@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {validateSpec} from '../scripts/build_from_spec.mjs';
+const base = () => ({version:1,font:'Test Font',slideSize:{width:960,height:540},slides:[{id:'one',notes:'Teaching notes',elements:[{type:'shape',name:'title',text:'Text',fontSize:22,position:{left:50,top:18,width:600,height:32}}]}]});
+test('valid explicit page specification',()=>assert.equal(validateSpec(base()).slides.length,1));
+test('missing notes rejected',()=>{const s=base();s.slides[0].notes='';assert.throws(()=>validateSpec(s),/notes/);});
+test('off-slide content rejected',()=>{const s=base();s.slides[0].elements[0].position.top=530;assert.throws(()=>validateSpec(s),/outside/);});
+test('duplicate names rejected',()=>{const s=base();s.slides[0].elements.push({...s.slides[0].elements[0]});assert.throws(()=>validateSpec(s),/duplicate/);});
+test('unresolved connector rejected',()=>{const s=base();s.slides[0].elements.push({type:'connector',name:'c',from:'title',to:'missing',fromSide:'right',toSide:'left'});assert.throws(()=>validateSpec(s),/endpoints/);});
+test('ragged table rejected',()=>{const s=base();s.slides[0].elements[0]={type:'table',name:'t',position:{left:50,top:100,width:700,height:200},fontSize:20,values:[['a','b'],['c']]};assert.throws(()=>validateSpec(s),/rectangular/);});
+test('remote image rejected',()=>{const s=base();s.slides[0].elements[0]={type:'image',name:'i',path:'https://example.org/a.png',position:{left:0,top:0,width:200,height:200}};assert.throws(()=>validateSpec(s),/local image/);});
+test('nonfinite size rejected',()=>{const s=base();s.slides[0].elements[0].fontSize=Infinity;assert.throws(()=>validateSpec(s),/size/);});

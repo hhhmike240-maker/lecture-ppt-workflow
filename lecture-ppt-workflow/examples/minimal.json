@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "font": "Microsoft YaHei",
+  "slideSize": {"width": 960, "height": 540},
+  "slides": [{
+    "id": "example",
+    "notes": "任务交接练习。先解释交付结果，再点击揭示权限问题。此页为原创最小测试，不是完整课程。",
+    "elements": [
+      {"type":"shape","name":"heading","text":"任务交接","fontSize":28,"bold":true,"position":{"left":44,"top":28,"width":872,"height":50}},
+      {"type":"shape","name":"body","text":"交付什么结果？何时完成？","fontSize":23,"position":{"left":44,"top":180,"width":872,"height":80}},
+      {"type":"shape","name":"reveal_1_1","text":"哪些可以自行处理，哪些需要请示？","fontSize":23,"position":{"left":44,"top":320,"width":872,"height":80}}
+    ]
+  }]
+}

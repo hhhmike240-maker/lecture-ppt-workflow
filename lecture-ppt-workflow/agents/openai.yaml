@@ -1,0 +1,4 @@
+interface:
+  display_name: "教学课件工作流（试用）"
+  short_description: "以教师讲义和标准课件为依据，制作新章并按反馈修订，检查知识与版式"
+  default_prompt: "使用 $lecture-ppt-workflow 读取我的讲义与标准PPT，先检查运行环境，再制作完整新章课件。"

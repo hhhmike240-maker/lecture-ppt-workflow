@@ -1,0 +1,417 @@
+{
+  "version": 1,
+  "font": "Microsoft YaHei",
+  "slideSize": {
+    "width": 960,
+    "height": 540
+  },
+  "slides": [
+    {
+      "id": "framework",
+      "background": "#F7F7F7",
+      "elements": [
+        {
+          "type": "shape",
+          "name": "section",
+          "text": "任务交接",
+          "position": {
+            "left": 44,
+            "top": 22,
+            "width": 872,
+            "height": 38
+          },
+          "fontSize": 28,
+          "bold": true,
+          "color": "#315D7C"
+        },
+        {
+          "type": "shape",
+          "name": "separator",
+          "geometry": "rect",
+          "position": {
+            "left": 44,
+            "top": 68,
+            "width": 872,
+            "height": 1
+          },
+          "fill": "#8A999F"
+        },
+        {
+          "type": "shape",
+          "name": "topic",
+          "text": "结果、权限与反馈",
+          "position": {
+            "left": 44,
+            "top": 84,
+            "width": 872,
+            "height": 42
+          },
+          "fontSize": 24,
+          "bold": true,
+          "color": "#243746"
+        },
+        {
+          "type": "shape",
+          "name": "result",
+          "text": "结果",
+          "position": {
+            "left": 44,
+            "top": 164,
+            "width": 130,
+            "height": 40
+          },
+          "fontSize": 26,
+          "bold": true,
+          "color": "#167A85"
+        },
+        {
+          "type": "shape",
+          "name": "result-detail",
+          "text": "交付什么，何时完成？\n把交付物和时间说清楚。",
+          "position": {
+            "left": 208,
+            "top": 164,
+            "width": 660,
+            "height": 76
+          },
+          "fontSize": 23,
+          "bold": false,
+          "color": "#243746"
+        },
+        {
+          "type": "shape",
+          "name": "authority",
+          "text": "权限",
+          "position": {
+            "left": 44,
+            "top": 270,
+            "width": 130,
+            "height": 40
+          },
+          "fontSize": 26,
+          "bold": true,
+          "color": "#167A85"
+        },
+        {
+          "type": "shape",
+          "name": "authority-detail",
+          "text": "哪些可以自行处理？\n哪些事项需要请示？",
+          "position": {
+            "left": 208,
+            "top": 270,
+            "width": 660,
+            "height": 76
+          },
+          "fontSize": 23,
+          "bold": false,
+          "color": "#243746"
+        },
+        {
+          "type": "shape",
+          "name": "feedback",
+          "text": "反馈",
+          "position": {
+            "left": 44,
+            "top": 376,
+            "width": 130,
+            "height": 40
+          },
+          "fontSize": 26,
+          "bold": true,
+          "color": "#167A85"
+        },
+        {
+          "type": "shape",
+          "name": "feedback-detail",
+          "text": "什么情况下反馈，向谁反馈？\n遇到变化时及时确认。",
+          "position": {
+            "left": 208,
+            "top": 376,
+            "width": 660,
+            "height": 76
+          },
+          "fontSize": 23,
+          "bold": false,
+          "color": "#243746"
+        }
+      ],
+      "notes": "建议3分钟。请学生区分交付目标与处置权限。本页为自编练习框架，不归属于某个学者。下一页用资料整理任务检查三项是否清楚。"
+    },
+    {
+      "id": "case-before",
+      "background": "#F7F7F7",
+      "elements": [
+        {
+          "type": "shape",
+          "name": "section",
+          "text": "任务交接",
+          "position": {
+            "left": 44,
+            "top": 22,
+            "width": 872,
+            "height": 38
+          },
+          "fontSize": 28,
+          "bold": true,
+          "color": "#315D7C"
+        },
+        {
+          "type": "shape",
+          "name": "separator",
+          "geometry": "rect",
+          "position": {
+            "left": 44,
+            "top": 68,
+            "width": 872,
+            "height": 1
+          },
+          "fill": "#8A999F"
+        },
+        {
+          "type": "shape",
+          "name": "topic",
+          "text": "资料整理中的权限边界",
+          "position": {
+            "left": 44,
+            "top": 84,
+            "width": 872,
+            "height": 42
+          },
+          "fontSize": 24,
+          "bold": true,
+          "color": "#243746"
+        },
+        {
+          "type": "shape",
+          "name": "dense-material",
+          "text": "负责人请助教周五前提交分类目录。助教可以调整目录层级，但不能自行删除原始文件。整理中发现部分资料归属不清。请讨论哪些工作可以继续、哪些需要反馈。参考分析：继续登记已知资料，保留原件；记录归属问题，向负责人确认后再处理。",
+          "position": {
+            "left": 44,
+            "top": 170,
+            "width": 872,
+            "height": 240
+          },
+          "fontSize": 23,
+          "bold": false,
+          "color": "#243746"
+        },
+        {
+          "type": "shape",
+          "name": "source",
+          "text": "教学情境（虚构）",
+          "position": {
+            "left": 44,
+            "top": 478,
+            "width": 872,
+            "height": 30
+          },
+          "fontSize": 16,
+          "bold": false,
+          "color": "#586973"
+        }
+      ],
+      "notes": "建议4分钟。修订前材料、问题与参考分析同时呈现，讨论节奏不够清楚；与修订后对比时不要将这种做法作为推荐。情境为本项目原创虚构练习。"
+    },
+    {
+      "id": "review",
+      "background": "#F7F7F7",
+      "elements": [
+        {
+          "type": "shape",
+          "name": "section",
+          "text": "任务交接",
+          "position": {
+            "left": 44,
+            "top": 22,
+            "width": 872,
+            "height": 38
+          },
+          "fontSize": 28,
+          "bold": true,
+          "color": "#315D7C"
+        },
+        {
+          "type": "shape",
+          "name": "separator",
+          "geometry": "rect",
+          "position": {
+            "left": 44,
+            "top": 68,
+            "width": 872,
+            "height": 1
+          },
+          "fill": "#8A999F"
+        },
+        {
+          "type": "shape",
+          "name": "topic",
+          "text": "知识回顾",
+          "position": {
+            "left": 44,
+            "top": 84,
+            "width": 872,
+            "height": 42
+          },
+          "fontSize": 24,
+          "bold": true,
+          "color": "#243746"
+        },
+        {
+          "type": "shape",
+          "name": "root",
+          "text": "任务交接",
+          "position": {
+            "left": 44,
+            "top": 278,
+            "width": 180,
+            "height": 64
+          },
+          "fontSize": 25,
+          "bold": true,
+          "color": "#FFFFFF",
+          "geometry": "roundRect",
+          "fill": "#315D7C"
+        },
+        {
+          "type": "shape",
+          "name": "result",
+          "text": "结果",
+          "position": {
+            "left": 328,
+            "top": 170,
+            "width": 150,
+            "height": 48
+          },
+          "fontSize": 24,
+          "bold": true,
+          "color": "#167A85"
+        },
+        {
+          "type": "shape",
+          "name": "result-leaves",
+          "text": "交付物\n时间",
+          "position": {
+            "left": 610,
+            "top": 153,
+            "width": 270,
+            "height": 82
+          },
+          "fontSize": 23,
+          "bold": false,
+          "color": "#243746"
+        },
+        {
+          "type": "shape",
+          "name": "authority",
+          "text": "权限",
+          "position": {
+            "left": 328,
+            "top": 280,
+            "width": 150,
+            "height": 48
+          },
+          "fontSize": 24,
+          "bold": true,
+          "color": "#167A85"
+        },
+        {
+          "type": "shape",
+          "name": "authority-leaves",
+          "text": "可自行处理\n须请示",
+          "position": {
+            "left": 610,
+            "top": 263,
+            "width": 270,
+            "height": 82
+          },
+          "fontSize": 23,
+          "bold": false,
+          "color": "#243746"
+        },
+        {
+          "type": "shape",
+          "name": "feedback",
+          "text": "反馈",
+          "position": {
+            "left": 328,
+            "top": 390,
+            "width": 150,
+            "height": 48
+          },
+          "fontSize": 24,
+          "bold": true,
+          "color": "#167A85"
+        },
+        {
+          "type": "shape",
+          "name": "feedback-leaves",
+          "text": "触发条件\n接收人",
+          "position": {
+            "left": 610,
+            "top": 373,
+            "width": 270,
+            "height": 82
+          },
+          "fontSize": 23,
+          "bold": false,
+          "color": "#243746"
+        },
+        {
+          "type": "connector",
+          "name": "root-result",
+          "from": "root",
+          "to": "result",
+          "fromSide": "right",
+          "toSide": "left",
+          "color": "#819AA8"
+        },
+        {
+          "type": "connector",
+          "name": "root-authority",
+          "from": "root",
+          "to": "authority",
+          "fromSide": "right",
+          "toSide": "left",
+          "color": "#819AA8"
+        },
+        {
+          "type": "connector",
+          "name": "root-feedback",
+          "from": "root",
+          "to": "feedback",
+          "fromSide": "right",
+          "toSide": "left",
+          "color": "#819AA8"
+        },
+        {
+          "type": "connector",
+          "name": "leaf-result",
+          "from": "result",
+          "to": "result-leaves",
+          "fromSide": "right",
+          "toSide": "left",
+          "color": "#819AA8"
+        },
+        {
+          "type": "connector",
+          "name": "leaf-authority",
+          "from": "authority",
+          "to": "authority-leaves",
+          "fromSide": "right",
+          "toSide": "left",
+          "color": "#819AA8"
+        },
+        {
+          "type": "connector",
+          "name": "leaf-feedback",
+          "from": "feedback",
+          "to": "feedback-leaves",
+          "fromSide": "right",
+          "toSide": "left",
+          "color": "#819AA8"
+        }
+      ],
+      "notes": "建议2分钟。请学生用自己的任务各填一次交付物、权限和反馈安排。连线表示分类关系，不表示因果或固定先后顺序。知识回顾对应讲义三项，不能用未讲内容填充分支。"
+    }
+  ]
+}

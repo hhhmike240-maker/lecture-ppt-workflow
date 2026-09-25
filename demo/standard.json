@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "font": "Microsoft YaHei",
+  "slideSize": {
+    "width": 960,
+    "height": 540
+  },
+  "slides": [
+    {
+      "id": "standard",
+      "background": "#F7F7F7",
+      "elements": [
+        {
+          "type": "shape",
+          "name": "section",
+          "text": "章节标题",
+          "position": {
+            "left": 44,
+            "top": 22,
+            "width": 872,
+            "height": 38
+          },
+          "fontSize": 28,
+          "bold": true,
+          "color": "#315D7C"
+        },
+        {
+          "type": "shape",
+          "name": "separator",
+          "geometry": "rect",
+          "position": {
+            "left": 44,
+            "top": 68,
+            "width": 872,
+            "height": 1
+          },
+          "fill": "#8A999F"
+        },
+        {
+          "type": "shape",
+          "name": "topic",
+          "text": "本页主题",
+          "position": {
+            "left": 44,
+            "top": 84,
+            "width": 872,
+            "height": 42
+          },
+          "fontSize": 24,
+          "bold": true,
+          "color": "#243746"
+        },
+        {
+          "type": "shape",
+          "name": "main",
+          "text": "正文区域\n放置定义、资料或可编辑关系图。",
+          "position": {
+            "left": 44,
+            "top": 172,
+            "width": 872,
+            "height": 130
+          },
+          "fontSize": 23,
+          "bold": false,
+          "color": "#243746"
+        },
+        {
+          "type": "shape",
+          "name": "caption",
+          "text": "图注与讨论区应与正文保持独立间距。",
+          "position": {
+            "left": 44,
+            "top": 366,
+            "width": 872,
+            "height": 55
+          },
+          "fontSize": 23,
+          "bold": false,
+          "color": "#243746"
+        },
+        {
+          "type": "shape",
+          "name": "source",
+          "text": "必要来源放在此区域。",
+          "position": {
+            "left": 44,
+            "top": 478,
+            "width": 872,
+            "height": 30
+          },
+          "fontSize": 16,
+          "bold": false,
+          "color": "#586973"
+        }
+      ],
+      "notes": "原创无标识标准页。用于演示角色、间距与配色，不含学校或教师素材。没有母版占位符绑定，不是功能完整的模板库。"
+    }
+  ]
+}
