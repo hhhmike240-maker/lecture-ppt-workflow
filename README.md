@@ -4,9 +4,9 @@
 
 适合希望保留课程知识、版式与授课备注，并能审核结果的教师、助教。项目是Codex Skill、规则和辅助脚本，不是独立大模型、通用演示软件或无人审核的教学系统。
 
-**当前版本可以上传 GitHub，定位为源代码与示例的早期试用版。** 它需要Node、公开npm依赖、中文字体和演示软件；安装器不会自动下载依赖。详细事实见[运行与许可](lecture-ppt-workflow/references/runtime.md)和[验证记录](docs/VALIDATION.md)。
+**当前版本已发布在 GitHub，定位为源代码与示例的早期试用版。** 它需要Node、公开npm依赖、中文字体和演示软件；安装器不会自动下载依赖。详细事实见[运行与许可](lecture-ppt-workflow/references/runtime.md)和[验证记录](docs/VALIDATION.md)。
 
-维护者上传步骤见[上传清单](docs/UPLOAD_CHECKLIST.md)，仓库与Release文案见[发布草稿](docs/GITHUB_DRAFT.md)。本轮未自动公开发布。
+维护者上传步骤见[上传清单](docs/UPLOAD_CHECKLIST.md)，仓库与Release文案见[发布草稿](docs/GITHUB_DRAFT.md)。v0.1.0-alpha 已作为早期试用版公开发布。
 
 ## 功能与证据
 
@@ -96,7 +96,7 @@ python demo/run_demo.py --out scratch/demo-run --skill-dir scratch/skills/lectur
 - 用量没有固定承诺，文件大小不等于模型消耗。
 - 更新请使用新目录；不要无确认删除缓存或旧成果。
 
-报告问题请按[问题模板](docs/ISSUE_TEMPLATE.md)提供脱敏复现材料；不要上传学生信息、聊天记录、账号路径或未获许可课件。尚无公开仓库，当前交给项目维护者；发布后再建Issue。
+报告问题请按[问题模板](docs/ISSUE_TEMPLATE.md)提供脱敏复现材料；不要上传学生信息、聊天记录、账号路径或未获许可课件。仓库已公开，欢迎通过 [Issues](https://github.com/hhhmike240-maker/lecture-ppt-workflow/issues) 提交反馈。
 
 后续优先级：第二设备安装与独立任务触发 → 跨平台静态渲染 → 动态点击放映与复杂模板兼容性。暂不开发网站、账号或大型模板库。
 
