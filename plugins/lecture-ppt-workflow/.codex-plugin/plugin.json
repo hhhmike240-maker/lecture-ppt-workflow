@@ -1,0 +1,44 @@
+{
+  "name": "lecture-ppt-workflow",
+  "version": "0.1.1-alpha",
+  "description": "Teacher-guided editable lecture slides from handouts, reference decks, and feedback.",
+  "author": {
+    "name": "hhhmike240-maker",
+    "url": "https://github.com/hhhmike240-maker"
+  },
+  "homepage": "https://github.com/hhhmike240-maker/lecture-ppt-workflow",
+  "repository": "https://github.com/hhhmike240-maker/lecture-ppt-workflow",
+  "license": "MIT",
+  "keywords": [
+    "teaching",
+    "lecture",
+    "powerpoint",
+    "pptx",
+    "education",
+    "slides",
+    "codex-skill"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Lecture PPT Workflow",
+    "shortDescription": "Draft and revise editable teaching slides with teacher review.",
+    "longDescription": "Use a handout, reference deck, and teacher feedback to prepare editable lecture slides. Includes knowledge mapping, teaching notes, local checks, and an original demo. Early access: local dependencies and teacher review are required.",
+    "developerName": "hhhmike240-maker",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/hhhmike240-maker/lecture-ppt-workflow",
+    "defaultPrompt": [
+      "Turn my handout and reference deck into editable lecture slides with teaching notes.",
+      "Revise only the slides I name, preserve the knowledge, and explain each change.",
+      "根据我的讲义和标准课件制作教学 PPT，先检查环境，保留授课备注并逐页核验。"
+    ],
+    "brandColor": "#385F8E",
+    "screenshots": [
+      "./assets/demo/preview-before/002.png",
+      "./assets/demo/preview-after/002.png"
+    ]
+  }
+}

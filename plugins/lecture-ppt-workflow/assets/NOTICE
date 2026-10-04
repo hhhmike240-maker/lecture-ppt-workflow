@@ -1,0 +1,10 @@
+This repository contains original workflow rules, helper scripts, documentation,
+and original demonstration materials prepared for this project.
+
+The repository does not include @oai/artifact-tool, any bundled Codex runtime,
+fonts, Microsoft PowerPoint, or other third-party software. Those components
+remain subject to their own terms and may be unavailable for public use.
+
+The project describes AI-assisted implementation accurately: the workflow and
+acceptance decisions are project work; some code and documentation were
+produced or refined with AI assistance.

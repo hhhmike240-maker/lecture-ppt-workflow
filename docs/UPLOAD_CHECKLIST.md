@@ -1,5 +1,7 @@
 # 上传 GitHub 前的最后一步
 
+> 历史材料：这是首次发布前的操作清单。仓库已建立，后续版本请使用[发布指南](PUBLISHING.md)，不要按下文重复创建仓库。
+
 本目录是完整仓库内容；本轮仅在本地准备，没有创建仓库、推送或联系第三方。
 
 1. 创建空仓库，推荐名称 `lecture-ppt-workflow`。简介、Topics 和 Release 文案见 [GITHUB_DRAFT.md](GITHUB_DRAFT.md)。

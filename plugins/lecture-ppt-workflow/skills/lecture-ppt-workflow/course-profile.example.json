@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "purpose": "模型读取的示例偏好，不是生成器自动配置",
+  "slide_size_px": [960, 540],
+  "font_family": "Microsoft YaHei",
+  "font_sizes_px": {"section": 28, "topic": 24, "body": 23, "source": 16},
+  "background": "#F7F7F7",
+  "colors": {"heading": "#315D7C", "text": "#243746", "accent": "#167A85"},
+  "header": {"section_top": 22, "line_y": 68, "topic_top": 84, "body_top_min": 155, "extra_section_label": false},
+  "content_rect_px": [44, 155, 872, 295],
+  "source_rect_px": [44, 478, 872, 36],
+  "logo": null,
+  "case_mode": "teacher_material_only",
+  "chapter_review": "editable_relationship_map",
+  "notes": "更换标准PPT后重新测量；字体未安装时先报告并确认替代"
+}

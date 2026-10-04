@@ -6,4 +6,5 @@ scratch/
 work/
 .env
 *.log
-
+dist/
+.agents/skills/
