@@ -1,0 +1,57 @@
+name: "使用反馈 / Usage feedback"
+description: "告诉我们是否成功做出课件 / Tell us what worked or where you got stuck."
+title: "[feedback] "
+body:
+  - type: markdown
+    attributes:
+      value: "感谢试用！中文或英文均可。请勿提交学生信息、私有讲义、账号路径或密钥。Thanks for trying this workflow. Chinese and English are welcome. Share only sanitized information; this issue is public."
+  - type: dropdown
+    id: outcome
+    attributes:
+      label: "完成到哪一步？ / How far did you get?"
+      options:
+        - "看过演示，尚未安装 / Viewed the demo only"
+        - "安装遇阻 / Installation blocked"
+        - "已安装，尚未完成示例 / Installed, demo not completed"
+        - "已复现示例 / Reproduced the bundled demo"
+        - "已制作自己的课件 / Created my own teaching slides"
+        - "已再次使用 / Used it for another chapter or task"
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: "版本或提交 / Version or commit"
+      placeholder: "例如 / e.g. v0.1.0-alpha"
+  - type: textarea
+    id: environment
+    attributes:
+      label: "运行环境 / Environment"
+      description: "OS, Codex surface, Python/Node, PowerPoint/LibreOffice, and course language."
+      placeholder: "Windows; Codex desktop; Python 3.12; Node 24; PowerPoint; Chinese"
+  - type: textarea
+    id: experience
+    attributes:
+      label: "使用结果或卡点 / Result or blocker"
+      description: "What were you trying to make? What worked? If blocked, include the exact sanitized error."
+    validations:
+      required: true
+  - type: textarea
+    id: next
+    attributes:
+      label: "最希望改进什么？ / What should improve next?"
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: "公开信息确认 / Public information"
+      options:
+        - label: "已移除私人信息与未获授权材料 / I have removed private information and material I cannot share."
+          required: true
+  - type: checkboxes
+    id: quotation
+    attributes:
+      label: "可选：公开引用 / Optional quotation permission"
+      description: "留空不影响反馈。Posting feedback does not otherwise grant permission to use it as a testimonial."
+      options:
+        - label: "允许维护者在项目介绍中匿名引用本条文字反馈 / The maintainer may anonymously quote this text feedback in project materials."
+          required: false

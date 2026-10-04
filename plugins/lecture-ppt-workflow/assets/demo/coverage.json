@@ -1,0 +1,9 @@
+{
+  "knowledge": [
+    {"id":"K1","source":"lecture.md 第一节结果","required":true,"slides":[1,3],"on_screen":["交付","时间"]},
+    {"id":"K2","source":"lecture.md 第一节权限","required":true,"slides":[1,2,3],"on_screen":["请示"]},
+    {"id":"K3","source":"lecture.md 第一节反馈","required":true,"slides":[1,3],"on_screen":["反馈"]},
+    {"id":"K4","source":"lecture.md 第二节情境","required":true,"slides":[2],"on_screen":["保留原件","负责人确认","虚构"]}
+  ],
+  "figures": []
+}

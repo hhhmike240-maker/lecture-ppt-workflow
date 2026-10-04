@@ -1,0 +1,31 @@
+{
+  "input": "after-build/candidate.pptx",
+  "output": "demo/after.pptx",
+  "input_sha256": "90b1305aa77f1ecc0b77e7ea2221c16387aa2c53dfc2540724c11957526d68eb",
+  "output_sha256": "30eee4b97c096389db39012ab66079ad28d6562342c5f241913736fe8f68c575",
+  "effect": "native OOXML Fade entrance, 400 ms",
+  "initial_visibility": "Standard entrance preset semantics; cNvPr permanent hidden flag is forbidden",
+  "validation_scope": "ZIP integrity, XML roundtrip, timing tree, target IDs, grouping, duration, manual advance, sound absence. No PowerPoint or WPS slideshow playback test.",
+  "slides": [
+    {
+      "slide": 2,
+      "part": "ppt/slides/slide2.xml",
+      "click_count": 1,
+      "animated_shapes": 1,
+      "groups": [
+        {
+          "group": 1,
+          "click": 1,
+          "shapes": [
+            {
+              "id": "8",
+              "name": "reveal_1_1",
+              "item": 1
+            }
+          ]
+        }
+      ],
+      "static_checks_passed": true
+    }
+  ]
+}
