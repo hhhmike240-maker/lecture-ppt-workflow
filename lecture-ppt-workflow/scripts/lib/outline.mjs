@@ -482,20 +482,25 @@ L.review = (s, ctx) => {
 
 L.quiz = (s, ctx) => {
   const {theme, W} = ctx, h = header(s, ctx), els = [...h.els], CW = W - 2 * M, pad = 16;
-  // 1-2 questions: full-width cards; 3-4: a 2 x 2 grid so a typical classroom check fits on one slide.
-  const cols = s.questions.length >= 3 ? 2 : 1, colGap = 20, cw = (CW - colGap * (cols - 1)) / cols;
-  const qSize = cols > 1 ? 19 : 21, aSize = cols > 1 ? 17 : 19, badge = cols > 1 ? 32 : 38;
-  const tw = cw - (badge + 34) - pad;
-  const cards = s.questions.map(q0 => {
-    const q = typeof q0 === 'string' ? {q:q0} : q0, options = list(q.options).map(str).filter(Boolean);
-    const qt = str(q.q), ot = options.join('    '), at = str(q.answer) ? `答案：${str(q.answer)}` : '';
-    const qH = textHeight(qt, qSize, tw), oH = ot ? textHeight(ot, aSize, tw) : 0, aH = at ? textHeight(at, aSize, tw) : 0;
-    return {qt, ot, at, qH, oH, aH, height:Math.max(badge + 2 * pad, pad + qH + (ot ? 6 + oH : 0) + (at ? 10 + aH : 0) + pad)};
-  });
-  const rows = Math.ceil(cards.length / cols);
-  const rowH = [...Array(rows)].map((_, r) => Math.max(...cards.slice(r * cols, r * cols + cols).map(c => c.height)));
-  const avail = ctx.bottom - h.top - 6, used = rowH.reduce((a, b) => a + b, 0);
-  check(ctx, used + 14 * (rows - 1), avail);
+  // 1-3 questions: full-width cards; 4 (or 3 that do not fit stacked): a 2 x 2 grid.
+  const measure = cols => {
+    const colGap = 20, cw = (CW - colGap * (cols - 1)) / cols;
+    const qSize = cols > 1 ? 19 : 21, aSize = cols > 1 ? 17 : 19, badge = cols > 1 ? 32 : 38, tw = cw - (badge + 34) - pad;
+    const cards = s.questions.map(q0 => {
+      const q = typeof q0 === 'string' ? {q:q0} : q0, options = list(q.options).map(str).filter(Boolean);
+      const qt = str(q.q), ot = options.join('    '), at = str(q.answer) ? `答案：${str(q.answer)}` : '';
+      const qH = textHeight(qt, qSize, tw), oH = ot ? textHeight(ot, aSize, tw) : 0, aH = at ? textHeight(at, aSize, tw) : 0;
+      return {qt, ot, at, qH, oH, aH, height:Math.max(badge + 2 * pad, pad + qH + (ot ? 6 + oH : 0) + (at ? 10 + aH : 0) + pad)};
+    });
+    const rows = Math.ceil(cards.length / cols);
+    const rowH = [...Array(rows)].map((_, r) => Math.max(...cards.slice(r * cols, r * cols + cols).map(c => c.height)));
+    return {cols, colGap, cw, qSize, aSize, badge, tw, cards, rows, rowH, used:rowH.reduce((a, b) => a + b, 0) + 14 * (rows - 1)};
+  };
+  const avail = ctx.bottom - h.top - 6, n = s.questions.length;
+  let m = measure(n >= 4 ? 2 : 1);
+  if (n === 3 && m.used > avail) m = measure(2);
+  const {cols, colGap, cw, qSize, aSize, badge, tw, cards, rows, rowH} = m, used = rowH.reduce((a, b) => a + b, 0);
+  check(ctx, m.used, avail);
   const gap = Math.max(14, Math.min(32, (avail - used) / (rows + 1)));
   let y = h.top + 6 + Math.max(0, Math.min(gap, (avail - used - gap * (rows - 1)) * .3));
   cards.forEach((c, i) => {

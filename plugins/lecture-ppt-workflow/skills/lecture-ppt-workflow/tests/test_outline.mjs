@@ -88,12 +88,14 @@ test('bad theme colors are rejected', () => {
   assert.throws(() => layoutOutline({theme:{primary:'blue'}, slides:[{layout:'closing', title:'x'}]}), /颜色/);
 });
 
-test('four quiz questions fit as a 2 x 2 grid', () => {
+test('four quiz questions fit as a 2 x 2 grid; three stack when they fit', () => {
   const q = (n) => ({q:`第${n}题：工作分析的对象是岗位还是员工？`, answer:'岗位本身，而不是某一位员工。'});
   const r = layoutOutline(one({layout:'quiz', title:'课堂检验', questions:[q(1), q(2), q(3), q(4)], notes:'n'}));
   assert.deepEqual(errors(r), []);
   const cards = r.spec.slides[0].elements.filter(e => /^question-\d-card$/.test(e.name));
   assert.equal(new Set(cards.map(c => c.position.left)).size, 2);
+  const three = layoutOutline(one({layout:'quiz', title:'课堂检验', questions:[q(1), q(2), q(3)], notes:'n'}));
+  assert.equal(new Set(three.spec.slides[0].elements.filter(e => /^question-\d-card$/.test(e.name)).map(c => c.position.left)).size, 1);
 });
 
 test('a one-paragraph case analysis is split into sentence bullets', () => {

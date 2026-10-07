@@ -77,7 +77,7 @@
     "scope": "Allowlisted paths and file hashes only. Runtime/cache/archive/key-file patterns are excluded. This scan does not certify the absence of private content, secrets, third-party material, or licensing issues in allowed files."
   },
   "file_count": 216,
-  "total_bytes": 3879877,
+  "total_bytes": 3882051,
   "files": [
     {
       "path": ".gitattributes",
@@ -116,8 +116,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "sha256": "474ada9c71cf6df12d2d35080addcb88c55e5633f6cacc036a57262f4a1fe8da",
-      "bytes": 4354
+      "sha256": "0273c9d6963874e495dca9ff75386d7254d1f20cd606bd5b7fc13e271651a194",
+      "bytes": 4448
     },
     {
       "path": "CONTRIBUTING.md",
@@ -136,13 +136,13 @@
     },
     {
       "path": "README.en.md",
-      "sha256": "a5592c023fed5746908f3cc0994dd8c0a44468898c0bdf713172270ab1eaeee7",
-      "bytes": 6157
+      "sha256": "84203d3c324d0dc52f38d672b83fee00e18d0a401491cf50325b1594850309dc",
+      "bytes": 6253
     },
     {
       "path": "README.md",
-      "sha256": "bee5a84c53ac538d5668f6c75b1a242257134cd3258c04ab9fd2e0c8e3702b83",
-      "bytes": 6503
+      "sha256": "71c5996dd139a9c3e964c8d408bfdf29cc583edfe2bbd083b6ddcee8f2598e43",
+      "bytes": 6571
     },
     {
       "path": "SECURITY.md",
@@ -396,8 +396,8 @@
     },
     {
       "path": "docs/VALIDATION_20261007.md",
-      "sha256": "77c0de4ca62a5b20217f8108c48de1bee32bce3c36e8e27c4598fc58c1d9fb09",
-      "bytes": 3762
+      "sha256": "0ee8e505dbbe0e238c85cef91261c8fc466f999efe17df46de9c3a99a5e75b37",
+      "bytes": 4059
     },
     {
       "path": "docs/history/RELEASE_0.1.1-alpha.md",
@@ -556,8 +556,8 @@
     },
     {
       "path": "lecture-ppt-workflow/scripts/lib/outline.mjs",
-      "sha256": "26eca7e090818929400b86ba83c71ad6c495a9ae224cfb687953a2a7fc218a07",
-      "bytes": 36451
+      "sha256": "c57acb6feefe3372d75dc257e79a4e93603516167b6c4f00870c2350d4a38fa0",
+      "bytes": 36737
     },
     {
       "path": "lecture-ppt-workflow/scripts/lib/pptx_core.mjs",
@@ -616,8 +616,8 @@
     },
     {
       "path": "lecture-ppt-workflow/tests/test_outline.mjs",
-      "sha256": "32fcaeb1f22beed591a2b682827e1d4252d8cb0a618a04a15bd2021e78f85855",
-      "bytes": 6469
+      "sha256": "89e7894fcf5570687f94e6408de6fbf1940731659d63026c86eab1f7c73b441a",
+      "bytes": 6749
     },
     {
       "path": "lecture-ppt-workflow/tests/test_package.mjs",
@@ -656,8 +656,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/CHANGELOG.md",
-      "sha256": "474ada9c71cf6df12d2d35080addcb88c55e5633f6cacc036a57262f4a1fe8da",
-      "bytes": 4354
+      "sha256": "0273c9d6963874e495dca9ff75386d7254d1f20cd606bd5b7fc13e271651a194",
+      "bytes": 4448
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/CONTRIBUTING.md",
@@ -676,8 +676,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/README.en.md",
-      "sha256": "344828ecd421e7564f4a80f17aad1ceb8d7445854235381a8c4d5e260fd58aed",
-      "bytes": 7054
+      "sha256": "6492804ca211d8ddd295fb0c0a6c242d8347c2241b28e47f0dc7aaa4fbf76b60",
+      "bytes": 7150
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/README.md",
@@ -906,8 +906,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/docs/VALIDATION_20261007.md",
-      "sha256": "77c0de4ca62a5b20217f8108c48de1bee32bce3c36e8e27c4598fc58c1d9fb09",
-      "bytes": 3762
+      "sha256": "0ee8e505dbbe0e238c85cef91261c8fc466f999efe17df46de9c3a99a5e75b37",
+      "bytes": 4059
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/docs/images/showcase.png",
@@ -1051,8 +1051,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/scripts/lib/outline.mjs",
-      "sha256": "26eca7e090818929400b86ba83c71ad6c495a9ae224cfb687953a2a7fc218a07",
-      "bytes": 36451
+      "sha256": "c57acb6feefe3372d75dc257e79a4e93603516167b6c4f00870c2350d4a38fa0",
+      "bytes": 36737
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/scripts/lib/pptx_core.mjs",
@@ -1111,8 +1111,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/tests/test_outline.mjs",
-      "sha256": "32fcaeb1f22beed591a2b682827e1d4252d8cb0a618a04a15bd2021e78f85855",
-      "bytes": 6469
+      "sha256": "89e7894fcf5570687f94e6408de6fbf1940731659d63026c86eab1f7c73b441a",
+      "bytes": 6749
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/tests/test_package.mjs",
