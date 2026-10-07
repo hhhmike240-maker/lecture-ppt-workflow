@@ -1,98 +1,85 @@
-> **Source-repository guide.** The commands and prompt paths below assume a checkout of the [source repository](https://github.com/hhhmike240-maker/lecture-ppt-workflow), not the extracted plugin root or assets directory. Paths such as `install.py`, `demo/`, and `.agents/skills/` belong to that repository setup. For this plugin package, follow the [plugin README](../README.md) instead: its Skill is under `skills/lecture-ppt-workflow`, its example inputs are under `assets/demo`, and discovery must use the actual installed plugin location. This is the 0.1.1-alpha early-access package.
+> **Source-repository guide.** The commands and prompt paths below assume a checkout of the [source repository](https://github.com/hhhmike240-maker/lecture-ppt-workflow), not the extracted plugin root or assets directory. Paths such as `install.py`, `demo/`, and `.agents/skills/` belong to that repository setup. For this plugin package, follow the [plugin README](../README.md) instead: its Skill is under `skills/lecture-ppt-workflow`, its example inputs are under `assets/demo`, and discovery must use the actual installed plugin location. This is the 0.2.0 package.
 
-> **源代码仓库指南。** 下方命令和提示词路径以完整源代码仓库为起点，不能直接在插件根目录执行。插件包请按上方插件说明操作：示例在 `assets/demo`，Skill 在 `skills/lecture-ppt-workflow`，应用发现需确认真实安装位置。本包为 0.1.1-alpha 早期试用包。
+> **源代码仓库指南。** 下方命令和提示词路径以完整源代码仓库为起点，不能直接在插件根目录执行。插件包请按上方插件说明操作：示例在 `assets/demo`，Skill 在 `skills/lecture-ppt-workflow`，应用发现需确认真实安装位置。本包为 0.2.0 版。
 
-# Lecture PPT Workflow
+# Lecture PPT Workflow · Lecture notes to teaching slides
 
-**Turn lecture notes and a reference deck into editable teaching slides, then refine them through instructor feedback.**
+[简体中文](../README.md) | **English**
 
-[中文](../README.md) · English · [Quick start](docs/QUICKSTART.en.md) · [Example prompts](demo/PROMPTS.en.md) · [Report an issue](https://github.com/hhhmike240-maker/lecture-ppt-workflow/issues/new/choose)
+Give your lecture notes to any AI chatbot and get an **editable** teaching deck in minutes: layouts are computed for you, every slide has **speaker notes**, case analyses and quiz answers **appear on click**, and the deck can reuse **your own institution's template**.
 
-These documents describe **v0.1.1-alpha**. Download published packages from [Releases](https://github.com/hhhmike240-maker/lecture-ppt-workflow/releases). [Watch the 60-second English-captioned overview](docs/media/lecture-ppt-workflow-overview.mp4): a walkthrough made from original Chinese slide images, not a screen recording.
+**[▶ Use it online (no install, no sign-up)](https://hhhmike240-maker.github.io/lecture-ppt-workflow/app/)** · [Sample deck](demo/lecture.pptx) · [Sample notes](demo/lecture.md) · [Feedback](https://github.com/hhhmike240-maker/lecture-ppt-workflow/issues/new/choose)
 
-Lecture PPT Workflow is a Codex Skill with teaching rules and supporting scripts for instructors and teaching assistants. Bring your chapter notes and a reference PowerPoint deck; the workflow guides content mapping, slide creation, speaker notes, review, and reuse in later chapters.
+![Slides generated from the sample lecture notes](docs/images/showcase.png)
 
-**This is an early alpha workflow.** It requires Codex, a model, and the tools needed for your task. The installer copies the Skill; it does not install dependencies. English onboarding is available here, while the detailed Skill rules and reference documents remain primarily in Chinese. The included slides are Chinese-language examples; complete English slide output has not yet been validated.
+<sub>Six of the 15 slides generated from the sample notes (a Chinese HR-management chapter), with no manual edits. Every text box, table and shape is editable in PowerPoint or WPS.</sub>
 
-## What you can do
+## Three steps
 
-| Task | What the workflow supports | What still needs review |
-|---|---|---|
-| Build a chapter deck | Map lecture content and original figures to slides; create editable text, shapes, tables, and relationship diagrams | The model interprets the sources; the instructor checks meaning and completeness |
-| Add teaching scenarios | Keep the knowledge sequence intact, add supplied scenarios, and reveal reference analysis on click | Sources, fictional labels, teaching fit, and actual slideshow behavior |
-| Make a focused revision | Specify a slide, object, or limited change and deliver a new file | Complex templates and inherited styles may need extra work |
-| Extract a course style | Identify layout and font roles from a reference deck and suggest a reusable course profile | The profile is guidance for the model, not an automatic renderer configuration |
+1. Open the **[web page](https://hhhmike240-maker.github.io/lecture-ppt-workflow/app/)** and copy the prompt (choose "English prompt"; the page itself is in Chinese).
+2. Send the prompt and your notes to an AI chatbot: ChatGPT, Claude, DeepSeek, Kimi, Doubao, Qwen and others all work.
+3. Paste the answer back into the page, check the preview, and download the PPTX.
 
-The supporting scripts index DOCX/PPTX files, locate images and notes, generate new slides from reviewed JSON specifications using PptxGenJS, and check package structure, content identifiers, and geometry. These checks help review a deck; they do not establish semantic correctness or visual quality.
+Optional: upload one of your existing decks. The new deck reuses its **logos, title rule, colors and fonts**.
 
-## See the example
+![Default style and the same slide after uploading a reference deck](docs/images/template.png)
 
-The original, fictional example teaches a short task-handover framework. It includes [lecture notes in Chinese](demo/lecture.md), a [reference deck](demo/standard.pptx), and editable [before](demo/before.pptx) and [after](demo/after.pptx) decks.
+Your notes and slides are processed **in your browser only**. The only network traffic is your own conversation with the AI.
 
-**After revision — Chinese-language demo, slide 2.** Materials, discussion, and reference analysis occupy separate regions. The analysis has a click-to-reveal animation in the PPTX; the static image cannot demonstrate playback.
+## What makes it different
 
-![Chinese demo after revision: scenario materials, discussion, and reference analysis](demo/preview-after/002.png)
+The rules come from several rounds of feedback from a university instructor who taught with the generated decks.
 
-**Before revision — Chinese-language demo, slide 2.** The same example begins as a denser scenario page.
+| What teachers care about | What this tool does |
+|---|---|
+| No invented content | The prompt keeps the AI faithful to your notes; additions go into speaker notes marked "please verify"; invented cases are labeled fictional |
+| Something to say | Every slide gets speaker notes: key points, common misconceptions, a question to ask, the transition |
+| Class interaction | Case analyses and quiz answers are hidden until you click (native PowerPoint animation) |
+| Readable slides | Text limits per slide; overflow is reported with "split this slide", **never silently shrunk** |
+| Your own template | Upload a deck; logos, rules, color bands and fonts are reused |
+| Original figures | Figures from your notes are not redrawn by the AI; a placeholder marks where to insert them |
+| Fully editable | Native text boxes, tables and shapes, no page screenshots |
 
-![Chinese demo before revision: a denser scenario page](demo/preview-before/002.png)
+## 13 teaching layouts
 
-These are project-authored demonstration materials, not private instructor files. They contain no school branding or external photographs and illustrate a minimal workflow rather than the quality of an entire course.
+Cover · Agenda · Section · Key points (auto cards) · Definition · Comparison · Table · Process · Case (click to reveal analysis) · Figure · Quiz (click to reveal answers) · Knowledge map · Closing.
 
-## Try the smallest check
+The AI writes content and picks layouts; positions, spacing and alignment are computed. See the [outline format](../skills/lecture-ppt-workflow/references/outline.md).
 
-With Python 3.10+ available, run these commands from the repository root. They inspect the included PPTX without Codex, a model call, Node, or a generation engine:
+## Advanced use
 
-```text
-python lecture-ppt-workflow/scripts/office_audit.py index demo/after.pptx --out scratch/check-1/index.json
-python lecture-ppt-workflow/scripts/style_check.py demo/after.pptx --out scratch/check-1/style.json
+### As a skill in coding agents (Codex / Claude Code)
+
+```bash
+git clone https://github.com/hhhmike240-maker/lecture-ppt-workflow.git
+cd lecture-ppt-workflow
+python install.py --target claude      # Claude Code: ~/.claude/skills
+python install.py --target codex       # Codex: ~/.codex/skills
 ```
 
-Read the JSON reports for errors and warnings. Choose a new output path when repeating a check; existing outputs are not overwritten. A successful check does not mean the deck has passed instructor review or slideshow testing.
+Then ask: "Use the lecture-ppt-workflow skill to turn lecture.docx into slides with my reference deck's style." The agent indexes the Word/PPT files, writes the outline, builds and renders the deck, and checks that each knowledge point appears on screen. Requires Python 3.10+ and Node.js 20+; the installer prints the `npm ci` step. See the [quick start](docs/QUICKSTART.en.md).
 
-## Use the Skill in Codex
+### Command line
 
-For a project-scoped trial, install a separate copy inside this repository:
-
-```text
-python install.py --skills-dir .agents/skills
-python .agents/skills/lecture-ppt-workflow/scripts/validate_skill.py
+```bash
+cd lecture-ppt-workflow && npm ci --ignore-scripts && cd ..
+node lecture-ppt-workflow/scripts/build_outline.mjs demo/outline.json out/demo --template my-deck.pptx
 ```
 
-Open this repository as your Codex project and start a new task. Ask Codex to confirm that it discovered the Skill before proceeding:
+The output folder contains `lecture.pptx`, a layout report `report.json`, the page specification `spec.json`, and a copy of `outline.json` for later edits or restyling. Existing folders are never overwritten. For the full demo with coverage checks and previews, run `python demo/run_demo.py --out out/full-demo`.
 
-```text
-Use $lecture-ppt-workflow. First confirm that you can discover and read this
-Skill, then check the available runtime, fonts, and rendering tools.
-Use demo/lecture.md as the content source and demo/standard.pptx as the
-visual reference. Create a three-slide Chinese teaching deck with speaker
-notes, a final relationship diagram, and click-to-reveal scenario analysis.
-Write a new file and inspect every rendered slide. Report structural checks,
-static inspection, and actual slideshow testing separately.
-```
+## Verified and not yet verified
 
-This is an English-language instruction for the **Chinese demo**. See [example prompts](demo/PROMPTS.en.md) for revisions, style extraction, and an English-output trial.
+- **Verified** (2026-10-07, Windows with Microsoft 365 PowerPoint): opening and exporting all 15 sample slides; click animations recognized by PowerPoint as on-click fade, 0.4 s; identical output from the web page and the command line; template reuse on an original sample template and on a real university template. Automated tests: 32 Node, 19 Python. See the [validation log](docs/VALIDATION_20261007.md).
+- **Not yet verified**: WPS, PowerPoint for Mac, Keynote; rendering scripts on non-Windows systems; real-world quality for English-language courses. Feedback is welcome.
 
-The installer refuses an existing destination. Without `--skills-dir`, its current default is `$CODEX_HOME/skills`, or `~/.codex/skills` when `CODEX_HOME` is unset; the explicit project path above avoids relying on that default. Copying files and passing the structural validator do not prove Codex discovery or successful invocation.
+## Limits
 
-For generation, prepare Python 3.10+, Node.js 20+, the locked npm dependencies, `lxml` in a dedicated Python virtual environment, suitable fonts, and a rendering tool. The demo uses Microsoft YaHei, which is not bundled. The demo runner uses PowerPoint on Windows and LibreOffice plus Poppler on other platforms. Follow the [quick start](docs/QUICKSTART.en.md) for exact commands and limitations.
+- AI-written content needs the teacher's review.
+- The web preview is approximate; PowerPoint or WPS is authoritative.
+- Template reuse copies decorations **without text** (logo images, lines, color blocks). Placeholder styles, master text and inherited font sizes are not copied; preview complex templates first.
+- No equations, charts, audio or video yet. Original figures are inserted by the teacher, or uploaded on the web page.
 
-## Evidence and current limits
+## Contributing and license
 
-See the [current validation record](docs/VALIDATION_20261004.md) and [release notes](docs/RELEASE_0.1.1-alpha.md) for the dependency fix, 35 passing tests, and complete local demo rerun.
-
-The [validation record in Chinese](docs/VALIDATION.md) documents local installation checks, script tests, generation with PptxGenJS 4.0.1, and static PowerPoint exports of the reference, before, and after decks. The revised scenario slide contains one manual fade-in animation in the file structure. Actual click-through playback was not tested.
-
-The project initiator reported that one instructor independently made a later chapter and was satisfied after several feedback rounds. This is feedback from the internal project context, not a published study or evidence from external users of this public package. No time-saving measurement, first-pass success rate, or cross-device result is claimed.
-
-Known gaps include a fresh-device installation, discovery and invocation in an independent Codex task, the LibreOffice rendering path, complete English slide output, and actual slideshow playback. Complex templates, theme inheritance, formulas, multimedia, and PowerPoint/WPS compatibility need separate testing. Existing complex animations are not reconstructed. Teachers retain responsibility for subject accuracy and classroom suitability.
-
-## Feedback, sources, and license
-
-See the [bilingual FAQ](docs/FAQ.md). Feedback about successful installation, your own slides, and repeat use is welcome, as well as bug reports.
-
-[Open an issue](https://github.com/hhhmike240-maker/lecture-ppt-workflow/issues/new/choose) with your operating system, tool versions, exact command or prompt, the observed result, and a small example you have permission to share. Remove student information, private conversations, local account paths, and restricted course materials first.
-
-The code and documents were created with AI assistance; existing tools such as PptxGenJS perform PPTX generation. This project contributes the teaching workflow, constraints, specification adapter, checks, and feedback reuse. See [provenance](docs/PROVENANCE.md), [runtime and licensing notes](../skills/lecture-ppt-workflow/references/runtime.md), and the [changelog](CHANGELOG.md); these detailed documents are currently in Chinese.
-
-Original project code, rules, documentation, and demo materials are released under the [MIT License](LICENSE). Third-party dependencies, fonts, and presentation software retain their own licenses. Keep original inputs and previous outputs; use new paths for revisions and updates.
+Feedback of any kind is welcome via [issues](https://github.com/hhhmike240-maker/lecture-ppt-workflow/issues/new/choose). See [CONTRIBUTING](CONTRIBUTING.md) for adding layouts or improving prompts. Original code, rules, docs and samples are [MIT licensed](LICENSE). The generation engine is [PptxGenJS](https://github.com/gitbrent/PptxGenJS) (MIT); see [NOTICE](NOTICE) and [provenance](docs/PROVENANCE.md). Built with AI assistance; requirements, teacher feedback and acceptance by the maintainer.

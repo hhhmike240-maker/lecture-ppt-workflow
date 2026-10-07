@@ -5,14 +5,14 @@ from office_audit import fresh_json
 from cli_support import run
 
 def probe():
-    node=os.environ.get('BUPT_NODE') or shutil.which('node')
+    node=os.environ.get('LECTURE_NODE') or os.environ.get('BUPT_NODE') or shutil.which('node')
     root=Path(__file__).resolve().parents[1]
     pptxgen=(root/'node_modules'/'pptxgenjs').is_dir()
     capabilities={'parsing':sys.version_info>=(3,10),'animations':importlib.util.find_spec('lxml') is not None,'generation':bool(node and pptxgen),'rendering':False}
     issues=[]
     if not capabilities['animations']:issues.append('Animation helper needs lxml in this Python environment; no auto-install was attempted.')
     if not pptxgen: issues.append('Generation requires npm ci --ignore-scripts in this Skill directory.')
-    if not node: issues.append('Generation requires Node.js 20+; set BUPT_NODE or add node to PATH.')
+    if not node: issues.append('Generation requires Node.js 20+; set LECTURE_NODE or add node to PATH.')
     if shutil.which('soffice') and shutil.which('pdftoppm'): capabilities['rendering']=True
     elif platform.system()=='Windows': issues.append('Portable rendering needs LibreOffice and Poppler; Windows PowerPoint can use render_windows.ps1.')
     else: issues.append('Rendering needs LibreOffice/soffice and Poppler/pdftoppm.')

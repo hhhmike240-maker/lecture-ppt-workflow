@@ -10,25 +10,25 @@ body:
     attributes:
       label: "完成到哪一步？ / How far did you get?"
       options:
-        - "看过演示，尚未安装 / Viewed the demo only"
-        - "安装遇阻 / Installation blocked"
-        - "已安装，尚未完成示例 / Installed, demo not completed"
-        - "已复现示例 / Reproduced the bundled demo"
-        - "已制作自己的课件 / Created my own teaching slides"
-        - "已再次使用 / Used it for another chapter or task"
+        - "只看了介绍或示例 / Only looked at the README or sample"
+        - "用在线页面做出了课件 / Made a deck with the web page"
+        - "在线页面使用遇阻 / Got stuck on the web page"
+        - "作为 Skill 安装遇阻 / Skill installation blocked"
+        - "用 Skill 做出了课件 / Made a deck with the Skill"
+        - "已用于实际上课 / Used the deck in a real class"
     validations:
       required: true
   - type: input
     id: version
     attributes:
       label: "版本或提交 / Version or commit"
-      placeholder: "例如 / e.g. v0.1.0-alpha"
+      placeholder: "例如 / e.g. v0.2.0 或在线页面 / or web page"
   - type: textarea
     id: environment
     attributes:
       label: "运行环境 / Environment"
-      description: "OS, Codex surface, Python/Node, PowerPoint/LibreOffice, and course language."
-      placeholder: "Windows; Codex desktop; Python 3.12; Node 24; PowerPoint; Chinese"
+      description: "使用的 AI（如 DeepSeek、ChatGPT）、浏览器、PowerPoint 或 WPS、课程语言 / AI chatbot, browser, PowerPoint or WPS, course language."
+      placeholder: "Kimi; Edge; WPS 2024; 中文课程"
   - type: textarea
     id: experience
     attributes:

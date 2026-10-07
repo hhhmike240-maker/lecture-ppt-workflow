@@ -4,6 +4,8 @@ Python 3.10+标准库支持索引、样式/覆盖和包检查。动画补丁另�
 
 2026-09-23本地核验：旧Artifact Tool 2.8.59标为private；公共npm查询返回404，已不再作为公开版生成依赖。公开版使用PptxGenJS 4.0.1（MIT），依赖由使用者通过`npm ci`获取；工具和依赖的权利各自独立。
 
+生成依赖为 PptxGenJS 4.0.1、image-size 2.0.4、JSZip 3.10.2（均为 MIT 或 MIT/GPLv3 双许可），版本锁定在 package-lock.json。仓库 `app/vendor/` 中附带 PptxGenJS 浏览器包（内含 JSZip）供在线页面使用，许可证文件同目录保存。
+
 运行`npm ci --ignore-scripts`安装公开依赖；不把node_modules提交到仓库。先运行doctor.py；缺依赖则停止生成，但仍可整理内容、索引、检查已有PPT。PptxGenJS生成的是新建页面规格，不负责无损重写既有复杂模板。
 
 本公开版不捆绑Node依赖、字体、Office、其他Skill或其源码。跨平台静态渲染依赖LibreOffice/Poppler；Windows可用PowerPoint脚本。普通新电脑仍需自行准备字体和办公软件。

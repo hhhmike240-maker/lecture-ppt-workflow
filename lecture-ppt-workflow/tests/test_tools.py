@@ -24,7 +24,7 @@ def fixture(path,reveal=False,timed=False,broken=False):
 class ToolsTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.dir=Path(tempfile.mkdtemp(prefix='bupt-skill-tests-'))
+        cls.dir=Path(tempfile.mkdtemp(prefix='lecture-skill-tests-'))
         print('Retained fixtures:',cls.dir)
     def paths(self):
         d=self.dir/self._testMethodName;d.mkdir();return d

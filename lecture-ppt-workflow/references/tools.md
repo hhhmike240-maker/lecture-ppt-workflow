@@ -7,6 +7,7 @@
 来源索引和检查只需Python 3.10+标准库；动画工具另需lxml。生成/渲染需要当前可用演示文稿引擎；随包没有模型推理、离线生成器或图像识别引擎。安装依赖前说明所需内容，优先使用已有运行时。不要对托管运行时做全局安装。
 
 ```text
+node scripts/build_outline.mjs outline.json work/build-1 --template reference.pptx
 python scripts/office_audit.py index lecture.docx --out work/lecture.json --images-dir work/word-images
 python scripts/office_audit.py index standard.pptx --out work/standard.json
 python scripts/doctor.py --out work/environment.json
@@ -21,6 +22,8 @@ node scripts/build_from_spec.mjs specification.json work/build-new
 node --test tests/test_builder.mjs
 python -m unittest discover -s tests -v
 ```
+
+`build_outline.mjs` 是新章课件的默认生成方式：输入[课件大纲](outline.md)，输出 lecture.pptx（含授课备注、点击动画、可选模板装饰）、report.json（版面问题、模板提取结果）和 spec.json。退出码 0 无版面错误，1 有版面错误但已写出候选，2 输入错误。
 
 所有输出采用新路径，存在则拒绝覆盖。页码均为实际放映顺序，从1开始；示例页码不是默认选页，混合选页中的反向范围也会拒绝。比较工具未加--background-only时仅报告差异，不判断差异是否合规。生成器规格见[页面生成](authoring.md)，随包提供不含教师素材的最小例子。新建候选不是已验收课件。
 

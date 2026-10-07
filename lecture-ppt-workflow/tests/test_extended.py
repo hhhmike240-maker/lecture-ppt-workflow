@@ -10,7 +10,7 @@ from validate_skill import validate
 
 class Extended(unittest.TestCase):
     @classmethod
-    def setUpClass(cls):cls.root=Path(tempfile.mkdtemp(prefix='bupt-extended-'));print('Retained:',cls.root)
+    def setUpClass(cls):cls.root=Path(tempfile.mkdtemp(prefix='lecture-extended-'));print('Retained:',cls.root)
     def folder(self):
         p=self.root/self._testMethodName;p.mkdir();return p
     def test_group_transform(self):

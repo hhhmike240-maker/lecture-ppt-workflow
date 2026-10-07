@@ -1,4 +1,4 @@
 interface:
   display_name: "Lecture PPT Workflow · 教学课件"
-  short_description: "Teaching slides from notes and a reference deck · 教学课件制作与修订"
-  default_prompt: "Use $lecture-ppt-workflow to check my environment and prepare teaching slides from my lecture notes and reference PPT, preserving the source language and asking me to review the result."
+  short_description: "Lecture notes to editable teaching slides · 讲义变教学课件"
+  default_prompt: "Use $lecture-ppt-workflow to turn my lecture notes into an editable teaching deck with speaker notes, using my reference PPT's style if provided, and ask me to review the result."

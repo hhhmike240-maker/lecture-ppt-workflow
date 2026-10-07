@@ -1,7 +1,7 @@
 {
   "name": "lecture-ppt-workflow",
-  "version": "0.1.1-alpha",
-  "description": "Teacher-guided editable lecture slides from handouts, reference decks, and feedback.",
+  "version": "0.2.0",
+  "description": "Lecture notes to editable teaching slides with speaker notes, click reveals and template reuse.",
   "author": {
     "name": "hhhmike240-maker",
     "url": "https://github.com/hhhmike240-maker"
@@ -21,8 +21,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Lecture PPT Workflow",
-    "shortDescription": "Draft and revise editable teaching slides with teacher review.",
-    "longDescription": "Use a handout, reference deck, and teacher feedback to prepare editable lecture slides. Includes knowledge mapping, teaching notes, local checks, and an original demo. Early access: local dependencies and teacher review are required.",
+    "shortDescription": "Turn lecture notes into editable teaching slides.",
+    "longDescription": "Write a lecture outline from your notes and build an editable deck with computed layouts, speaker notes, click-to-reveal case analyses and quiz answers, knowledge-coverage checks, and optional reuse of your reference deck's logos, rules, colors and fonts. Teachers review the result.",
     "developerName": "hhhmike240-maker",
     "category": "Productivity",
     "capabilities": [
@@ -37,8 +37,8 @@
     ],
     "brandColor": "#385F8E",
     "screenshots": [
-      "./assets/demo/preview-before/002.png",
-      "./assets/demo/preview-after/002.png"
+      "./assets/docs/images/showcase.png",
+      "./assets/docs/images/template.png"
     ]
   }
 }

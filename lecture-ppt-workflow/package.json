@@ -1,12 +1,24 @@
 {
   "name": "lecture-ppt-workflow",
-  "version": "0.1.1-alpha",
+  "version": "0.2.0",
   "private": true,
-  "description": "Teacher-guided lecture slide workflow and local helpers",
+  "description": "Teacher-guided lecture slides: outline-to-PPTX layouts, click reveals, template reuse and local checks",
   "type": "module",
   "license": "MIT",
-  "engines": {"node": ">=20"},
-  "dependencies": {"pptxgenjs": "4.0.1", "image-size": "2.0.4"},
-  "overrides": {"pptxgenjs": {"image-size": "$image-size"}},
-  "scripts": {"test": "node --test tests/test_builder.mjs tests/test_public_builder.mjs tests/test_images.mjs"}
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "pptxgenjs": "4.0.1",
+    "image-size": "2.0.4",
+    "jszip": "3.10.2"
+  },
+  "overrides": {
+    "pptxgenjs": {
+      "image-size": "$image-size"
+    }
+  },
+  "scripts": {
+    "test": "node --test tests/test_builder.mjs tests/test_public_builder.mjs tests/test_images.mjs tests/test_outline.mjs tests/test_package.mjs"
+  }
 }
