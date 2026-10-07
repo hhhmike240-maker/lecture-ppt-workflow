@@ -70,8 +70,8 @@ node lecture-ppt-workflow/scripts/build_outline.mjs demo/outline.json out/demo -
 
 ## 已验证与未验证
 
-- **已验证**（2026-10-07，Windows + Microsoft 365 PowerPoint）：示例课件 15 页的打开与逐页导出；点击动画被 PowerPoint 识别为“单击时淡入 0.4 秒”；网页与命令行生成结果一致；模板复用在原创示例模板和一份真实高校模板上测试通过。自动化测试 Node 32 项、Python 19 项。详见 [验证记录](docs/VALIDATION_20261007.md)。
-- **尚未验证**：WPS、macOS 版 PowerPoint、Keynote 中的显示和动画；非 Windows 系统的渲染脚本；英文课程的实际效果。欢迎反馈。
+- **已验证**（2026-10-07，Windows + Microsoft 365 PowerPoint）：示例课件 15 页的打开与逐页导出；点击动画被 PowerPoint 识别为“单击时淡入 0.4 秒”；网页与命令行生成结果一致；模板复用在原创示例模板和一份真实高校模板上测试通过；**WPS Office（Windows）** 打开、逐页导出一致，点击动画同样被识别。自动化测试 Node 32 项、Python 19 项。详见 [验证记录](docs/VALIDATION_20261007.md)。
+- **尚未验证**：WPS 中实际放映的点击效果（结构已识别）、macOS 版 PowerPoint、Keynote；非 Windows 系统的渲染脚本；英文课程的实际效果。欢迎反馈。
 
 ## 局限
 

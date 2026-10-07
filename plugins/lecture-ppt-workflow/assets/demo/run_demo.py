@@ -52,6 +52,11 @@ def main():
 
 
 if __name__ == '__main__':
+    for stream in (sys.stdout, sys.stderr):   # Chinese summaries on legacy-code-page consoles
+        try:
+            stream.reconfigure(encoding='utf-8', errors='replace')
+        except (AttributeError, ValueError):
+            pass
     try:
         main()
     except (OSError, ValueError, subprocess.CalledProcessError) as e:

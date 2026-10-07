@@ -77,7 +77,7 @@
     "scope": "Allowlisted paths and file hashes only. Runtime/cache/archive/key-file patterns are excluded. This scan does not certify the absence of private content, secrets, third-party material, or licensing issues in allowed files."
   },
   "file_count": 216,
-  "total_bytes": 3867666,
+  "total_bytes": 3870132,
   "files": [
     {
       "path": ".gitattributes",
@@ -136,13 +136,13 @@
     },
     {
       "path": "README.en.md",
-      "sha256": "8668eff52fb3fb3ea38f16748074554abc491266f024be4c2fe8d9cf871a7246",
-      "bytes": 5817
+      "sha256": "bec2f0d8a86680af9de863a0bf7e26c994f6f6534bc0f81fceedf94acce0178e",
+      "bytes": 5975
     },
     {
       "path": "README.md",
-      "sha256": "e51079f111356c1940c5c7dea1b766263bbf6bec0fbc3a60f15801950638d782",
-      "bytes": 6160
+      "sha256": "beaa52d55e20b1f0f32848d29dc9b44960a14ba69ec098ca8b2ea68f478f48db",
+      "bytes": 6278
     },
     {
       "path": "SECURITY.md",
@@ -361,8 +361,8 @@
     },
     {
       "path": "demo/run_demo.py",
-      "sha256": "9c88df2d737bf84040b323e36d5c1026010fb0920a6c70a0b0b44027b3fe2adf",
-      "bytes": 3230
+      "sha256": "961ec85e2b1dd6107e740d31027a63c5a0746ea21b46a6d52d994e8ffa133cc7",
+      "bytes": 3467
     },
     {
       "path": "demo/template/make_sample_template.mjs",
@@ -376,8 +376,8 @@
     },
     {
       "path": "docs/FAQ.md",
-      "sha256": "2e5892625711c48e10abcf189d0f804d67b1750adc2d311a81d4ec9595f95de3",
-      "bytes": 3391
+      "sha256": "ef2b353b22c74cdd5275a225c99c1d2398a131dc56913d8e14f0d7d496b62837",
+      "bytes": 3430
     },
     {
       "path": "docs/PROVENANCE.md",
@@ -396,8 +396,8 @@
     },
     {
       "path": "docs/VALIDATION_20261007.md",
-      "sha256": "e83beb900e68e80437078c70e0e904253f4d444365f12c35a5e52af34ec28b63",
-      "bytes": 2645
+      "sha256": "398a0bd25f251e9eb0f59421273df824616921b4f1f881d783b26ec37993b162",
+      "bytes": 3089
     },
     {
       "path": "docs/history/RELEASE_0.1.1-alpha.md",
@@ -541,8 +541,8 @@
     },
     {
       "path": "lecture-ppt-workflow/scripts/cli_support.py",
-      "sha256": "f1752e9bfd30f127a9b025c340f378c0964e41d89f395f8f12d590d2c89657a6",
-      "bytes": 502
+      "sha256": "184daf3bb14bc062cdfc19d3a5263a67e9776f057ad2026a1dbe39dc18739f09",
+      "bytes": 795
     },
     {
       "path": "lecture-ppt-workflow/scripts/doctor.py",
@@ -651,8 +651,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/README.md",
-      "sha256": "6e8bc71b85a75e71b3c4be49131597f69bd6be4758f0ee812200d8de1c112f40",
-      "bytes": 2786
+      "sha256": "d46044769d2260d9143ed3ed179347fda6a7de36b5476d56a88daaac0b8283c5",
+      "bytes": 2792
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/CHANGELOG.md",
@@ -676,8 +676,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/README.en.md",
-      "sha256": "9f35662ea746a4a1437958218559529bb7d9171f1b2362a23efb7e73b4878051",
-      "bytes": 6714
+      "sha256": "9a7625d0c5c286fb02b6a3211fe07a4c77f46dee4e51abd5d6528d347e5961c1",
+      "bytes": 6872
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/README.md",
@@ -876,8 +876,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/demo/run_demo.py",
-      "sha256": "08448299be15cee3e017ac9b4f61949172adcae8703c9778d6f9a9ef49b0540a",
-      "bytes": 3245
+      "sha256": "610ffc8b0ece8aff334535d33c5f6daf1947d50702b41d3fe705ed23b294c68b",
+      "bytes": 3482
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/demo/template/sample-template.pptx",
@@ -886,8 +886,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/docs/FAQ.md",
-      "sha256": "7c488809f3975031c26c91978370012e86fd9f296c2ee48215a256d1f19f8012",
-      "bytes": 3394
+      "sha256": "7b70af6bd7e0e03084bd2e7c22d4f3b9255563cede1be7ca80c00c46cdeaccb9",
+      "bytes": 3433
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/docs/PROVENANCE.md",
@@ -906,8 +906,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/docs/VALIDATION_20261007.md",
-      "sha256": "e83beb900e68e80437078c70e0e904253f4d444365f12c35a5e52af34ec28b63",
-      "bytes": 2645
+      "sha256": "398a0bd25f251e9eb0f59421273df824616921b4f1f881d783b26ec37993b162",
+      "bytes": 3089
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/docs/images/showcase.png",
@@ -1036,8 +1036,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/scripts/cli_support.py",
-      "sha256": "f1752e9bfd30f127a9b025c340f378c0964e41d89f395f8f12d590d2c89657a6",
-      "bytes": 502
+      "sha256": "184daf3bb14bc062cdfc19d3a5263a67e9776f057ad2026a1dbe39dc18739f09",
+      "bytes": 795
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/scripts/doctor.py",

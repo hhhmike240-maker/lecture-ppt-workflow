@@ -34,4 +34,4 @@ Try it on the sample: [lecture notes](assets/demo/lecture.md) and [sample templa
 
 ## Limits
 
-Teachers review content and the final deck. Template reuse copies text-free decorations only (logo images, lines, color blocks); placeholder styles and master text are not copied. Verified on Windows with Microsoft 365 PowerPoint; WPS and Mac have not been verified. See the [validation log](assets/docs/VALIDATION_20261007.md), [FAQ](assets/docs/FAQ.md) and [provenance](assets/docs/PROVENANCE.md). Original files are [MIT licensed](assets/LICENSE); third-party components are listed in [NOTICE](assets/NOTICE).
+Teachers review content and the final deck. Template reuse copies text-free decorations only (logo images, lines, color blocks); placeholder styles and master text are not copied. Verified on Windows with Microsoft 365 PowerPoint and WPS Office; Mac has not been verified. See the [validation log](assets/docs/VALIDATION_20261007.md), [FAQ](assets/docs/FAQ.md) and [provenance](assets/docs/PROVENANCE.md). Original files are [MIT licensed](assets/LICENSE); third-party components are listed in [NOTICE](assets/NOTICE).
