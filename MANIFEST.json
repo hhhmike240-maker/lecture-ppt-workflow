@@ -77,7 +77,7 @@
     "scope": "Allowlisted paths and file hashes only. Runtime/cache/archive/key-file patterns are excluded. This scan does not certify the absence of private content, secrets, third-party material, or licensing issues in allowed files."
   },
   "file_count": 230,
-  "total_bytes": 4534996,
+  "total_bytes": 4535934,
   "files": [
     {
       "path": ".gitattributes",
@@ -696,8 +696,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/CONTRIBUTING.md",
-      "sha256": "c025fb12fcb6585dc832398c3d7730e34c807044c020074710a67a7cbf40a01e",
-      "bytes": 1994
+      "sha256": "f7dec6b6355fe1c97cab8d923ae067086cb8065932da6c682d752988f5cd74eb",
+      "bytes": 2932
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/LICENSE",
