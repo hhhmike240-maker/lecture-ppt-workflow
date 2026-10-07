@@ -32,7 +32,7 @@ The AI does not redraw figures from your notes. It makes a figure slide with a d
 
 ### Does it work for English courses?
 
-Yes. Use the English prompt; slide text follows the language of your notes, and labels the tool adds ("Answer:", "Suggested analysis", the click order in the notes) follow the outline's `language`. English decks default to Calibri. The page interface switches between English and Chinese. English output has been checked with the sample notes in PowerPoint; a real chatbot run with English notes has not been recorded yet, so feedback is especially welcome.
+Yes. Use the English prompt; slide text follows the language of your notes, and labels the tool adds ("Answer:", "Suggested analysis", the click order in the notes) follow the outline's `language`. English decks default to Calibri. The page interface switches between English and Chinese. In a real test, Claude turned the English sample notes into a 19-slide outline that passed the layout check first time. Other chatbots have not been tested with English notes yet, so feedback is especially welcome.
 
 ### Does it cost anything?
 

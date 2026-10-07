@@ -72,8 +72,8 @@ node lecture-ppt-workflow/scripts/build_outline.mjs demo/outline.json out/demo -
 
 ## 已验证与未验证
 
-- **已验证**（2026-10-07，Windows + Microsoft 365 PowerPoint）：示例课件 15 页的打开与逐页导出；点击动画被 PowerPoint 识别为“单击时淡入 0.4 秒”；网页与命令行生成结果一致；模板复用在原创示例模板和一份真实高校模板上测试通过；**WPS Office（Windows）** 打开、逐页导出一致，点击动画同样被识别。**DeepSeek 实测**：首次回答即为合格大纲（17 页，每页有备注），2 页被正确提示超出版面，按提示回复一句后修好；**豆包实测**（改进后的提示词）：一次通过，17 页零版面问题。**英文示例**（15 页）在 PowerPoint 中逐页导出无重叠、无截断，中文示例版面与 v0.2.0 完全一致。自动化测试 Node 41 项、Python 19 项。详见 [验证记录](docs/VALIDATION_20261007.md)。
-- **尚未验证**：WPS 中实际放映的点击效果（结构已识别）、macOS 版 PowerPoint、Keynote；非 Windows 系统的渲染脚本；Kimi、通义、ChatGPT 等其他 AI 的输出质量；用英文讲义实测 AI、英文课件在 WPS 中的效果。欢迎反馈。
+- **已验证**（2026-10-07，Windows + Microsoft 365 PowerPoint）：示例课件 15 页的打开与逐页导出；点击动画被 PowerPoint 识别为“单击时淡入 0.4 秒”；网页与命令行生成结果一致；模板复用在原创示例模板和一份真实高校模板上测试通过；**WPS Office（Windows）** 打开、逐页导出一致，点击动画同样被识别。**DeepSeek 实测**：首次回答即为合格大纲（17 页，每页有备注），2 页被正确提示超出版面，按提示回复一句后修好；**豆包实测**（改进后的提示词）：一次通过，17 页零版面问题。**Claude 英文实测**（英文提示词 + 英文示例讲义）：首次回答即合格，19 页零错误零警告，内容页都有备注，自编案例标注虚构，PowerPoint 渲染全部正常。**英文示例**（15 页）在 PowerPoint 中逐页导出无重叠、无截断，中文示例版面与 v0.2.0 完全一致。自动化测试 Node 41 项、Python 19 项。详见 [验证记录](docs/VALIDATION_20261007.md)。
+- **尚未验证**：WPS 中实际放映的点击效果（结构已识别）、macOS 版 PowerPoint、Keynote；非 Windows 系统的渲染脚本；Kimi、通义、ChatGPT 等其他 AI 的输出质量；用英文讲义实测 ChatGPT 等其他 AI、英文课件在 WPS 中的效果。欢迎反馈。
 
 ## 局限
 
