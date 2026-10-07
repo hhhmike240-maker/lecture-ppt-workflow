@@ -22,6 +22,7 @@
 | 英文版：中文回归 | 用 main 分支与英文版的 `outline.mjs` 分别排版中文示例（默认风格与模板框架） | 页面规格、问题列表、摘要逐字节一致 |
 | 英文版：示例课件 | `demo/en/outline.json` 生成 15 页，PowerPoint COM 逐页导出 | 零版面问题；无重叠、截断；3 个点击动画；标签与备注全为英文；知识覆盖 9 项通过 |
 | 英文版：西文字宽 | 浏览器 canvas `measureText` 测英文句子，与原估算比较 | Calibri 约 0.81–0.84、Arial 约 0.87–0.97、微软雅黑约 0.95–1.0；采用 Calibri 0.86、Arial 0.93 |
+| Claude 英文实测 | claude.ai 网页版（默认模型），英文提示词 + 英文示例讲义（长文本自动作为“Pasted text”附件） | 首次回答为单个合格 JSON：19 页、12 种版式、language 为 en；版面检查零错误零警告；内容页均有 62–94 词备注；自编案例标注虚构；PowerPoint 渲染 19 页无重叠、截断，5 个点击动画。观察：对比页每栏只有 1 条时栏内留白较多 |
 | 英文版：网页 | 本地静态服务器，`?lang=en` 打开、加载英文示例、切换中文、页面内生成 PPTX | 界面、提示词、示例、问题提示随语言切换；无控制台错误；生成 15 页、3 个点击动画、字体 Calibri |
 
 ## 未验证
@@ -30,7 +31,7 @@
 - 非 Windows 系统上的 `render.mjs`（LibreOffice + Poppler）渲染新版课件。
 - GitHub Pages 线上部署（需仓库开启 Pages 后检查）。
 - 在 Codex / Claude Code 新会话中实际触发 Skill 并完成一章课件。
-- Kimi、通义、ChatGPT 等其他 AI 聊天工具的输出质量；用英文讲义和英文提示词实测 AI；英文课件在 WPS 中的效果；英文字宽在 PowerPoint 中的精确值（目前用浏览器字体度量）。
+- Kimi、通义、ChatGPT 等其他 AI 聊天工具的输出质量；用英文讲义实测 ChatGPT、Gemini 等其他 AI；英文课件在 WPS 中的效果；英文字宽在 PowerPoint 中的精确值（目前用浏览器字体度量）。
 - 母版占位符较多、背景为大图或含 SmartArt 的复杂模板。
 
 ## 发现并修复的问题

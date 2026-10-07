@@ -77,7 +77,7 @@
     "scope": "Allowlisted paths and file hashes only. Runtime/cache/archive/key-file patterns are excluded. This scan does not certify the absence of private content, secrets, third-party material, or licensing issues in allowed files."
   },
   "file_count": 230,
-  "total_bytes": 4535934,
+  "total_bytes": 4536824,
   "files": [
     {
       "path": ".gitattributes",
@@ -101,8 +101,8 @@
     },
     {
       "path": ".github/workflows/test.yml",
-      "sha256": "82fcd6ce708f33b0f4217c9b02cb670130989753a955cda22e3bcbf856b732e7",
-      "bytes": 1388
+      "sha256": "370d442668a31625e651baecd5f58e6c9b4c921d28f5ab8535e29b9097f4f891",
+      "bytes": 1344
     },
     {
       "path": ".gitignore",
@@ -116,13 +116,13 @@
     },
     {
       "path": "CHANGELOG.md",
-      "sha256": "a08a8cda4265e5964d23ac5216d13e81cd678941efe4c2510f482b795c0dfb02",
-      "bytes": 6056
+      "sha256": "6a284d2b852b9fd681a628d9f9765cfddffb82b94b48b8aaf294be8c2d22f551",
+      "bytes": 6120
     },
     {
       "path": "CONTRIBUTING.md",
-      "sha256": "f7dec6b6355fe1c97cab8d923ae067086cb8065932da6c682d752988f5cd74eb",
-      "bytes": 2932
+      "sha256": "786170271fcdadc404a7f2205e4ad89c8a4ec909e78760d1dd1014e9785b5c14",
+      "bytes": 2886
     },
     {
       "path": "LICENSE",
@@ -136,13 +136,13 @@
     },
     {
       "path": "README.en.md",
-      "sha256": "8b90967dcd74da6584bd60703b15b0b984e20a03901b54c82b6cd3c5fe83f5b3",
-      "bytes": 7239
+      "sha256": "f564ecd13cda816fb9509b0454bfe3b72ff2cfd255b41db291474957e6195702",
+      "bytes": 7533
     },
     {
       "path": "README.md",
-      "sha256": "2db2b174e44e9556a3ecea4995b546a1ef4867282c3d0cfa3956e05c9b437819",
-      "bytes": 7050
+      "sha256": "39ff950f670543538ab9f7076fd784af28df72708215a09ae9a261e5134db7be",
+      "bytes": 7181
     },
     {
       "path": "SECURITY.md",
@@ -381,8 +381,8 @@
     },
     {
       "path": "demo/run_demo.py",
-      "sha256": "a30ebb4db540695302915b787172612c40e1c36ee8562e9c3e40b08473e10497",
-      "bytes": 3699
+      "sha256": "c19a6e2ddb0faf3a2c5c96db4b0ce0761fddf16e02f4ff224dc9be1168677900",
+      "bytes": 3633
     },
     {
       "path": "demo/template/make_sample_template.mjs",
@@ -396,13 +396,13 @@
     },
     {
       "path": "docs/FAQ.en.md",
-      "sha256": "4bb7628fc40140dfa68b8890590a002b8ee0e0d6c8b8b6e7ba02ac311c93c2d3",
-      "bytes": 3394
+      "sha256": "4ebf5335fcf576eeec9de9e376ef9e6238fafa0937a4dff607f4f7aaad8f40c7",
+      "bytes": 3440
     },
     {
       "path": "docs/FAQ.md",
-      "sha256": "c70e0159771ad6b9ef0c526d77cd0931bcf95bda3964a725c33766a80530baa5",
-      "bytes": 3690
+      "sha256": "f8210e46d57a1704b4d28101e7566bcdb9a430f79a32ec8bd2c5d427a841ef17",
+      "bytes": 3664
     },
     {
       "path": "docs/PROVENANCE.md",
@@ -421,8 +421,8 @@
     },
     {
       "path": "docs/VALIDATION_20261007.md",
-      "sha256": "4b43c03502366deb722e703016c886c535a234db3b86d96e7a4421e8d2e72b1e",
-      "bytes": 5271
+      "sha256": "5b1e64e88100f0078d2654cace230e8ddf4514f2d66e0e3e0f87564bc26ffb89",
+      "bytes": 5689
     },
     {
       "path": "docs/history/RELEASE_0.1.1-alpha.md",
@@ -676,8 +676,8 @@
     },
     {
       "path": "make_manifest.py",
-      "sha256": "4067c307eba9e004c971ed8a92847f2db8544ba831f336e7b48aed9a470634a3",
-      "bytes": 8540
+      "sha256": "fda93b30e09ed0a8f40708083137cef08a3060084adeae25755b95d3efde4a7b",
+      "bytes": 8344
     },
     {
       "path": "plugins/lecture-ppt-workflow/.codex-plugin/plugin.json",
@@ -691,13 +691,13 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/CHANGELOG.md",
-      "sha256": "a08a8cda4265e5964d23ac5216d13e81cd678941efe4c2510f482b795c0dfb02",
-      "bytes": 6056
+      "sha256": "6a284d2b852b9fd681a628d9f9765cfddffb82b94b48b8aaf294be8c2d22f551",
+      "bytes": 6120
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/CONTRIBUTING.md",
-      "sha256": "f7dec6b6355fe1c97cab8d923ae067086cb8065932da6c682d752988f5cd74eb",
-      "bytes": 2932
+      "sha256": "786170271fcdadc404a7f2205e4ad89c8a4ec909e78760d1dd1014e9785b5c14",
+      "bytes": 2886
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/LICENSE",
@@ -711,8 +711,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/README.en.md",
-      "sha256": "2bd0f2c16cec19e968bca4e5d7545d9ce6700b9202dc6afc51ee79245c3ec4f7",
-      "bytes": 8146
+      "sha256": "64b554da8baed712ecfb1abd43914b633fa7ba20147a326d0ee67d1b24865d57",
+      "bytes": 8440
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/README.md",
@@ -931,8 +931,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/demo/run_demo.py",
-      "sha256": "037b9af805772673c7b470dc5c915e10ade3a17a2cced5b8a7bddb7ea7e64986",
-      "bytes": 3714
+      "sha256": "7432199abd8ba3b7f40b843d173fcead00c56d09a4a1a3bddb932413d2eae4db",
+      "bytes": 3648
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/demo/template/sample-template.pptx",
@@ -941,13 +941,13 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/docs/FAQ.en.md",
-      "sha256": "a9aa976b6d405ca4f7026e9219ec3402b86f0358708d7d09c069ee31a52ab645",
-      "bytes": 4281
+      "sha256": "1346879f5ad3ed24e8ae62d79bbf0bcc437d738a2372d01ea6e3f411ad975b81",
+      "bytes": 4327
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/docs/FAQ.md",
-      "sha256": "dd4e2dc019fcc65badfadd874a69414e244c8a644404bdead8193cf6bbc8b4a3",
-      "bytes": 3693
+      "sha256": "30e6cd17d473ade36b0ee397f33883fcdaadc1e5d39667d4024bea7655db4de1",
+      "bytes": 3667
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/docs/PROVENANCE.md",
@@ -966,8 +966,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/docs/VALIDATION_20261007.md",
-      "sha256": "4b43c03502366deb722e703016c886c535a234db3b86d96e7a4421e8d2e72b1e",
-      "bytes": 5271
+      "sha256": "5b1e64e88100f0078d2654cace230e8ddf4514f2d66e0e3e0f87564bc26ffb89",
+      "bytes": 5689
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/docs/images/showcase.en.png",
@@ -1216,13 +1216,13 @@
     },
     {
       "path": "scripts/build_plugin.py",
-      "sha256": "40e513f93841b4ff5c667351ceba29aecba8ff7a28f8a215b1319d0953787a5c",
-      "bytes": 15569
+      "sha256": "c78aee7304c56b78919c5cc821f300f572845ba34fc4215ffb277414ac144d14",
+      "bytes": 15275
     },
     {
       "path": "scripts/make_showcase.py",
-      "sha256": "c124bdef49229f0523dcb5c087d932d01feb5eebf7c48932de6c4e061db626dd",
-      "bytes": 3804
+      "sha256": "3071828f34a220edd4adf68e44d38af39b8f3f01c0e70c39054392c38607ff8d",
+      "bytes": 3729
     },
     {
       "path": "scripts/package_release.py",
