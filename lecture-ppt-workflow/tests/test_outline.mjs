@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
-import {layoutOutline, validateOutline, countLines, LAYOUTS} from '../scripts/lib/outline.mjs';
+import {layoutOutline, validateOutline, countLines, deckLanguage, LAYOUTS} from '../scripts/lib/outline.mjs';
 import {validateSpec} from '../scripts/lib/pptx_core.mjs';
 
 const demo = async () => JSON.parse(await fs.readFile(fileURLToPath(new URL('../examples/outline.json', import.meta.url)), 'utf8'));
@@ -24,8 +24,8 @@ test('every layout is covered by the demo outline', async () => {
 });
 
 test('unknown layout and missing fields give Chinese, page-numbered errors', () => {
-  assert.throws(() => validateOutline(one({layout:'poster'})), /第1页：未知版式/);
-  assert.throws(() => validateOutline(one({layout:'bullets', title:'x'})), /第1页（要点）：points/);
+  assert.throws(() => validateOutline(one({layout:'poster'}), 'zh'), /第1页：未知版式/);
+  assert.throws(() => validateOutline(one({layout:'bullets', title:'x'}), 'zh'), /第1页（要点）：points/);
   assert.throws(() => validateOutline({slides:[]}), /slides/);
 });
 
@@ -85,7 +85,8 @@ test('text measurement wraps Chinese by character width', () => {
 });
 
 test('bad theme colors are rejected', () => {
-  assert.throws(() => layoutOutline({theme:{primary:'blue'}, slides:[{layout:'closing', title:'x'}]}), /颜色/);
+  assert.throws(() => layoutOutline({language:'zh-CN', theme:{primary:'blue'}, slides:[{layout:'closing', title:'x'}]}), /颜色/);
+  assert.throws(() => layoutOutline({theme:{primary:'blue'}, slides:[{layout:'closing', title:'x'}]}), /must be a color/);
 });
 
 test('four quiz questions fit as a 2 x 2 grid; three stack when they fit', () => {
@@ -108,4 +109,78 @@ test('a one-paragraph case analysis is split into sentence bullets', () => {
 test('overflow errors tell the teacher what to ask the AI', () => {
   const r = layoutOutline(one({layout:'case', title:'情境', material:'很长的材料。'.repeat(70), questions:['问题一', '问题二', '问题三'], analysis:['分析'], notes:'n'}));
   assert.ok(errors(r).some(i => /可以对 AI 说：“第 1 页情境太长/.test(i.message)));
+});
+
+// ---------- English decks ----------
+const enDemo = async () => JSON.parse(await fs.readFile(fileURLToPath(new URL('../examples/outline.en.json', import.meta.url)), 'utf8'));
+
+test('English demo outline lays out without errors, in English, with every layout', async () => {
+  const outline = await enDemo(), r = layoutOutline(outline);
+  assert.deepEqual(errors(r), []);
+  assert.equal(r.summary.language, 'en');
+  assert.equal(r.spec.lang, 'en');
+  assert.equal(r.spec.font, 'Calibri');
+  validateSpec(r.spec);
+  const used = new Set(outline.slides.map(s => s.layout));
+  for (const layout of LAYOUTS.filter(l => l !== 'figure')) assert.ok(used.has(layout), layout);
+  const text = JSON.stringify(r.spec.slides.map(s => [s.notes, s.elements.map(e => e.text ?? e.runs?.map(x => x.text) ?? e.values)]));
+  assert.doesNotMatch(text, /\p{Script=Han}/u);
+});
+
+test('deck language: explicit language wins, otherwise CJK text means Chinese', () => {
+  assert.equal(deckLanguage({language:'en-GB', slides:[{title:'工作分析'}]}), 'en');
+  assert.equal(deckLanguage({language:'zh-CN', slides:[{title:'Job analysis'}]}), 'zh');
+  assert.equal(deckLanguage({slides:[{title:'Job analysis'}]}), 'en');
+  assert.equal(deckLanguage({slides:[{title:'工作分析'}]}), 'zh');
+});
+
+test('English decks get English labels, notes and click order', () => {
+  const r = layoutOutline({language:'en', slides:[
+    {layout:'agenda', items:['One', 'Two']},
+    {layout:'case', title:'Case', material:'Material.', questions:['Why?'], analysis:'First point. Second point; third point.', fictional:true, notes:'n'},
+    {layout:'quiz', title:'Check', questions:[{q:'One?', answer:'Yes.'}], notes:'n'},
+    {layout:'review', title:'Map', branches:[{title:'A', items:['a1', 'a2']}, {title:'B', items:['b1']}], notes:'n'},
+    {layout:'figure', title:'Figure', placeholder:'Figure 3-1'},
+  ]});
+  const [agenda, kase, quiz, review, figure] = r.spec.slides, el = (s, n) => s.elements.find(e => e.name === n);
+  assert.equal(el(agenda, 'heading').text, 'Agenda');
+  assert.match(agenda.notes, /^Agenda slide/);
+  assert.equal(el(kase, 'material-label').text, 'Case material');
+  assert.equal(el(kase, 'questions-label').text, 'Discussion');
+  assert.equal(el(kase, 'reveal_1_1_analysis').runs[0].text, 'Suggested analysis');
+  assert.equal(el(kase, 'reveal_1_1_analysis').runs.filter(x => x.bullet).length, 3);
+  assert.equal(el(kase, 'source').text, 'Teaching scenario (fictional)');
+  assert.match(kase.notes, /\[Click order\] Click 1: show the suggested analysis\./);
+  assert.equal(el(quiz, 'reveal_1_1_answer').text, 'Answer: Yes.');
+  assert.equal(el(review, 'branch-1-items').text, 'a1; a2');
+  assert.match(el(figure, 'figure-placeholder').text, /^\[Insert the original figure here\]\nFigure 3-1/);
+  assert.match(figure.notes, /^\[TO DO\]/);
+  assert.ok(r.issues.some(i => i.message === 'Speaker notes (notes) are missing'));
+});
+
+test('English "Term: explanation" points bold the term; times and URLs do not', () => {
+  const r = layoutOutline({language:'en', slides:[{layout:'bullets', title:'Uses', style:'list', notes:'n',
+    points:['Recruitment and selection: clear hiring criteria', 'Class starts at 10:30', 'See https://example.org']}]});
+  const runs = r.spec.slides[0].elements.find(e => e.name === 'points').runs;
+  assert.deepEqual(runs.filter(x => x.bold).map(x => x.text), ['Recruitment and selection: ']);
+  const cards = layoutOutline({language:'en', slides:[{layout:'bullets', title:'Uses', notes:'n',
+    points:['Recruitment: clear hiring criteria instead of first impressions', 'Training: compare skills with the job requirements']}]});
+  assert.ok(cards.spec.slides[0].elements.some(e => e.name === 'card-2-title' && e.text === 'Training'));
+});
+
+test('issue messages follow options.lang, slide text follows the deck', () => {
+  const long = 'This point is far too long for one slide and keeps going so that the layout must overflow. ';
+  const en = layoutOutline({language:'zh-CN', slides:[{layout:'bullets', title:'溢出', points:Array(8).fill(long.repeat(2))}]}, {lang:'en'});
+  assert.ok(errors(en).some(i => /overflows the slide by about \d+%.*You can tell the AI: "Slide 1 has too many points/.test(i.message)));
+  assert.match(en.spec.slides[0].notes, /待补充/);
+  const zh = layoutOutline({language:'en', slides:[{layout:'bullets', title:'Overflow', points:Array(8).fill(long.repeat(2))}]}, {lang:'zh'});
+  assert.ok(errors(zh).some(i => /可以对 AI 说/.test(i.message)));
+  assert.match(zh.spec.slides[0].notes, /^\[TO DO\]/);
+  assert.throws(() => validateOutline(one({layout:'bullets', title:'x'}), 'en'), /^Error: Slide 1 \(Key points\): points needs 1–8 items$/);
+});
+
+test('English decks use the Latin font of a reference deck', () => {
+  const theme = {font:'SimHei', latinFont:'Arial'};
+  assert.equal(layoutOutline({language:'en', theme, slides:[{layout:'closing', title:'End'}]}).spec.font, 'Arial');
+  assert.equal(layoutOutline({language:'zh-CN', theme, slides:[{layout:'closing', title:'结束'}]}).spec.font, 'SimHei');
 });

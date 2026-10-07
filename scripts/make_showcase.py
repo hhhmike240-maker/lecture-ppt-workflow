@@ -1,7 +1,9 @@
 """Compose README showcase images from rendered demo previews (maintainer helper, needs Pillow).
 
 Usage: python scripts/make_showcase.py --font path/to/CJK-font.ttc
-Writes docs/images/showcase.png and docs/images/template.png (refuses to overwrite).
+       python scripts/make_showcase.py --english path/to/english/preview
+Writes docs/images/showcase.png and docs/images/template.png, or with --english only
+docs/images/showcase.en.png from a rendering of demo/en/outline.json (refuses to overwrite).
 """
 import argparse
 from pathlib import Path
@@ -39,15 +41,24 @@ def grid(paths, cols, width, gap, out, title, font):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--font', required=True)
+    p.add_argument('--font')
+    p.add_argument('--english', type=Path, help='folder with 001.png ... rendered from demo/en/outline.json')
     a = p.parse_args()
-    font, small = ImageFont.truetype(a.font, 30), ImageFont.truetype(a.font, 24)
     out = ROOT / 'docs' / 'images'
     out.mkdir(parents=True, exist_ok=True)
+    pick = ['004', '005', '007', '009', '012', '014']
+    if a.english:
+        if (out / 'showcase.en.png').exists():
+            raise FileExistsError(out / 'showcase.en.png')
+        grid([a.english / f'{n}.png' for n in pick], 3, 420, 4, out / 'showcase.en.png', None, None)
+        print('Created', out / 'showcase.en.png')
+        return
+    if not a.font:
+        p.error('--font is required for the Chinese images')
+    font, small = ImageFont.truetype(a.font, 30), ImageFont.truetype(a.font, 24)
     for name in ('showcase.png', 'template.png'):
         if (out / name).exists():
             raise FileExistsError(out / name)
-    pick = ['004', '005', '007', '009', '012', '014']
     grid([ROOT / 'demo' / 'preview' / f'{n}.png' for n in pick], 3, 420, 4, out / 'showcase.png', None, font)
     # Same outline, default style vs the sample reference deck.
     left, right = card(Image.open(ROOT / 'demo' / 'preview' / '005.png'), 520), card(Image.open(ROOT / 'demo' / 'preview-template' / '005.png'), 520)

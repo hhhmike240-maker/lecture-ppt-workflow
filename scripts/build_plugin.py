@@ -25,7 +25,7 @@ PLUGIN = REPO / "plugins" / NAME
 SKILL_FILES = (
     "SKILL.md", "agents/openai.yaml", "course-profile.example.json",
     "package.json", "package-lock.json", "requirements.txt",
-    "examples/minimal.json", "examples/outline.json",
+    "examples/minimal.json", "examples/outline.json", "examples/outline.en.json",
     "references/animation.md", "references/authoring.md",
     "references/course-profile.md", "references/feedback.md", "references/outline.md",
     "references/runtime.md", "references/tools.md", "references/workflow.md",
@@ -44,12 +44,13 @@ SKILL_FILES = (
 DEMO_FILES = (
     "lecture.md", "outline.json", "coverage-map.json", "lecture.pptx", "lecture-template.pptx",
     "PROMPTS.md", "run_demo.py", "template/sample-template.pptx",
+    "en/lecture.md", "en/outline.json", "en/coverage-map.json", "en/lecture.pptx",
     *[f"preview/{i:03d}.png" for i in range(1, 16)],
     *[f"preview-template/{i:03d}.png" for i in range(1, 16)],
 )
 DOC_FILES = (
-    "PROVENANCE.md", "FAQ.md", "USAGE.md", "VALIDATION_20261007.md",
-    "images/showcase.png", "images/template.png",
+    "PROVENANCE.md", "FAQ.md", "FAQ.en.md", "USAGE.md", "VALIDATION_20261007.md",
+    "images/showcase.png", "images/showcase.en.png", "images/template.png",
 )
 OPTIONAL_FILES = (
     "README.en.md", "docs/QUICKSTART.en.md", "demo/PROMPTS.en.md",
@@ -134,7 +135,7 @@ def rewrite_markdown(data: bytes, source: Path, destination: str, mapping: dict[
         if target.is_dir():
             directory_targets = {
                 ".": ".", NAME: f"skills/{NAME}", "demo": "assets/demo",
-                "docs": "assets/docs", "demo/preview": "assets/demo/preview",
+                "docs": "assets/docs", "demo/preview": "assets/demo/preview", "demo/en": "assets/demo/en",
                 "demo/preview-template": "assets/demo/preview-template", "prompts": "assets/prompts",
             }
             dest = directory_targets.get(relative)
@@ -162,7 +163,7 @@ def planned_files() -> dict[str, bytes]:
         if source.suffix.lower() == ".md":
             data = rewrite_markdown(data, source, destination, mapping)
         if relative in {
-            "README.en.md", "docs/QUICKSTART.en.md", "docs/USAGE.md",
+            "README.en.md", "docs/QUICKSTART.en.md", "docs/FAQ.en.md", "docs/USAGE.md",
             "demo/PROMPTS.en.md", "demo/PROMPTS.md",
         }:
             plugin_readme = Path(os.path.relpath(PLUGIN / "README.md", (PLUGIN / destination).parent)).as_posix()

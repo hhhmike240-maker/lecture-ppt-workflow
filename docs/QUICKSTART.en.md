@@ -1,17 +1,17 @@
 # Quick start
 
-[English README](../README.en.md) · [FAQ](FAQ.md) · [中文使用指南](USAGE.md)
+[English README](../README.en.md) · [FAQ](FAQ.en.md) · [中文使用指南](USAGE.md)
 
 ## A. Web page (no installation)
 
-1. Open https://hhhmike240-maker.github.io/lecture-ppt-workflow/app/ and click "English prompt", then copy it.
+1. Open https://hhhmike240-maker.github.io/lecture-ppt-workflow/app/?lang=en and click "Copy prompt".
 2. Paste the prompt into any AI chatbot, fill in the course details at the end, and attach or paste your lecture notes.
 3. Paste the AI's full answer into step 2 of the page. A preview appears automatically.
 4. Optional: upload one of your decks in step 3 to reuse its logos, rules, colors and fonts; upload original figures to fill figure slides.
-5. Fix red issues by asking the AI, e.g. "Slide 5 is too long; split it into two slides and output the full JSON again."
-6. Click "下载 PPTX" (Download PPTX) and review the deck in PowerPoint or WPS.
+5. Fix red issues by sending the AI the sentence the page suggests, e.g. "Slide 5 has too many points: split it into two slides… Keep the other slides unchanged and output the full JSON."
+6. Click "Download PPTX" and review the deck in PowerPoint or WPS.
 
-The page interface is in Chinese; the steps above follow its layout from top to bottom.
+To try it without your own notes, click "Load sample" in step 2.
 
 ## B. As a skill (Codex / Claude Code)
 
@@ -38,4 +38,4 @@ node lecture-ppt-workflow/scripts/build_outline.mjs outline.json out-dir --templ
 python demo/run_demo.py --out out/full-demo
 ```
 
-Outputs: `lecture.pptx`, `report.json` (layout issues, extracted template style), `spec.json`, and a copy of `outline.json`. Exit code 0 = clean, 1 = candidate written with layout errors, 2 = input error. Format reference: [outline format](../lecture-ppt-workflow/references/outline.md) (Chinese, with field tables).
+Outputs: `lecture.pptx`, `report.json` (layout issues, extracted template style), `spec.json`, and a copy of `outline.json`. Exit code 0 = clean, 1 = candidate written with layout errors, 2 = input error. Messages follow the deck language; add `--lang en` to get English messages for a Chinese deck. Format reference: [outline format](../lecture-ppt-workflow/references/outline.md); English sample: [demo/en/outline.json](../demo/en/outline.json).

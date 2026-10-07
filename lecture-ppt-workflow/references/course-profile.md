@@ -1,11 +1,11 @@
-# 课程配置与标准优先级
+# Course profile and priority of standards
 
-当前请求 > 最新教师反馈 > 指定标准PPT的角色样式 > 用户课程配置 > 设计判断。标准只决定视觉，不保证学术内容正确。
+Current request > latest teacher feedback > role styles of the named reference deck > the user's course profile > design judgment. A standard decides only the look; it does not make the academic content correct.
 
-样例见本Skill的course-profile.example.json。它是模型读取的偏好记录，不会自动注入生成器；将结果写入页面规格，必要时生成style_check的policy。每次记录来自哪份标准及其哈希。换模板须复核，不继承旧学校标识。
+See `course-profile.example.json` in this skill. It is a preference record for the model to read and is not injected into the generator automatically: write its values into the page specification, and generate a `style_check` policy when needed. Each time, record which standard it came from and its hash. Re-check after a template change; never carry over an old institution's marks.
 
-配置需要记录：画布、字体角色与字号、色彩、标题/横线关系、内容安全区、来源区、案例授权、章末回顾方式、单标题例外。示例为960×540像素。96px=1英寸，pt=px×0.75；勿把像素当磅。
+A profile records: canvas, font roles and sizes, colors, the heading/rule relationship, the content safe area, the source area, case permission, the chapter review style, and single-heading exceptions. The example uses 960×540 px. 96 px = 1 inch, pt = px × 0.75; do not treat pixels as points.
 
-标题层数来自标准；双层标题通常大标题在线上、页面主题在线下，不自动追加重复的章节小标签。如教师确需第三层，分别给横线—标签、标签—主题、主题—正文设间距，检查实际字形而不只框坐标。来源区避开正文和角落装饰。
+The number of heading levels comes from the standard. With two levels, the main heading usually sits above the rule and the slide topic below it; do not add a repeated section label automatically. If a teacher really needs a third level, set spacing for rule–label, label–topic and topic–body separately, and check the actual glyphs, not just the box coordinates. Keep the source area clear of body text and corner decorations.
 
-灰背景是内部课程偏好而非所有课程默认。图片内部白底单独处理；字体不随意缩小来容纳内容，优先拆分。允许采用使用者自己的模板和偏好，不需要特定学校的课件。
+A gray background is an internal course preference, not a default for every course. Treat white backgrounds inside images separately. Do not shrink fonts to fit content; split first. Users can apply their own templates and preferences; no particular institution's deck is required.

@@ -1,4 +1,4 @@
-"""Reproduce the public demo: outline -> PPTX (default style and sample template) -> checks -> previews.
+"""Reproduce the public demo: outline -> PPTX (default style, sample template, English) -> checks -> previews.
 
 Uses explicitly installed dependencies only (npm ci in the Skill directory; lxml for Python checks).
 Never installs anything, calls a model, deletes files or overwrites output.
@@ -31,11 +31,13 @@ def main():
         return result.returncode
 
     run(sys.executable, skill / 'scripts' / 'doctor.py', '--out', out / 'environment.json', ok=(0, 1))
-    builds = {'default': [], 'template': ['--template', DEMO / 'template' / 'sample-template.pptx']}
-    for name, extra in builds.items():
-        run(args.node, skill / 'scripts' / 'build_outline.mjs', DEMO / 'outline.json', out / name, *extra)
+    # name -> (folder with outline.json and coverage-map.json, extra build arguments)
+    builds = {'default': (DEMO, []), 'template': (DEMO, ['--template', DEMO / 'template' / 'sample-template.pptx']),
+              'english': (DEMO / 'en', [])}
+    for name, (source, extra) in builds.items():
+        run(args.node, skill / 'scripts' / 'build_outline.mjs', source / 'outline.json', out / name, *extra)
         deck = out / name / 'lecture.pptx'
-        run(sys.executable, skill / 'scripts' / 'check_coverage.py', DEMO / 'coverage-map.json', deck, '--out', out / name / 'coverage.json')
+        run(sys.executable, skill / 'scripts' / 'check_coverage.py', source / 'coverage-map.json', deck, '--out', out / name / 'coverage.json')
         run(sys.executable, skill / 'scripts' / 'style_check.py', deck, '--out', out / name / 'style.json', ok=(0, 1))
         if args.no_render:
             continue

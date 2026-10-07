@@ -1,55 +1,65 @@
-# 课件大纲格式（lecture-outline v1）
+# Lecture outline format (lecture-outline v1)
 
-大纲只写内容与版式选择，坐标、字号、间距由 `scripts/lib/outline.mjs` 计算。网页、命令行 `build_outline.mjs` 和 Skill 使用同一套代码。
+An outline holds only content and layout choices; coordinates, font sizes and spacing are computed by `scripts/lib/outline.mjs`. The web page, the `build_outline.mjs` command and the skill share this code.
 
 ```json
 {
   "format": "lecture-outline",
   "version": 1,
-  "title": "第三章 工作分析",
-  "language": "zh-CN",
-  "theme": {"font": "Microsoft YaHei", "primary": "#2F5D7C", "accent": "#167A85"},
-  "slides": [{"layout": "cover", "title": "第三章 工作分析"}]
+  "title": "Chapter 3 Job Analysis",
+  "language": "en",
+  "theme": {"primary": "#2F5D7C", "accent": "#167A85"},
+  "slides": [{"layout": "cover", "title": "Chapter 3 Job Analysis"}]
 }
 ```
 
-完整示例见本 Skill 的 [examples/outline.json](../examples/outline.json)（15 页，覆盖除 figure 外的全部版式）；给聊天机器人用的说明见仓库 `prompts/prompt.zh.md`。
+Complete examples: [examples/outline.en.json](../examples/outline.en.json) (English) and [examples/outline.json](../examples/outline.json) (Chinese), 15 slides each, covering every layout except figure. Prompts for chatbots are in the repository's `prompts/prompt.en.md` and `prompts/prompt.zh.md`.
 
-## 版式与字段
+## Language
 
-| layout | 必填 | 可选 | 说明 |
+`language` is the language of the slide text. `zh…` gives a Chinese deck; any other value gives an English deck. Without `language`, an outline containing Chinese characters is Chinese and anything else is English. The deck language decides:
+
+- labels the scripts add: agenda and review headings, "Case material", "Discussion", "Suggested analysis", "Answer:", the fictional-scenario label, the figure placeholder, and the "[TO DO]" and "[Click order]" lines in the notes;
+- the default font (Microsoft YaHei for Chinese, Calibri for English; with a reference deck, English decks use its Latin font);
+- how "Term: explanation" is recognized (Chinese: a term of up to 16 characters before `：` or `:`; English: up to 6 words before `: ` with a space, so times and URLs are left alone).
+
+Issue messages follow the deck language unless `layoutOutline(outline, {lang})`, `build_outline.mjs --lang` or the web page's interface language says otherwise.
+
+## Layouts and fields
+
+| layout | Required | Optional | Notes |
 |---|---|---|---|
-| cover | title | subtitle, meta | 有模板封面时居中放入模板的标题色块 |
-| agenda | items（2–10） | title | 超过 5 项分两栏 |
-| section | title | number, subtitle | 设定之后页面的大标题（“number title”） |
-| bullets | title, points（1–8） | emphasis, style（list/cards）, reveal | 2–4 条“术语：解释”自动卡片化；reveal=true 逐条点击出现 |
-| definition | term, definition | title, points（≤4） | points 为“术语：解释”时显示为卡片 |
-| compare | title, columns（2–3，title+points） | conclusion | |
-| table | title, headers（2–6）, rows（≤10） | note, boldFirstColumn | 列宽按内容自动分配，短文字不折行 |
-| process | title, steps（2–6，title+text） | | 箭头为可编辑连线 |
-| case | title, material, questions（1–4） | analysis（≤5，建议 2–3 条短句）, fictional, source, label | analysis 第 1 次点击出现；无 source 时默认标“教学情境（虚构）” |
-| figure | title, image 或 placeholder | caption, points, imageSide | image 为图片文件名（相对大纲文件或网页上传）；无图时留虚线占位框 |
-| quiz | title, questions（1–4，q+answer） | options | 3–4 题时为 2×2 卡片；第 n 题答案第 n 次点击出现 |
-| review | branches（2–5，title+items） | title, center | 结构图；分支名建议 8 字以内 |
-| closing | title | subtitle | 与 section 同样式 |
+| cover | title | subtitle, meta | With a template cover, centered in the template's title band |
+| agenda | items (2–10) | title | Two columns above 5 items |
+| section | title | number, subtitle | Sets the heading of the following slides ("number title") |
+| bullets | title, points (1–8) | emphasis, style (list/cards), reveal | 2–4 "Term: explanation" points become cards; reveal=true shows points one click at a time |
+| definition | term, definition | title, points (≤4) | "Term: explanation" points render as cards |
+| compare | title, columns (2–3, title + points) | conclusion | |
+| table | title, headers (2–6), rows (≤10) | note, boldFirstColumn | Column widths follow content; short text does not wrap |
+| process | title, steps (2–6, title + text) | | Arrows are editable connectors |
+| case | title, material, questions (1–4) | analysis (≤5, 2–3 short points recommended), fictional, source, label | analysis appears on click 1; without source it is labeled as a fictional teaching scenario |
+| figure | title, image or placeholder | caption, points, imageSide | image is a file name (relative to the outline, or uploaded on the web page); without it a dashed placeholder is left |
+| quiz | title, questions (1–4, q + answer) | options | 3–4 questions use a 2×2 grid; the answer to question n appears on click n |
+| review | branches (2–5, title + items) | title, center | Structure map; keep branch titles to 1–3 words (about 8 Chinese characters) |
+| closing | title | subtitle | Same style as section |
 
-通用字段：`notes`（授课备注，内容页缺失时写入“【待补充】”并给出警告）、`source`（页脚出处）、`section`（覆盖或清空继承的大标题，null 表示清空）。
+Common fields: `notes` (speaker notes; if missing on a content slide, a "[TO DO]" placeholder is written and a warning is given), `source` (citation in the footer), `section` (overrides or clears the inherited heading; null clears it).
 
-## 主题（theme）
+## Theme
 
-`font`、`primary`、`accent`、`text`、`muted`、`background`、`surface`、`tint`、`line`、`border`、`warm`（#RRGGBB），`pageNumbers`（布尔），`width`（640–1280，默认 960 为 16:9，720 为 4:3），`backgroundImage`/`coverImage`（图片文件名，整页铺底）。
+`font`, `latinFont`, `primary`, `accent`, `text`, `muted`, `background`, `surface`, `tint`, `line`, `border`, `warm` (#RRGGBB), `pageNumbers` (boolean), `width` (640–1280; the default 960 is 16:9, 720 is 4:3), `backgroundImage`/`coverImage` (image file names, full-slide background).
 
-使用 `--template 参考课件.pptx` 或网页上传参考课件时，会自动生成 theme 和 `frame`：标题横线位置（ruleY）、避开标志的标题宽度（headingRight）、页码位置（footerRight）、内容底边（bottom）和封面标题色块（coverTitle）。大纲中显式写的 theme 字段优先。
+With `--template reference.pptx` or a reference deck uploaded on the web page, the theme and a `frame` are generated: the title rule position (ruleY), a heading width that avoids logos (headingRight), the page number position (footerRight), the content bottom (bottom) and the cover title band (coverTitle). Theme fields written in the outline take precedence.
 
-## 检查结果
+## Check results
 
-`layoutOutline()` 返回 `{spec, issues, summary}`。issues 中：
+`layoutOutline()` returns `{spec, issues, summary}`. In issues:
 
-- **error**：文字超出版面（不自动缩小字号，按提示删减或拆页）、标题超过一行、缺少图片文件等。命令行退出码为 1，状态为 needs-revision，但仍写出候选文件供查看。
-- **warning**：缺授课备注、要点超过 6 条、原图占位待替换、来源过长等。
+- **error**: text overflows the slide (the font is never shrunk; trim or split as the message says), a heading longer than one line, a missing image file, and so on. The command exits with code 1 and status needs-revision, but still writes the candidate files for review.
+- **warning**: missing speaker notes, more than 6 points, a figure placeholder to replace, a long source line, and so on.
 
-文字宽度按微软雅黑的字宽估算（中文按 1 个字宽，西文按比例），行高按 1.32 倍；估算略保守。最终仍需渲染逐页查看。
+Text width is estimated from Microsoft YaHei character widths (CJK characters 1 em, Latin proportionally), scaled for narrower Latin fonts (Calibri 0.86, Arial 0.93; measured with canvas `measureText`), with a line height of 1.32. The estimate is slightly conservative; always render and look at every slide.
 
-## 生成后的处理
+## After generation
 
-`finalize.mjs` 对每页：复制模板装饰与背景（如有）→ 重新编号形状 ID（避免 PptxGenJS 表格 ID 重复）→ 为 `reveal_组_序号` 命名的形状写入原生“单击时淡入 0.4 秒”动画。动画结构与 `add_animations.py` 一致，并由 Python 测试交叉校验。
+`finalize.mjs`, for each slide: copies template decorations and backgrounds (if any) → renumbers shape IDs (avoids duplicate IDs from PptxGenJS tables) → writes a native "on click, fade in 0.4 s" animation for shapes named `reveal_group_order`. The animation structure matches `add_animations.py` and is cross-checked by the Python tests.

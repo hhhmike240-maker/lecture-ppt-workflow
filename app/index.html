@@ -19,6 +19,9 @@
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 "Microsoft YaHei","PingFang SC","Noto Sans SC",system-ui,sans-serif}
+html[lang=en] body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+.topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+#ui-lang{flex:none;font-size:14px;padding:5px 12px}
 a{color:var(--accent)}
 header{max-width:1120px;margin:0 auto;padding:36px 16px 8px}
 header h1{margin:0 0 6px;font-size:28px;color:var(--primary);letter-spacing:.5px}
@@ -62,7 +65,7 @@ pre.prompt{white-space:pre-wrap;max-height:320px;overflow:auto;background:var(--
 .slide-card.has-error{border-color:var(--err)}
 .slide-frame{position:relative;width:100%;overflow:hidden;background:#fff}
 .slide-canvas{position:absolute;left:0;top:0;transform-origin:0 0;font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif;color:#243746}
-.slide-canvas .el{position:absolute;overflow:hidden;display:flex;flex-direction:column;word-break:break-all;line-height:1.32}
+.slide-canvas .el{position:absolute;overflow:hidden;display:flex;flex-direction:column;overflow-wrap:anywhere;line-height:1.32}
 .slide-canvas table{border-collapse:collapse;position:absolute;table-layout:fixed}
 .slide-canvas td{border:1px solid #C7D5DE;padding:4px 8px;line-height:1.3;vertical-align:middle;overflow:hidden}
 .slide-canvas svg{position:absolute;left:0;top:0;pointer-events:none}
@@ -81,48 +84,51 @@ footer{max-width:1120px;margin:0 auto;padding:0 16px 40px;color:var(--muted);fon
 </head>
 <body>
 <header>
-  <h1>教学课件工作流</h1>
-  <p>把讲义交给你常用的 AI，粘贴它的回答，就能下载<strong>可编辑</strong>的教学 PPT：版式自动排好，每页带<strong>授课备注</strong>，案例分析和提问答案带<strong>点击出现</strong>动画。可以套用你自己课件的字体、配色和背景。</p>
-  <div class="badges"><span class="badge">免安装、免注册</span><span class="badge">文件只在你的浏览器里处理，不上传</span><span class="badge">支持 DeepSeek / Kimi / 豆包 / 通义 / ChatGPT / Claude</span></div>
+  <div class="topbar">
+    <h1 data-i18n="h1">教学课件工作流</h1>
+    <button type="button" id="ui-lang" lang="en">English</button>
+  </div>
+  <p data-i18n="intro">把讲义交给你常用的 AI，粘贴它的回答，就能下载<strong>可编辑</strong>的教学 PPT：版式自动排好，每页带<strong>授课备注</strong>，案例分析和提问答案带<strong>点击出现</strong>动画。可以套用你自己课件的字体、配色和背景。</p>
+  <div class="badges"><span class="badge" data-i18n="badge1">免安装、免注册</span><span class="badge" data-i18n="badge2">文件只在你的浏览器里处理，不上传</span><span class="badge" data-i18n="badge3">支持 DeepSeek / Kimi / 豆包 / 通义 / ChatGPT / Claude</span></div>
 </header>
 <main>
   <section class="card" aria-labelledby="s1">
-    <div class="step"><b>1</b><h2 id="s1">复制提示词，连同讲义发给 AI</h2></div>
-    <p class="hint">提示词里写好了版式说明和“老师审过的规则”：内容以讲义为准、关键知识上屏、解释写进备注、装不下就拆页、不乱编案例。</p>
+    <div class="step"><b>1</b><h2 id="s1" data-i18n="s1">复制提示词，连同讲义发给 AI</h2></div>
+    <p class="hint" data-i18n="s1hint">提示词里写好了版式说明和“老师审过的规则”：内容以讲义为准、关键知识上屏、解释写进备注、装不下就拆页、不乱编案例。</p>
     <div class="row">
-      <div class="tabs" role="group" aria-label="提示词语言">
-        <button type="button" data-lang="zh" aria-pressed="true">中文提示词</button>
-        <button type="button" data-lang="en" aria-pressed="false">English prompt</button>
+      <div class="tabs" role="group" aria-label="提示词语言" data-i18n-aria="promptLang">
+        <button type="button" data-lang="zh" aria-pressed="true" data-i18n="promptZh">中文提示词</button>
+        <button type="button" data-lang="en" aria-pressed="false" data-i18n="promptEn">英文提示词</button>
       </div>
-      <button type="button" class="primary" id="copy-prompt">复制提示词</button>
+      <button type="button" class="primary" id="copy-prompt" data-i18n="copy">复制提示词</button>
     </div>
-    <details><summary>查看提示词内容</summary><pre class="prompt" id="prompt-text">加载中…</pre></details>
+    <details><summary data-i18n="showPrompt">查看提示词内容</summary><pre class="prompt" id="prompt-text">加载中…</pre></details>
     <div class="status" id="prompt-status" role="status"></div>
   </section>
 
   <section class="card" aria-labelledby="s2">
-    <div class="step"><b>2</b><h2 id="s2">把 AI 的回答粘贴到这里</h2></div>
-    <p class="hint">整段粘贴即可，前后多余的文字和 ```json 标记会自动去掉。想先看看效果？点“加载示例”。</p>
-    <textarea id="outline" spellcheck="false" placeholder='{"format":"lecture-outline","version":1,"slides":[ ... ]}' aria-label="课件大纲 JSON"></textarea>
+    <div class="step"><b>2</b><h2 id="s2" data-i18n="s2">把 AI 的回答粘贴到这里</h2></div>
+    <p class="hint" data-i18n="s2hint">整段粘贴即可，前后多余的文字和 ```json 标记会自动去掉。想先看看效果？点“加载示例”。</p>
+    <textarea id="outline" spellcheck="false" placeholder='{"format":"lecture-outline","version":1,"slides":[ ... ]}' aria-label="课件大纲 JSON" data-i18n-aria="outlineLabel"></textarea>
     <div class="row" style="margin-top:10px">
-      <button type="button" class="primary" id="preview">生成预览</button>
-      <button type="button" id="load-sample">加载示例（第三章 工作分析）</button>
+      <button type="button" class="primary" id="preview" data-i18n="preview">生成预览</button>
+      <button type="button" id="load-sample" data-i18n="sample">加载示例（第三章 工作分析）</button>
     </div>
     <div class="status" id="parse-status" role="status"></div>
   </section>
 
   <section class="card" aria-labelledby="s3">
-    <div class="step"><b>3</b><h2 id="s3">可选：套用你自己的课件风格、放入讲义原图</h2></div>
+    <div class="step"><b>3</b><h2 id="s3" data-i18n="s3">可选：套用你自己的课件风格、放入讲义原图</h2></div>
     <div class="uploads">
       <div class="drop">
-        <label for="template">参考课件（.pptx）</label>
-        <div class="hint" style="margin:0 0 8px">读取字体、主色和背景图片。母版里的形状装饰不会复制。</div>
+        <label for="template" data-i18n="templateLabel">参考课件（.pptx）</label>
+        <div class="hint" style="margin:0 0 8px" data-i18n="templateHint">读取字体、主色和背景图片。母版里的形状装饰不会复制。</div>
         <input type="file" id="template" accept=".pptx">
         <div class="swatches" id="template-info"></div>
       </div>
       <div class="drop">
-        <label for="images">讲义原图（PNG/JPG，可多选）</label>
-        <div class="hint" style="margin:0 0 8px">文件名与大纲中 figure 页的 image 字段一致时自动放入；没有原图的页面会留出“请插入原图”占位框。</div>
+        <label for="images" data-i18n="imagesLabel">讲义原图（PNG/JPG，可多选）</label>
+        <div class="hint" style="margin:0 0 8px" data-i18n="imagesHint">文件名与大纲中 figure 页的 image 字段一致时自动放入；没有原图的页面会留出“请插入原图”占位框。</div>
         <input type="file" id="images" accept="image/png,image/jpeg" multiple>
         <div class="swatches" id="image-info"></div>
       </div>
@@ -130,8 +136,8 @@ footer{max-width:1120px;margin:0 auto;padding:0 16px 40px;color:var(--muted);fon
   </section>
 
   <section class="card" aria-labelledby="s4" id="result" hidden>
-    <div class="step"><b>4</b><h2 id="s4">检查预览，下载 PPT</h2></div>
-    <p class="hint">预览是近似效果，以 PowerPoint/WPS 中打开为准。请逐页核对内容是否准确；红色问题建议先回到 AI 修改（例如“第 5 页内容太多，拆成两页”）。</p>
+    <div class="step"><b>4</b><h2 id="s4" data-i18n="s4">检查预览，下载 PPT</h2></div>
+    <p class="hint" data-i18n="s4hint">预览是近似效果，以 PowerPoint/WPS 中打开为准。请逐页核对内容是否准确；红色问题建议先回到 AI 修改（例如“第 5 页内容太多，拆成两页”）。</p>
     <div id="summary"></div>
     <ul id="issues"></ul>
     <div class="deck" id="deck"></div>
@@ -140,11 +146,11 @@ footer{max-width:1120px;margin:0 auto;padding:0 16px 40px;color:var(--muted);fon
 <div class="sticky" id="download-bar">
   <div class="inner">
     <span id="download-summary"></span>
-    <div class="row"><button type="button" class="primary" id="download">下载 PPTX</button></div>
+    <div class="row"><button type="button" class="primary" id="download" data-i18n="download">下载 PPTX</button></div>
   </div>
 </div>
 <footer>
-  <p>开源项目 <a href="https://github.com/hhhmike240-maker/lecture-ppt-workflow">lecture-ppt-workflow</a>（MIT 许可）。生成引擎为 <a href="https://github.com/gitbrent/PptxGenJS">PptxGenJS</a>。AI 生成的内容需要老师审核后再用于教学。<a href="https://github.com/hhhmike240-maker/lecture-ppt-workflow/issues/new/choose">反馈问题或建议</a></p>
+  <p data-i18n="footer">开源项目 <a href="https://github.com/hhhmike240-maker/lecture-ppt-workflow">lecture-ppt-workflow</a>（MIT 许可）。生成引擎为 <a href="https://github.com/gitbrent/PptxGenJS">PptxGenJS</a>。AI 生成的内容需要老师审核后再用于教学。<a href="https://github.com/hhhmike240-maker/lecture-ppt-workflow/issues/new/choose">反馈问题或建议</a></p>
 </footer>
 <script src="vendor/pptxgen.bundle.js"></script>
 <script type="module" src="app.js"></script>

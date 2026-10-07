@@ -76,8 +76,8 @@
     "symlinks_and_reparse_points": "rejected within scanned public paths",
     "scope": "Allowlisted paths and file hashes only. Runtime/cache/archive/key-file patterns are excluded. This scan does not certify the absence of private content, secrets, third-party material, or licensing issues in allowed files."
   },
-  "file_count": 216,
-  "total_bytes": 3882051,
+  "file_count": 230,
+  "total_bytes": 4535934,
   "files": [
     {
       "path": ".gitattributes",
@@ -101,8 +101,8 @@
     },
     {
       "path": ".github/workflows/test.yml",
-      "sha256": "69692d4efefe2514f5bed399ca2837323a96008f0a34b3d73a006ba1d2b61a85",
-      "bytes": 1251
+      "sha256": "82fcd6ce708f33b0f4217c9b02cb670130989753a955cda22e3bcbf856b732e7",
+      "bytes": 1388
     },
     {
       "path": ".gitignore",
@@ -116,13 +116,13 @@
     },
     {
       "path": "CHANGELOG.md",
-      "sha256": "0273c9d6963874e495dca9ff75386d7254d1f20cd606bd5b7fc13e271651a194",
-      "bytes": 4448
+      "sha256": "a08a8cda4265e5964d23ac5216d13e81cd678941efe4c2510f482b795c0dfb02",
+      "bytes": 6056
     },
     {
       "path": "CONTRIBUTING.md",
-      "sha256": "c025fb12fcb6585dc832398c3d7730e34c807044c020074710a67a7cbf40a01e",
-      "bytes": 1994
+      "sha256": "f7dec6b6355fe1c97cab8d923ae067086cb8065932da6c682d752988f5cd74eb",
+      "bytes": 2932
     },
     {
       "path": "LICENSE",
@@ -136,13 +136,13 @@
     },
     {
       "path": "README.en.md",
-      "sha256": "84203d3c324d0dc52f38d672b83fee00e18d0a401491cf50325b1594850309dc",
-      "bytes": 6253
+      "sha256": "8b90967dcd74da6584bd60703b15b0b984e20a03901b54c82b6cd3c5fe83f5b3",
+      "bytes": 7239
     },
     {
       "path": "README.md",
-      "sha256": "71c5996dd139a9c3e964c8d408bfdf29cc583edfe2bbd083b6ddcee8f2598e43",
-      "bytes": 6571
+      "sha256": "2db2b174e44e9556a3ecea4995b546a1ef4867282c3d0cfa3956e05c9b437819",
+      "bytes": 7050
     },
     {
       "path": "SECURITY.md",
@@ -151,13 +151,13 @@
     },
     {
       "path": "app/app.js",
-      "sha256": "19c52a36b2be345fffe709dcb3b8f57417de65bdacfcd1c0eb1c73a652423c52",
-      "bytes": 17547
+      "sha256": "bb7cc7974994be1029d314daa11fb8574131050ee0e107daa943c19924be439d",
+      "bytes": 27019
     },
     {
       "path": "app/index.html",
-      "sha256": "fada3932f7a99671101db96501f06ce536318c8991b18668a3ec5f3899b02d71",
-      "bytes": 10354
+      "sha256": "ff459d51d637721e147703582b306ae557ddd33218d6aa446b92d47025fed5b6",
+      "bytes": 11225
     },
     {
       "path": "app/vendor/LICENSE-jszip.md",
@@ -188,6 +188,26 @@
       "path": "demo/coverage-map.json",
       "sha256": "f963022b13c8c29b4a747e51884d1fd12363fbc346de50a9a5238f986ae59a20",
       "bytes": 1431
+    },
+    {
+      "path": "demo/en/coverage-map.json",
+      "sha256": "73c857cb97477f63debd9b095a6534c276e7abb70f1c66a899ea9d27269817b9",
+      "bytes": 1454
+    },
+    {
+      "path": "demo/en/lecture.md",
+      "sha256": "27f08c2fe1fad915886c9eb563f305e058f352b1a316becc9dd5e75f82831372",
+      "bytes": 3404
+    },
+    {
+      "path": "demo/en/lecture.pptx",
+      "sha256": "5035734c44e3396aa627934ce2ccb6e1312c69c0572fb6f6975380ac323d0e11",
+      "bytes": 59039
+    },
+    {
+      "path": "demo/en/outline.json",
+      "sha256": "ece15af0af676d54d991f6a47e5eff3a7e3893f1b00e3ba77baea72da8f09c80",
+      "bytes": 8325
     },
     {
       "path": "demo/lecture-template.pptx",
@@ -361,8 +381,8 @@
     },
     {
       "path": "demo/run_demo.py",
-      "sha256": "961ec85e2b1dd6107e740d31027a63c5a0746ea21b46a6d52d994e8ffa133cc7",
-      "bytes": 3467
+      "sha256": "a30ebb4db540695302915b787172612c40e1c36ee8562e9c3e40b08473e10497",
+      "bytes": 3699
     },
     {
       "path": "demo/template/make_sample_template.mjs",
@@ -375,9 +395,14 @@
       "bytes": 68882
     },
     {
+      "path": "docs/FAQ.en.md",
+      "sha256": "4bb7628fc40140dfa68b8890590a002b8ee0e0d6c8b8b6e7ba02ac311c93c2d3",
+      "bytes": 3394
+    },
+    {
       "path": "docs/FAQ.md",
-      "sha256": "ef2b353b22c74cdd5275a225c99c1d2398a131dc56913d8e14f0d7d496b62837",
-      "bytes": 3430
+      "sha256": "c70e0159771ad6b9ef0c526d77cd0931bcf95bda3964a725c33766a80530baa5",
+      "bytes": 3690
     },
     {
       "path": "docs/PROVENANCE.md",
@@ -386,8 +411,8 @@
     },
     {
       "path": "docs/QUICKSTART.en.md",
-      "sha256": "6d6b75d1b6606245bd91eb07435f3f04abf914ca819a2b2330c74f3be13f9a07",
-      "bytes": 2269
+      "sha256": "8aa4b430eaa71fbbc05dbd1f68928d64b28d82aed21f8c7b85074576332a2cb5",
+      "bytes": 2426
     },
     {
       "path": "docs/USAGE.md",
@@ -396,8 +421,8 @@
     },
     {
       "path": "docs/VALIDATION_20261007.md",
-      "sha256": "0ee8e505dbbe0e238c85cef91261c8fc466f999efe17df46de9c3a99a5e75b37",
-      "bytes": 4059
+      "sha256": "4b43c03502366deb722e703016c886c535a234db3b86d96e7a4421e8d2e72b1e",
+      "bytes": 5271
     },
     {
       "path": "docs/history/RELEASE_0.1.1-alpha.md",
@@ -415,6 +440,11 @@
       "bytes": 3333
     },
     {
+      "path": "docs/images/showcase.en.png",
+      "sha256": "6e36224eab74d0a5d24fc529c5797721130f273f4d216c596cb82d746f05e816",
+      "bytes": 206815
+    },
+    {
       "path": "docs/images/showcase.png",
       "sha256": "70bd120dd1861ef91265526686d7ab146fbd6f7e50b46c75336d1f0d50a946cd",
       "bytes": 234589
@@ -426,8 +456,8 @@
     },
     {
       "path": "index.html",
-      "sha256": "25ab637de4aa6098190fd7f58789d49349586f1d0401b977b3a4723b510872bd",
-      "bytes": 532
+      "sha256": "819812eed8f291d31ba7c72ecbdaf7b6515b88ad6696abda7b0c5f80232889dd",
+      "bytes": 725
     },
     {
       "path": "install.py",
@@ -436,8 +466,8 @@
     },
     {
       "path": "lecture-ppt-workflow/SKILL.md",
-      "sha256": "9e945c7e6121f88bfe8fce8955d24c134c7e5b6fe75c455ef46d00039722e6f3",
-      "bytes": 5276
+      "sha256": "dda3511cdc97254db82ba994521fb89b913de4585c2b7dfdf879dfa6b1c1b087",
+      "bytes": 6511
     },
     {
       "path": "lecture-ppt-workflow/agents/openai.yaml",
@@ -453,6 +483,11 @@
       "path": "lecture-ppt-workflow/examples/minimal.json",
       "sha256": "ce144a6db32b52a1182c314f39b116f9a292dc34699c676af20160c77f8e2099",
       "bytes": 775
+    },
+    {
+      "path": "lecture-ppt-workflow/examples/outline.en.json",
+      "sha256": "ece15af0af676d54d991f6a47e5eff3a7e3893f1b00e3ba77baea72da8f09c80",
+      "bytes": 8325
     },
     {
       "path": "lecture-ppt-workflow/examples/outline.json",
@@ -471,43 +506,43 @@
     },
     {
       "path": "lecture-ppt-workflow/references/animation.md",
-      "sha256": "83cc0e8285b6eef5300f17348c736ebbd17efa5adf8815f3889ba05ca3114ba9",
-      "bytes": 1193
+      "sha256": "39aec0e48e178fc86d0c6d68728d479529460a68307818a96c4a85d46e98d14a",
+      "bytes": 1628
     },
     {
       "path": "lecture-ppt-workflow/references/authoring.md",
-      "sha256": "80d95d940d1cfc434d718fa2cad530dfdc98314a7028e0eb105b6cf38f228279",
-      "bytes": 3890
+      "sha256": "698b8a1f7bbca2547d8351f51e22841415011b406fc648cd9b07196794444fae",
+      "bytes": 4739
     },
     {
       "path": "lecture-ppt-workflow/references/course-profile.md",
-      "sha256": "f5a531998e960be4601f0b601ae9c987cbfdaf5870936b6df51441c14b45079f",
-      "bytes": 1258
+      "sha256": "851bd6b7fcd0af66b03443627c262c5df8077bc3b80de65232bcafbb2ccac6e1",
+      "bytes": 1657
     },
     {
       "path": "lecture-ppt-workflow/references/feedback.md",
-      "sha256": "19fdfc9f0e20d25261d59c78b3bb444e974c7cb35592f21058b781122584485e",
-      "bytes": 1336
+      "sha256": "1a0fdc6106aa2bc8d49fe2749b3e06318f921dbc703e13e2d64576e3da46c585",
+      "bytes": 1778
     },
     {
       "path": "lecture-ppt-workflow/references/outline.md",
-      "sha256": "a4567cb8844da19b50ea1d53ea19f5ce72f4c702d95efaa9fa26b156bcfed071",
-      "bytes": 3986
+      "sha256": "66d71811e183d49c1cb77c4712f7769e488f8a740617fdbef8fffd446f2c70e9",
+      "bytes": 5446
     },
     {
       "path": "lecture-ppt-workflow/references/runtime.md",
-      "sha256": "e0107996c45fd17540ebdf49eadf28564c9ddeff4bb4eb3fd9b6594a1315cbf7",
-      "bytes": 1266
+      "sha256": "88063b5bfe0bce1ce0b973cb4a8024ff391240b8ac0f1299085671a5a98cf4d3",
+      "bytes": 1564
     },
     {
       "path": "lecture-ppt-workflow/references/tools.md",
-      "sha256": "275a0aa5e28b6dddec9fc934dd85bf4a38d698f8102619e806b360d006673bf3",
-      "bytes": 4754
+      "sha256": "b638eb118c5ca92ae5a77c5b58a3a42b57275a523ccbe7e745ca8e5f260df5a7",
+      "bytes": 5763
     },
     {
       "path": "lecture-ppt-workflow/references/workflow.md",
-      "sha256": "752d93a395a85da8a3e26fa080f6d385ad4137835f3e196cf2e56d9716cf447d",
-      "bytes": 2016
+      "sha256": "ef907723910a27ef8e20c21ae69270730870b6cae0c20e10d84dbc7a979112a6",
+      "bytes": 2770
     },
     {
       "path": "lecture-ppt-workflow/requirements.txt",
@@ -531,8 +566,8 @@
     },
     {
       "path": "lecture-ppt-workflow/scripts/build_outline.mjs",
-      "sha256": "6ca20251145edfecfd40a773f3990e738d6c7a4cba41b71226d748c7699f379a",
-      "bytes": 5794
+      "sha256": "85e681b7071dbd5f5d109752b940a4b52baa27c01eb9e08ad9c3b7c111098396",
+      "bytes": 6190
     },
     {
       "path": "lecture-ppt-workflow/scripts/check_coverage.py",
@@ -556,8 +591,8 @@
     },
     {
       "path": "lecture-ppt-workflow/scripts/lib/outline.mjs",
-      "sha256": "c57acb6feefe3372d75dc257e79a4e93603516167b6c4f00870c2350d4a38fa0",
-      "bytes": 36737
+      "sha256": "ad23c1d28a8d346feb4c14cdffcb1b909c1f46beb2bdc291ac4ffb4898b91d33",
+      "bytes": 45020
     },
     {
       "path": "lecture-ppt-workflow/scripts/lib/pptx_core.mjs",
@@ -566,8 +601,8 @@
     },
     {
       "path": "lecture-ppt-workflow/scripts/lib/template.mjs",
-      "sha256": "0da4222315fe4fa0434f787a2e42710a3e7cce068b0d7fa2c02a2f75da079032",
-      "bytes": 19743
+      "sha256": "a6414c2a68b1d674392a52513adc18e487085ed349ad790969a6f245ac4ff24a",
+      "bytes": 21293
     },
     {
       "path": "lecture-ppt-workflow/scripts/office_audit.py",
@@ -616,8 +651,8 @@
     },
     {
       "path": "lecture-ppt-workflow/tests/test_outline.mjs",
-      "sha256": "89e7894fcf5570687f94e6408de6fbf1940731659d63026c86eab1f7c73b441a",
-      "bytes": 6749
+      "sha256": "3d51725e3ef81e437f31c1c0482e85a9179a29e545d1a9ba2f5609587876d70c",
+      "bytes": 11977
     },
     {
       "path": "lecture-ppt-workflow/tests/test_package.mjs",
@@ -641,8 +676,8 @@
     },
     {
       "path": "make_manifest.py",
-      "sha256": "1e9dd6b7e767c9287a1965bfd945ff6749b3db85736eb7bf5b233ff8dcebb51a",
-      "bytes": 8219
+      "sha256": "4067c307eba9e004c971ed8a92847f2db8544ba831f336e7b48aed9a470634a3",
+      "bytes": 8540
     },
     {
       "path": "plugins/lecture-ppt-workflow/.codex-plugin/plugin.json",
@@ -656,13 +691,13 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/CHANGELOG.md",
-      "sha256": "0273c9d6963874e495dca9ff75386d7254d1f20cd606bd5b7fc13e271651a194",
-      "bytes": 4448
+      "sha256": "a08a8cda4265e5964d23ac5216d13e81cd678941efe4c2510f482b795c0dfb02",
+      "bytes": 6056
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/CONTRIBUTING.md",
-      "sha256": "c025fb12fcb6585dc832398c3d7730e34c807044c020074710a67a7cbf40a01e",
-      "bytes": 1994
+      "sha256": "f7dec6b6355fe1c97cab8d923ae067086cb8065932da6c682d752988f5cd74eb",
+      "bytes": 2932
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/LICENSE",
@@ -676,8 +711,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/README.en.md",
-      "sha256": "6492804ca211d8ddd295fb0c0a6c242d8347c2241b28e47f0dc7aaa4fbf76b60",
-      "bytes": 7150
+      "sha256": "2bd0f2c16cec19e968bca4e5d7545d9ce6700b9202dc6afc51ee79245c3ec4f7",
+      "bytes": 8146
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/README.md",
@@ -703,6 +738,26 @@
       "path": "plugins/lecture-ppt-workflow/assets/demo/coverage-map.json",
       "sha256": "f963022b13c8c29b4a747e51884d1fd12363fbc346de50a9a5238f986ae59a20",
       "bytes": 1431
+    },
+    {
+      "path": "plugins/lecture-ppt-workflow/assets/demo/en/coverage-map.json",
+      "sha256": "73c857cb97477f63debd9b095a6534c276e7abb70f1c66a899ea9d27269817b9",
+      "bytes": 1454
+    },
+    {
+      "path": "plugins/lecture-ppt-workflow/assets/demo/en/lecture.md",
+      "sha256": "27f08c2fe1fad915886c9eb563f305e058f352b1a316becc9dd5e75f82831372",
+      "bytes": 3404
+    },
+    {
+      "path": "plugins/lecture-ppt-workflow/assets/demo/en/lecture.pptx",
+      "sha256": "5035734c44e3396aa627934ce2ccb6e1312c69c0572fb6f6975380ac323d0e11",
+      "bytes": 59039
+    },
+    {
+      "path": "plugins/lecture-ppt-workflow/assets/demo/en/outline.json",
+      "sha256": "ece15af0af676d54d991f6a47e5eff3a7e3893f1b00e3ba77baea72da8f09c80",
+      "bytes": 8325
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/demo/lecture-template.pptx",
@@ -876,8 +931,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/demo/run_demo.py",
-      "sha256": "610ffc8b0ece8aff334535d33c5f6daf1947d50702b41d3fe705ed23b294c68b",
-      "bytes": 3482
+      "sha256": "037b9af805772673c7b470dc5c915e10ade3a17a2cced5b8a7bddb7ea7e64986",
+      "bytes": 3714
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/demo/template/sample-template.pptx",
@@ -885,9 +940,14 @@
       "bytes": 68882
     },
     {
+      "path": "plugins/lecture-ppt-workflow/assets/docs/FAQ.en.md",
+      "sha256": "a9aa976b6d405ca4f7026e9219ec3402b86f0358708d7d09c069ee31a52ab645",
+      "bytes": 4281
+    },
+    {
       "path": "plugins/lecture-ppt-workflow/assets/docs/FAQ.md",
-      "sha256": "7b70af6bd7e0e03084bd2e7c22d4f3b9255563cede1be7ca80c00c46cdeaccb9",
-      "bytes": 3433
+      "sha256": "dd4e2dc019fcc65badfadd874a69414e244c8a644404bdead8193cf6bbc8b4a3",
+      "bytes": 3693
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/docs/PROVENANCE.md",
@@ -896,8 +956,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/docs/QUICKSTART.en.md",
-      "sha256": "9a54b7bdb8c43db68c88ae4c9ca0edb605e5b567cd329ce43ebedae1d8bd3b88",
-      "bytes": 3166
+      "sha256": "c7a1f7ba9a15681d1d0c73ea9added7fa8ce7e5f191cd4000eb8ce81b8c92d9c",
+      "bytes": 3323
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/docs/USAGE.md",
@@ -906,8 +966,13 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/docs/VALIDATION_20261007.md",
-      "sha256": "0ee8e505dbbe0e238c85cef91261c8fc466f999efe17df46de9c3a99a5e75b37",
-      "bytes": 4059
+      "sha256": "4b43c03502366deb722e703016c886c535a234db3b86d96e7a4421e8d2e72b1e",
+      "bytes": 5271
+    },
+    {
+      "path": "plugins/lecture-ppt-workflow/assets/docs/images/showcase.en.png",
+      "sha256": "6e36224eab74d0a5d24fc529c5797721130f273f4d216c596cb82d746f05e816",
+      "bytes": 206815
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/docs/images/showcase.png",
@@ -921,8 +986,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/prompts/prompt.en.md",
-      "sha256": "5fe9cdbe0ba487a45628caee761abf6d749ce894a571c37447411c3b1dabf474",
-      "bytes": 3553
+      "sha256": "7e08e36371ceef04671f9525013ca1f4feb5a444fe3b9244353bbad42c6239b3",
+      "bytes": 5224
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/prompts/prompt.zh.md",
@@ -931,8 +996,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/SKILL.md",
-      "sha256": "9e945c7e6121f88bfe8fce8955d24c134c7e5b6fe75c455ef46d00039722e6f3",
-      "bytes": 5276
+      "sha256": "dda3511cdc97254db82ba994521fb89b913de4585c2b7dfdf879dfa6b1c1b087",
+      "bytes": 6511
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/agents/openai.yaml",
@@ -948,6 +1013,11 @@
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/examples/minimal.json",
       "sha256": "ce144a6db32b52a1182c314f39b116f9a292dc34699c676af20160c77f8e2099",
       "bytes": 775
+    },
+    {
+      "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/examples/outline.en.json",
+      "sha256": "ece15af0af676d54d991f6a47e5eff3a7e3893f1b00e3ba77baea72da8f09c80",
+      "bytes": 8325
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/examples/outline.json",
@@ -966,43 +1036,43 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/references/animation.md",
-      "sha256": "83cc0e8285b6eef5300f17348c736ebbd17efa5adf8815f3889ba05ca3114ba9",
-      "bytes": 1193
+      "sha256": "39aec0e48e178fc86d0c6d68728d479529460a68307818a96c4a85d46e98d14a",
+      "bytes": 1628
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/references/authoring.md",
-      "sha256": "80d95d940d1cfc434d718fa2cad530dfdc98314a7028e0eb105b6cf38f228279",
-      "bytes": 3890
+      "sha256": "698b8a1f7bbca2547d8351f51e22841415011b406fc648cd9b07196794444fae",
+      "bytes": 4739
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/references/course-profile.md",
-      "sha256": "f5a531998e960be4601f0b601ae9c987cbfdaf5870936b6df51441c14b45079f",
-      "bytes": 1258
+      "sha256": "851bd6b7fcd0af66b03443627c262c5df8077bc3b80de65232bcafbb2ccac6e1",
+      "bytes": 1657
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/references/feedback.md",
-      "sha256": "19fdfc9f0e20d25261d59c78b3bb444e974c7cb35592f21058b781122584485e",
-      "bytes": 1336
+      "sha256": "1a0fdc6106aa2bc8d49fe2749b3e06318f921dbc703e13e2d64576e3da46c585",
+      "bytes": 1778
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/references/outline.md",
-      "sha256": "a4567cb8844da19b50ea1d53ea19f5ce72f4c702d95efaa9fa26b156bcfed071",
-      "bytes": 3986
+      "sha256": "66d71811e183d49c1cb77c4712f7769e488f8a740617fdbef8fffd446f2c70e9",
+      "bytes": 5446
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/references/runtime.md",
-      "sha256": "e0107996c45fd17540ebdf49eadf28564c9ddeff4bb4eb3fd9b6594a1315cbf7",
-      "bytes": 1266
+      "sha256": "88063b5bfe0bce1ce0b973cb4a8024ff391240b8ac0f1299085671a5a98cf4d3",
+      "bytes": 1564
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/references/tools.md",
-      "sha256": "275a0aa5e28b6dddec9fc934dd85bf4a38d698f8102619e806b360d006673bf3",
-      "bytes": 4754
+      "sha256": "b638eb118c5ca92ae5a77c5b58a3a42b57275a523ccbe7e745ca8e5f260df5a7",
+      "bytes": 5763
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/references/workflow.md",
-      "sha256": "752d93a395a85da8a3e26fa080f6d385ad4137835f3e196cf2e56d9716cf447d",
-      "bytes": 2016
+      "sha256": "ef907723910a27ef8e20c21ae69270730870b6cae0c20e10d84dbc7a979112a6",
+      "bytes": 2770
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/requirements.txt",
@@ -1026,8 +1096,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/scripts/build_outline.mjs",
-      "sha256": "6ca20251145edfecfd40a773f3990e738d6c7a4cba41b71226d748c7699f379a",
-      "bytes": 5794
+      "sha256": "85e681b7071dbd5f5d109752b940a4b52baa27c01eb9e08ad9c3b7c111098396",
+      "bytes": 6190
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/scripts/check_coverage.py",
@@ -1051,8 +1121,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/scripts/lib/outline.mjs",
-      "sha256": "c57acb6feefe3372d75dc257e79a4e93603516167b6c4f00870c2350d4a38fa0",
-      "bytes": 36737
+      "sha256": "ad23c1d28a8d346feb4c14cdffcb1b909c1f46beb2bdc291ac4ffb4898b91d33",
+      "bytes": 45020
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/scripts/lib/pptx_core.mjs",
@@ -1061,8 +1131,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/scripts/lib/template.mjs",
-      "sha256": "0da4222315fe4fa0434f787a2e42710a3e7cce068b0d7fa2c02a2f75da079032",
-      "bytes": 19743
+      "sha256": "a6414c2a68b1d674392a52513adc18e487085ed349ad790969a6f245ac4ff24a",
+      "bytes": 21293
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/scripts/office_audit.py",
@@ -1111,8 +1181,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/tests/test_outline.mjs",
-      "sha256": "89e7894fcf5570687f94e6408de6fbf1940731659d63026c86eab1f7c73b441a",
-      "bytes": 6749
+      "sha256": "3d51725e3ef81e437f31c1c0482e85a9179a29e545d1a9ba2f5609587876d70c",
+      "bytes": 11977
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/tests/test_package.mjs",
@@ -1136,8 +1206,8 @@
     },
     {
       "path": "prompts/prompt.en.md",
-      "sha256": "5fe9cdbe0ba487a45628caee761abf6d749ce894a571c37447411c3b1dabf474",
-      "bytes": 3553
+      "sha256": "7e08e36371ceef04671f9525013ca1f4feb5a444fe3b9244353bbad42c6239b3",
+      "bytes": 5224
     },
     {
       "path": "prompts/prompt.zh.md",
@@ -1146,13 +1216,13 @@
     },
     {
       "path": "scripts/build_plugin.py",
-      "sha256": "5283468c67ed059a0011d933ccd156b0a2c62d4bb7bace88f9fdd8eaa5620795",
-      "bytes": 15078
+      "sha256": "40e513f93841b4ff5c667351ceba29aecba8ff7a28f8a215b1319d0953787a5c",
+      "bytes": 15569
     },
     {
       "path": "scripts/make_showcase.py",
-      "sha256": "5600153a7f30553caee9753fb507d80974030f3084cbbdd676bf840156cfe6c1",
-      "bytes": 3098
+      "sha256": "c124bdef49229f0523dcb5c087d932d01feb5eebf7c48932de6c4e061db626dd",
+      "bytes": 3804
     },
     {
       "path": "scripts/package_release.py",

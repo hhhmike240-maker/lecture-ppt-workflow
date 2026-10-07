@@ -18,6 +18,8 @@
 
 可选：上传一份你自己的课件，新课件会自动沿用其中的**标志、标题横线、配色和字体**。
 
+**英文课程也能用**：网页右上角切换英文界面，用英文提示词，课件里的“答案”“参考分析”、备注和版面提示都会是英文。见 [English README](README.en.md)。
+
 ![默认风格与套用模板后的对比](docs/images/template.png)
 
 讲义和课件只在你的浏览器里处理，**不会上传到任何服务器**。唯一经过网络的是你自己发给 AI 的那段对话。
@@ -66,12 +68,12 @@ cd lecture-ppt-workflow && npm ci --ignore-scripts && cd ..
 node lecture-ppt-workflow/scripts/build_outline.mjs demo/outline.json out/demo --template 我的课件.pptx
 ```
 
-输出目录里有 `lecture.pptx`、版面检查报告 `report.json`、页面规格 `spec.json` 和大纲副本 `outline.json`（以后修改或换模板时重新生成用）。已存在的目录不会被覆盖。完整演示（含知识覆盖检查和逐页预览图）：`python demo/run_demo.py --out out/full-demo`。
+输出目录里有 `lecture.pptx`、版面检查报告 `report.json`、页面规格 `spec.json` 和大纲副本 `outline.json`（以后修改或换模板时重新生成用）。已存在的目录不会被覆盖。完整演示（中英文两份课件，含知识覆盖检查和逐页预览图）：`python demo/run_demo.py --out out/full-demo`。
 
 ## 已验证与未验证
 
-- **已验证**（2026-10-07，Windows + Microsoft 365 PowerPoint）：示例课件 15 页的打开与逐页导出；点击动画被 PowerPoint 识别为“单击时淡入 0.4 秒”；网页与命令行生成结果一致；模板复用在原创示例模板和一份真实高校模板上测试通过；**WPS Office（Windows）** 打开、逐页导出一致，点击动画同样被识别。**DeepSeek 实测**：首次回答即为合格大纲（17 页，每页有备注），2 页被正确提示超出版面，按提示回复一句后修好；**豆包实测**（改进后的提示词）：一次通过，17 页零版面问题。自动化测试 Node 35 项、Python 19 项。详见 [验证记录](docs/VALIDATION_20261007.md)。
-- **尚未验证**：WPS 中实际放映的点击效果（结构已识别）、macOS 版 PowerPoint、Keynote；非 Windows 系统的渲染脚本；Kimi、通义、ChatGPT 等其他 AI 的输出质量；英文课程的实际效果。欢迎反馈。
+- **已验证**（2026-10-07，Windows + Microsoft 365 PowerPoint）：示例课件 15 页的打开与逐页导出；点击动画被 PowerPoint 识别为“单击时淡入 0.4 秒”；网页与命令行生成结果一致；模板复用在原创示例模板和一份真实高校模板上测试通过；**WPS Office（Windows）** 打开、逐页导出一致，点击动画同样被识别。**DeepSeek 实测**：首次回答即为合格大纲（17 页，每页有备注），2 页被正确提示超出版面，按提示回复一句后修好；**豆包实测**（改进后的提示词）：一次通过，17 页零版面问题。**英文示例**（15 页）在 PowerPoint 中逐页导出无重叠、无截断，中文示例版面与 v0.2.0 完全一致。自动化测试 Node 41 项、Python 19 项。详见 [验证记录](docs/VALIDATION_20261007.md)。
+- **尚未验证**：WPS 中实际放映的点击效果（结构已识别）、macOS 版 PowerPoint、Keynote；非 Windows 系统的渲染脚本；Kimi、通义、ChatGPT 等其他 AI 的输出质量；用英文讲义实测 AI、英文课件在 WPS 中的效果。欢迎反馈。
 
 ## 局限
 

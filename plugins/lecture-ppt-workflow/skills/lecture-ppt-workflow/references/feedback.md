@@ -1,17 +1,17 @@
-# 从反馈形成可复用规则
+# Turning feedback into reusable rules
 
-内部课程的反馈已形成如下通用检查，课程数值不随之传播：
+Feedback from an internal course has become the general checks below; the course's own values are not carried over.
 
-| 反馈 | 通用规则 | 仍需人工/模型确认 |
+| Feedback | General rule | Still needs a human or model |
 |---|---|---|
-| 字过大且通篇粗体 | 按角色继承字号 | 投影可读性、真实字形 |
-| 横线压标题，小标题贴正文 | 标题安全区及分层间距 | 模板实际层数与单标题例外 |
-| 页中留白大、表格牵强 | 内容决定图/表/流程，别填无关故事 | 教学价值和视觉均衡 |
-| 知识点没列全 | 内容—页码映射，关键知识上屏 | 语义完整性 |
-| 自编案例太多 | 明确教师材料/留空/授权候选 | 本次授权，不永久套用 |
-| 原图与风格不合 | 核对原图信息后局部适配 | 不误改变量和关系 |
-| 回顾太简单 | 真实目录分支及关键关系 | 不是几个孤立框 |
-| 来源与正文重叠 | 独立来源安全区，复杂边界进备注 | 必要来源不可删除 |
-| 制作口吻明显 | 自然教学语言 | 不隐藏虚构或不确定性 |
+| Text too large and bold everywhere | Inherit font sizes by role | Readability when projected, real glyphs |
+| Rule cuts through the heading; subtitle touches body text | Heading safe area and spacing between levels | The template's actual levels and single-heading exceptions |
+| Large empty areas; forced tables | Content decides figure/table/process; no unrelated stories | Teaching value and visual balance |
+| Knowledge points missing | Content → slide mapping; key knowledge on screen | Semantic completeness |
+| Too many invented cases | Teacher material, a blank, or an authorized candidate | Permission for this request, not forever |
+| Original figure clashes with the style | Check the figure's information, then adapt locally | Do not change variables or relationships by mistake |
+| Review too thin | Branches from the real contents and key relationships | Not a few isolated boxes |
+| Source overlaps body text | A separate source safe area; long citations in the notes | Required sources cannot be deleted |
+| Obvious "made by a tool" tone | Natural teaching language | Do not hide fiction or uncertainty |
 
-来源是本项目实际教师迭代反馈的抽象总结。不是全部由代码自动检查。2026年9月已有一位教师独立制作新章并经多轮修改表示满意；这是用户提供的真实使用反馈，不是跨设备测试或量化效果研究。不含教师身份、截图或原课件。
+These are abstractions of real teacher feedback from this project's iterations; not all of them are checked by code. In September 2026 a teacher independently produced a new chapter and, after several rounds of revision, said they were satisfied. This is real usage feedback provided by the user, not a cross-device test or a quantitative study of effects. No teacher identity, screenshots or original decks are included.

@@ -37,7 +37,8 @@ EXCLUDED_SUFFIXES = frozenset({
 })
 REQUIRED_FILES = ROOT_FILES | frozenset({
     ".github/ISSUE_TEMPLATE/usage_feedback.yml",
-    "docs/QUICKSTART.en.md", "docs/FAQ.md", "docs/USAGE.md", "docs/images/showcase.png",
+    "docs/QUICKSTART.en.md", "docs/FAQ.md", "docs/FAQ.en.md", "docs/USAGE.md", "docs/images/showcase.png",
+    "docs/images/showcase.en.png", "prompts/prompt.en.md", "demo/en/outline.json", "demo/en/lecture.pptx",
     "app/index.html", "app/app.js", "app/vendor/pptxgen.bundle.js", "prompts/prompt.zh.md",
     "demo/PROMPTS.en.md", "demo/outline.json", "demo/lecture.pptx",
     "lecture-ppt-workflow/SKILL.md", "scripts/package_release.py",
