@@ -27,9 +27,9 @@
 | compare | title, columns（2–3，title+points） | conclusion | |
 | table | title, headers（2–6）, rows（≤10） | note, boldFirstColumn | 列宽按内容自动分配，短文字不折行 |
 | process | title, steps（2–6，title+text） | | 箭头为可编辑连线 |
-| case | title, material, questions（1–4） | analysis（≤5）, fictional, source, label | analysis 第 1 次点击出现；无 source 时默认标“教学情境（虚构）” |
+| case | title, material, questions（1–4） | analysis（≤5，建议 2–3 条短句）, fictional, source, label | analysis 第 1 次点击出现；无 source 时默认标“教学情境（虚构）” |
 | figure | title, image 或 placeholder | caption, points, imageSide | image 为图片文件名（相对大纲文件或网页上传）；无图时留虚线占位框 |
-| quiz | title, questions（1–4，q+answer） | options | 第 n 题答案第 n 次点击出现 |
+| quiz | title, questions（1–4，q+answer） | options | 3–4 题时为 2×2 卡片；第 n 题答案第 n 次点击出现 |
 | review | branches（2–5，title+items） | title, center | 结构图；分支名建议 8 字以内 |
 | closing | title | subtitle | 与 section 同样式 |
 

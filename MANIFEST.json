@@ -77,7 +77,7 @@
     "scope": "Allowlisted paths and file hashes only. Runtime/cache/archive/key-file patterns are excluded. This scan does not certify the absence of private content, secrets, third-party material, or licensing issues in allowed files."
   },
   "file_count": 216,
-  "total_bytes": 3870132,
+  "total_bytes": 3877093,
   "files": [
     {
       "path": ".gitattributes",
@@ -141,8 +141,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "beaa52d55e20b1f0f32848d29dc9b44960a14ba69ec098ca8b2ea68f478f48db",
-      "bytes": 6278
+      "sha256": "ab77e3afd6e55e1c6de3c952f6785fc10e98d240f7cb44d3622cabd6842116df",
+      "bytes": 6431
     },
     {
       "path": "SECURITY.md",
@@ -491,8 +491,8 @@
     },
     {
       "path": "lecture-ppt-workflow/references/outline.md",
-      "sha256": "4c57ee73ec50a3148ddd31a703e2d4f6455a9770ec52ab311f1284d71ac50eff",
-      "bytes": 3931
+      "sha256": "a4567cb8844da19b50ea1d53ea19f5ce72f4c702d95efaa9fa26b156bcfed071",
+      "bytes": 3986
     },
     {
       "path": "lecture-ppt-workflow/references/runtime.md",
@@ -556,8 +556,8 @@
     },
     {
       "path": "lecture-ppt-workflow/scripts/lib/outline.mjs",
-      "sha256": "1f317f4755d7f8dc5758697276761df628a22e180058ddc30bc6e59f3101df91",
-      "bytes": 34715
+      "sha256": "26eca7e090818929400b86ba83c71ad6c495a9ae224cfb687953a2a7fc218a07",
+      "bytes": 36451
     },
     {
       "path": "lecture-ppt-workflow/scripts/lib/pptx_core.mjs",
@@ -616,8 +616,8 @@
     },
     {
       "path": "lecture-ppt-workflow/tests/test_outline.mjs",
-      "sha256": "0a26d82a2b8e47b1cbf81cd5e6229636265a9c61f5cb2f4befe107a17f59ea17",
-      "bytes": 5037
+      "sha256": "32fcaeb1f22beed591a2b682827e1d4252d8cb0a618a04a15bd2021e78f85855",
+      "bytes": 6469
     },
     {
       "path": "lecture-ppt-workflow/tests/test_package.mjs",
@@ -921,13 +921,13 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/prompts/prompt.en.md",
-      "sha256": "b8736fc3d23391d95da6a1af5fb24aaa944bfa751dfe1ce895c7da7967a65d14",
-      "bytes": 3471
+      "sha256": "5fe9cdbe0ba487a45628caee761abf6d749ce894a571c37447411c3b1dabf474",
+      "bytes": 3553
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/prompts/prompt.zh.md",
-      "sha256": "3f25255eff4e1d5a12cbf2f6d8856e083cf3809a5adae832072a878c72f2414b",
-      "bytes": 4830
+      "sha256": "3e3d66e9e6b61cd99a8e731080bf6cc0c5fa90d60f1b27d26c96dd7146ce9ac3",
+      "bytes": 4929
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/SKILL.md",
@@ -986,8 +986,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/references/outline.md",
-      "sha256": "4c57ee73ec50a3148ddd31a703e2d4f6455a9770ec52ab311f1284d71ac50eff",
-      "bytes": 3931
+      "sha256": "a4567cb8844da19b50ea1d53ea19f5ce72f4c702d95efaa9fa26b156bcfed071",
+      "bytes": 3986
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/references/runtime.md",
@@ -1051,8 +1051,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/scripts/lib/outline.mjs",
-      "sha256": "1f317f4755d7f8dc5758697276761df628a22e180058ddc30bc6e59f3101df91",
-      "bytes": 34715
+      "sha256": "26eca7e090818929400b86ba83c71ad6c495a9ae224cfb687953a2a7fc218a07",
+      "bytes": 36451
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/scripts/lib/pptx_core.mjs",
@@ -1111,8 +1111,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/tests/test_outline.mjs",
-      "sha256": "0a26d82a2b8e47b1cbf81cd5e6229636265a9c61f5cb2f4befe107a17f59ea17",
-      "bytes": 5037
+      "sha256": "32fcaeb1f22beed591a2b682827e1d4252d8cb0a618a04a15bd2021e78f85855",
+      "bytes": 6469
     },
     {
       "path": "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/tests/test_package.mjs",
@@ -1136,13 +1136,13 @@
     },
     {
       "path": "prompts/prompt.en.md",
-      "sha256": "b8736fc3d23391d95da6a1af5fb24aaa944bfa751dfe1ce895c7da7967a65d14",
-      "bytes": 3471
+      "sha256": "5fe9cdbe0ba487a45628caee761abf6d749ce894a571c37447411c3b1dabf474",
+      "bytes": 3553
     },
     {
       "path": "prompts/prompt.zh.md",
-      "sha256": "3f25255eff4e1d5a12cbf2f6d8856e083cf3809a5adae832072a878c72f2414b",
-      "bytes": 4830
+      "sha256": "3e3d66e9e6b61cd99a8e731080bf6cc0c5fa90d60f1b27d26c96dd7146ce9ac3",
+      "bytes": 4929
     },
     {
       "path": "scripts/build_plugin.py",

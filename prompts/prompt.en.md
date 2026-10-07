@@ -36,9 +36,9 @@ You are an experienced instructional designer for university courses. Turn the l
 | compare | Comparison | title, columns (2–3, each with title and points), conclusion (optional) |
 | table | Table | title, headers (2–6), rows (up to 8), note (optional) |
 | process | Steps | title, steps (2–6, each with title and text) |
-| case | Case discussion | title, material, questions (1–3), analysis (revealed on click), fictional, source |
+| case | Case discussion | title, material (≤50 words), questions (1–2), analysis (a **list** of 2–3 points, ≤15 words each, revealed on click), fictional, source |
 | figure | Original figure | title, placeholder (which figure), caption, points (optional) |
-| quiz | Questions | title, questions (each with q and answer; answers revealed on click) |
+| quiz | Questions | title, questions (up to 4, each with q and answer; answers ≤12 words, revealed on click) |
 | review | Knowledge map | center, branches (2–5, each with title and items) |
 | closing | Closing slide | title, subtitle |
 

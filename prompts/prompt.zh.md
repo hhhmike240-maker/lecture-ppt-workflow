@@ -36,9 +36,9 @@
 | compare | 对比 | title，columns（2–3 栏，每栏 title 和 points），conclusion（可选） |
 | table | 表格 | title，headers（2–6 列），rows（不超过 8 行），note（可选） |
 | process | 流程 | title，steps（2–6 步，每步 title 和 text） |
-| case | 教学情境 | title，material，questions（1–3 个），analysis（参考分析，点击后出现），fictional，source |
+| case | 教学情境 | title，material（80 字以内），questions（1–2 个），analysis（参考分析，**列表**，2–3 条、每条 30 字以内，点击后出现），fictional，source |
 | figure | 原图 | title，placeholder（说明是讲义哪张图），caption，points（可选，图旁要点） |
-| quiz | 课堂提问 | title，questions（每题 q 和 answer，答案点击后出现） |
+| quiz | 课堂提问 | title，questions（不超过 4 题，每题 q 和 answer；答案 25 字以内，点击后出现） |
 | review | 知识回顾 | center，branches（2–5 个，每个 title 和 items） |
 | closing | 结束页 | title，subtitle |
 

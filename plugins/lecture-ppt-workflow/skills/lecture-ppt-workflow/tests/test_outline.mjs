@@ -87,3 +87,23 @@ test('text measurement wraps Chinese by character width', () => {
 test('bad theme colors are rejected', () => {
   assert.throws(() => layoutOutline({theme:{primary:'blue'}, slides:[{layout:'closing', title:'x'}]}), /颜色/);
 });
+
+test('four quiz questions fit as a 2 x 2 grid', () => {
+  const q = (n) => ({q:`第${n}题：工作分析的对象是岗位还是员工？`, answer:'岗位本身，而不是某一位员工。'});
+  const r = layoutOutline(one({layout:'quiz', title:'课堂检验', questions:[q(1), q(2), q(3), q(4)], notes:'n'}));
+  assert.deepEqual(errors(r), []);
+  const cards = r.spec.slides[0].elements.filter(e => /^question-\d-card$/.test(e.name));
+  assert.equal(new Set(cards.map(c => c.position.left)).size, 2);
+});
+
+test('a one-paragraph case analysis is split into sentence bullets', () => {
+  const r = layoutOutline(one({layout:'case', title:'情境', material:'材料', questions:['问题'], analysis:'第一句。第二句；第三句。', fictional:true, source:'自编情境（虚构）', notes:'n'}));
+  const els = r.spec.slides[0].elements;
+  assert.equal(els.find(e => e.name === 'reveal_1_1_analysis').runs.filter(x => x.bullet).length, 3);
+  assert.equal(els.find(e => e.name === 'source').text, '自编情境（虚构）');   // no duplicated fictional label
+});
+
+test('overflow errors tell the teacher what to ask the AI', () => {
+  const r = layoutOutline(one({layout:'case', title:'情境', material:'很长的材料。'.repeat(70), questions:['问题一', '问题二', '问题三'], analysis:['分析'], notes:'n'}));
+  assert.ok(errors(r).some(i => /可以对 AI 说：“第 1 页情境太长/.test(i.message)));
+});

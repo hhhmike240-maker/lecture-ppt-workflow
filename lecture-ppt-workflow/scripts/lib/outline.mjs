@@ -152,7 +152,8 @@ function header(s, ctx) {
 
 function footer(s, ctx, {fictional = false} = {}) {
   const {theme, W} = ctx, els = [], right = Math.min(W - M, ctx.frame.footerRight ?? W - M);
-  const parts = [fictional ? '教学情境（虚构）' : '', str(s.source)].filter(Boolean);
+  const source = str(s.source);
+  const parts = [fictional && !/虚构/.test(source) ? '教学情境（虚构）' : '', source].filter(Boolean);
   if (parts.length) {
     const text = parts.join('；'), w = right - M - 70;
     els.push(textEl('source', text, M, 484, w, 24, 14, {color:theme.muted, valign:'middle'}));
@@ -162,10 +163,22 @@ function footer(s, ctx, {fictional = false} = {}) {
   return els;
 }
 
+// Overflow messages say what to ask the AI, so a teacher can fix the page in one round.
+const FIX = {
+  bullets:'要点太多：拆成两页，或每条精简到 20 字以内',
+  definition:'定义或要点太长：定义控制在 60 字内，要点 2–3 条',
+  compare:'对比内容太多：每栏不超过 4 条、每条 15 字以内，或拆成两页',
+  table:'表格太长：减少行数、精简单元格文字，或拆成两页',
+  process:'流程说明太长：每步说明控制在 25 字以内',
+  case:'情境太长：材料控制在 80 字内，问题不超过 2 个，参考分析改为 2–3 条、每条不超过 30 字',
+  figure:'图旁要点太多：减少到 3 条以内',
+  quiz:'提问太多：每页不超过 4 题，每个答案精简到 25 字以内，或拆成两页',
+};
 function check(ctx, needed, available, what = '内容') {
-  if (needed > available + 2) ctx.issue('error', `${what}超出版面约 ${Math.round((needed / available - 1) * 100)}%，请删减或拆成两页（不自动缩小字号）`);
+  if (needed <= available + 2) return;
+  const fix = FIX[ctx.layout] ?? '内容太多：精简或拆成两页';
+  ctx.issue('error', `${what}超出版面约 ${Math.round((needed / available - 1) * 100)}%（不自动缩小字号）。可以对 AI 说：“第 ${ctx.index + 1} 页${fix}，其他页不变，输出完整 JSON。”`);
 }
-
 /** Card row for "term：text" points. */
 function cardRow(points, x, y, w, ctx, {minHeight = 0, titleSize = 21, bodySize = 18} = {}) {
   const {theme} = ctx, n = points.length, gap = 20, cw = (w - gap * (n - 1)) / n, pad = 16, els = [];
@@ -405,7 +418,8 @@ L.case = (s, ctx) => {
   const qH = textHeight(qText, 20, half) + questions.length * 6;
   els.push(textEl('questions-label', '讨论', M, y, half, 28, 20, {bold:true, color:theme.accent}));
   els.push(textEl('questions', qText, M, y + 34, half, Math.max(10, Math.min(qH, ctx.bottom - y - 34)), 20, {color:theme.text, paragraphSpacing:6}));
-  const analysis = list(s.analysis).map(str).filter(Boolean);
+  // AIs often return the analysis as one paragraph; split it into sentences for bullets.
+  const analysis = (typeof s.analysis === 'string' ? s.analysis.split(/(?<=[。；;！？!?])s*/) : list(s.analysis)).map(str).filter(Boolean);
   let rightH = 0;
   if (analysis.length) {
     const runs = [{text:'参考分析', bold:true, color:theme.accent, breakLine:true}, ...analysis.map((a, i) => ({text:a, bullet:true, breakLine:i < analysis.length - 1}))];
@@ -467,31 +481,36 @@ L.review = (s, ctx) => {
 };
 
 L.quiz = (s, ctx) => {
-  const {theme, W} = ctx, h = header(s, ctx), els = [...h.els], CW = W - 2 * M, pad = 16, tx = M + 72, tw = CW - 72 - pad;
-  // Measure each question card first, then spread the cards over the content area.
+  const {theme, W} = ctx, h = header(s, ctx), els = [...h.els], CW = W - 2 * M, pad = 16;
+  // 1-2 questions: full-width cards; 3-4: a 2 x 2 grid so a typical classroom check fits on one slide.
+  const cols = s.questions.length >= 3 ? 2 : 1, colGap = 20, cw = (CW - colGap * (cols - 1)) / cols;
+  const qSize = cols > 1 ? 19 : 21, aSize = cols > 1 ? 17 : 19, badge = cols > 1 ? 32 : 38;
+  const tw = cw - (badge + 34) - pad;
   const cards = s.questions.map(q0 => {
     const q = typeof q0 === 'string' ? {q:q0} : q0, options = list(q.options).map(str).filter(Boolean);
     const qt = str(q.q), ot = options.join('    '), at = str(q.answer) ? `答案：${str(q.answer)}` : '';
-    const qH = textHeight(qt, 21, tw), oH = ot ? textHeight(ot, 18, tw) : 0, aH = at ? textHeight(at, 19, tw) : 0;
-    return {qt, ot, at, qH, oH, aH, height:Math.max(68, pad + qH + (ot ? 6 + oH : 0) + (at ? 10 + aH : 0) + pad)};
+    const qH = textHeight(qt, qSize, tw), oH = ot ? textHeight(ot, aSize, tw) : 0, aH = at ? textHeight(at, aSize, tw) : 0;
+    return {qt, ot, at, qH, oH, aH, height:Math.max(badge + 2 * pad, pad + qH + (ot ? 6 + oH : 0) + (at ? 10 + aH : 0) + pad)};
   });
-  const avail = ctx.bottom - h.top - 6, used = cards.reduce((a, c) => a + c.height, 0);
-  check(ctx, used + 14 * (cards.length - 1), avail);
-  const gap = Math.max(14, Math.min(32, (avail - used) / (cards.length + 1)));
-  let y = h.top + 6 + Math.max(0, Math.min(gap, (avail - used - gap * (cards.length - 1)) * .3));
+  const rows = Math.ceil(cards.length / cols);
+  const rowH = [...Array(rows)].map((_, r) => Math.max(...cards.slice(r * cols, r * cols + cols).map(c => c.height)));
+  const avail = ctx.bottom - h.top - 6, used = rowH.reduce((a, b) => a + b, 0);
+  check(ctx, used + 14 * (rows - 1), avail);
+  const gap = Math.max(14, Math.min(32, (avail - used) / (rows + 1)));
+  let y = h.top + 6 + Math.max(0, Math.min(gap, (avail - used - gap * (rows - 1)) * .3));
   cards.forEach((c, i) => {
-    const n = i + 1;
-    els.push(box(`question-${n}-card`, M, y, CW, c.height, {fill:theme.surface, lineColor:theme.border, lineWidth:1}));
-    els.push(textEl(`question-${n}-number`, String(n), M + pad, y + pad - 3, 38, 38, 18, {geometry:'ellipse', fill:theme.primary, color:'#FFFFFF', bold:true, align:'center', valign:'middle'}));
-    let ty = y + pad;
-    els.push(textEl(`question-${n}`, c.qt, tx, ty, tw, c.qH, 21, {bold:true, color:theme.text}));
+    const n = i + 1, r = Math.floor(i / cols), x = M + (i % cols) * (cw + colGap), cy = y + rowH.slice(0, r).reduce((a, b) => a + b + gap, 0);
+    const tx = x + pad + badge + 18;
+    els.push(box(`question-${n}-card`, x, cy, cw, rowH[r], {fill:theme.surface, lineColor:theme.border, lineWidth:1}));
+    els.push(textEl(`question-${n}-number`, String(n), x + pad, cy + pad - 3, badge, badge, cols > 1 ? 16 : 18, {geometry:'ellipse', fill:theme.primary, color:'#FFFFFF', bold:true, align:'center', valign:'middle'}));
+    let ty = cy + pad;
+    els.push(textEl(`question-${n}`, c.qt, tx, ty, tw, c.qH, qSize, {bold:true, color:theme.text}));
     ty += c.qH;
-    if (c.ot) { els.push(textEl(`question-${n}-options`, c.ot, tx, ty + 6, tw, c.oH, 18, {color:theme.text})); ty += 6 + c.oH; }
+    if (c.ot) { els.push(textEl(`question-${n}-options`, c.ot, tx, ty + 6, tw, c.oH, aSize, {color:theme.text})); ty += 6 + c.oH; }
     if (c.at) {
-      els.push(textEl(`reveal_${n}_1_answer`, c.at, tx, ty + 10, tw, Math.max(10, Math.min(c.aH, ctx.bottom - ty - 10)), 19, {color:theme.accent, bold:true}));
+      els.push(textEl(`reveal_${n}_1_answer`, c.at, tx, ty + 10, tw, Math.max(10, Math.min(c.aH, ctx.bottom - ty - 10)), aSize, {color:theme.accent, bold:true}));
       ctx.reveal(`第${n}次点击：显示第${n}题答案`);
     }
-    y += c.height + gap;
   });
   return els;
 };
@@ -524,7 +543,7 @@ export function layoutOutline(outline, options = {}) {
   let section = '';
   const slides = outline.slides.map((s, index) => {
     const reveals = [];
-    const ctx = {theme, W, H, index, section:'', coverImage:theme.coverImage, frame, bottom:Math.min(BOTTOM, frame.bottom ?? BOTTOM),
+    const ctx = {theme, W, H, index, layout:s.layout, section:'', coverImage:theme.coverImage, frame, bottom:Math.min(BOTTOM, frame.bottom ?? BOTTOM),
       issue:(level, message) => issues.push({slide:index + 1, layout:s.layout, level, message}),
       reveal:m => reveals.push(m)};
     if (s.layout === 'section') section = [str(s.number), str(s.title)].filter(Boolean).join(' ');
