@@ -18,48 +18,45 @@ import sys
 from urllib.parse import unquote, urlsplit
 
 NAME = "lecture-ppt-workflow"
-VERSION = "0.1.1-alpha"
+VERSION = "0.2.0"
 REPO_URL = "https://github.com/hhhmike240-maker/lecture-ppt-workflow"
 REPO = Path(__file__).resolve().parents[1]
 PLUGIN = REPO / "plugins" / NAME
 SKILL_FILES = (
     "SKILL.md", "agents/openai.yaml", "course-profile.example.json",
     "package.json", "package-lock.json", "requirements.txt",
-    "examples/minimal.json",
+    "examples/minimal.json", "examples/outline.json",
     "references/animation.md", "references/authoring.md",
-    "references/course-profile.md", "references/feedback.md",
+    "references/course-profile.md", "references/feedback.md", "references/outline.md",
     "references/runtime.md", "references/tools.md", "references/workflow.md",
     "scripts/add_animations.py", "scripts/background_patch.py",
-    "scripts/build_from_spec.mjs", "scripts/check_coverage.py",
+    "scripts/build_from_spec.mjs", "scripts/build_outline.mjs", "scripts/check_coverage.py",
     "scripts/cli_support.py", "scripts/doctor.py", "scripts/office_audit.py",
     "scripts/render_windows.ps1", "scripts/render.mjs",
     "scripts/style_check.py", "scripts/validate_skill.py",
-    "tests/test_builder.mjs", "tests/test_extended.py",
+    "scripts/lib/finalize.mjs", "scripts/lib/outline.mjs",
+    "scripts/lib/pptx_core.mjs", "scripts/lib/template.mjs",
+    "tests/test_builder.mjs", "tests/test_extended.py", "tests/test_js_reveal.py",
+    "tests/test_outline.mjs", "tests/test_package.mjs",
     "tests/test_public_builder.mjs", "tests/test_images.mjs",
     "tests/test_selection.py", "tests/test_tools.py",
 )
 DEMO_FILES = (
-    "after.json", "after.pptx", "animation-public.json", "before.json",
-    "before.pptx", "coverage.json", "lecture.md", "PROMPTS.md",
-    "run_demo.py", "specs.py", "standard.json", "standard.pptx",
-    "preview-after/001.png", "preview-after/002.png", "preview-after/003.png",
-    "preview-before/001.png", "preview-before/002.png", "preview-before/003.png",
-    "preview-standard/001.png",
+    "lecture.md", "outline.json", "coverage-map.json", "lecture.pptx", "lecture-template.pptx",
+    "PROMPTS.md", "run_demo.py", "template/sample-template.pptx",
+    *[f"preview/{i:03d}.png" for i in range(1, 16)],
+    *[f"preview-template/{i:03d}.png" for i in range(1, 16)],
 )
 DOC_FILES = (
-    "PROVENANCE.md", "VALIDATION.md", "ISSUE_TEMPLATE.md",
-    "DEPENDENCY_CHECK_20261004.md", "FAQ.md",
-    "VALIDATION_20261004.md", "RELEASE_0.1.1-alpha.md",
+    "PROVENANCE.md", "FAQ.md", "USAGE.md", "VALIDATION_20261007.md",
+    "images/showcase.png", "images/template.png",
 )
 OPTIONAL_FILES = (
-    "README.en.md", "docs/QUICKSTART.en.md", "docs/QUICKSTART.md",
-    "demo/PROMPTS.en.md", "docs/media/lecture-ppt-workflow-overview.mp4",
+    "README.en.md", "docs/QUICKSTART.en.md", "demo/PROMPTS.en.md",
+    "prompts/prompt.zh.md", "prompts/prompt.en.md",
 )
 ROOT_FILES = ("LICENSE", "NOTICE", "CHANGELOG.md", "SECURITY.md", "CONTRIBUTING.md")
-LEGACY_DOCS = (
-    "GITHUB_DRAFT.md", "PROMOTION_COPY.md", "PROMOTION_PLAN.md",
-    "RELEASE_REVIEW.md", "RESUME.md", "UPLOAD_CHECKLIST.md", "USAGE.md",
-)
+LEGACY_DOCS: tuple[str, ...] = ()
 FORBIDDEN_PARTS = {"node_modules", "__pycache__", ".git", ".venv", "scratch", "logs"}
 LINK = re.compile(r"(!?\[[^\]\n]*\]\()([^\s)]+)(\))")
 
@@ -89,15 +86,15 @@ def safe_source(relative: str) -> Path:
 def manifest() -> dict:
     return {
         "name": NAME, "version": VERSION,
-        "description": "Teacher-guided editable lecture slides from handouts, reference decks, and feedback.",
+        "description": "Lecture notes to editable teaching slides with speaker notes, click reveals and template reuse.",
         "author": {"name": "hhhmike240-maker", "url": "https://github.com/hhhmike240-maker"},
         "homepage": REPO_URL, "repository": REPO_URL, "license": "MIT",
         "keywords": ["teaching", "lecture", "powerpoint", "pptx", "education", "slides", "codex-skill"],
         "skills": "./skills/",
         "interface": {
             "displayName": "Lecture PPT Workflow",
-            "shortDescription": "Draft and revise editable teaching slides with teacher review.",
-            "longDescription": "Use a handout, reference deck, and teacher feedback to prepare editable lecture slides. Includes knowledge mapping, teaching notes, local checks, and an original demo. Early access: local dependencies and teacher review are required.",
+            "shortDescription": "Turn lecture notes into editable teaching slides.",
+            "longDescription": "Write a lecture outline from your notes and build an editable deck with computed layouts, speaker notes, click-to-reveal case analyses and quiz answers, knowledge-coverage checks, and optional reuse of your reference deck's logos, rules, colors and fonts. Teachers review the result.",
             "developerName": "hhhmike240-maker", "category": "Productivity",
             "capabilities": ["Read", "Write"], "websiteURL": REPO_URL,
             "defaultPrompt": [
@@ -106,7 +103,7 @@ def manifest() -> dict:
                 "根据我的讲义和标准课件制作教学 PPT，先检查环境，保留授课备注并逐页核验。",
             ],
             "brandColor": "#385F8E",
-            "screenshots": ["./assets/demo/preview-before/002.png", "./assets/demo/preview-after/002.png"],
+            "screenshots": ["./assets/docs/images/showcase.png", "./assets/docs/images/template.png"],
         },
     }
 
@@ -137,9 +134,8 @@ def rewrite_markdown(data: bytes, source: Path, destination: str, mapping: dict[
         if target.is_dir():
             directory_targets = {
                 ".": ".", NAME: f"skills/{NAME}", "demo": "assets/demo",
-                "docs": "assets/docs", "demo/preview-after": "assets/demo/preview-after",
-                "demo/preview-before": "assets/demo/preview-before",
-                "demo/preview-standard": "assets/demo/preview-standard",
+                "docs": "assets/docs", "demo/preview": "assets/demo/preview",
+                "demo/preview-template": "assets/demo/preview-template", "prompts": "assets/prompts",
             }
             dest = directory_targets.get(relative)
         if relative == "README.md":
@@ -166,7 +162,7 @@ def planned_files() -> dict[str, bytes]:
         if source.suffix.lower() == ".md":
             data = rewrite_markdown(data, source, destination, mapping)
         if relative in {
-            "README.en.md", "docs/QUICKSTART.en.md", "docs/QUICKSTART.md",
+            "README.en.md", "docs/QUICKSTART.en.md", "docs/USAGE.md",
             "demo/PROMPTS.en.md", "demo/PROMPTS.md",
         }:
             plugin_readme = Path(os.path.relpath(PLUGIN / "README.md", (PLUGIN / destination).parent)).as_posix()
@@ -177,16 +173,16 @@ def planned_files() -> dict[str, bytes]:
                 f"For this plugin package, follow the [plugin README]({plugin_readme}) instead: "
                 "its Skill is under `skills/lecture-ppt-workflow`, its example inputs are under `assets/demo`, "
                 "and discovery must use the actual installed plugin location. "
-                "This is the 0.1.1-alpha early-access package.\n\n"
+                "This is the 0.2.0 package.\n\n"
                 "> **源代码仓库指南。** 下方命令和提示词路径以完整源代码仓库为起点，不能直接在插件根目录执行。"
                 "插件包请按上方插件说明操作：示例在 `assets/demo`，Skill 在 `skills/lecture-ppt-workflow`，"
-                "应用发现需确认真实安装位置。本包为 0.1.1-alpha 早期试用包。\n\n"
+                "应用发现需确认真实安装位置。本包为 0.2.0 版。\n\n"
             )
             data = preface.encode("utf-8") + data
         if relative == "demo/run_demo.py":
             text = data.decode("utf-8")
-            old = "Path(__file__).resolve().parents[1]/'lecture-ppt-workflow'"
-            new = "Path(__file__).resolve().parents[2]/'skills'/'lecture-ppt-workflow'"
+            old = "default=DEMO.parent / 'lecture-ppt-workflow'"
+            new = "default=DEMO.parents[1] / 'skills' / 'lecture-ppt-workflow'"
             if old not in text and new not in text:
                 raise ValueError("Demo skill lookup changed; review plugin adaptation before copying.")
             data = text.replace(old, new).encode("utf-8")

@@ -25,7 +25,7 @@ from make_manifest import (  # noqa: E402
 )
 
 PLUGIN_PREFIX = "plugins/lecture-ppt-workflow/"
-ZIP_DATE = (2026, 10, 4, 0, 0, 0)
+ZIP_DATE = (2026, 10, 7, 0, 0, 0)
 
 
 def load_verified_manifest(root: Path) -> tuple[dict, bytes]:

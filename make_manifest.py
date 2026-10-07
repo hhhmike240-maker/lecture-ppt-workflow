@@ -14,16 +14,16 @@ import stat
 import sys
 
 ROOT = Path(__file__).resolve().parent
-VERSION = "0.1.1-alpha"
-RELEASE_DATE = "2026-10-04"
+VERSION = "0.2.0"
+RELEASE_DATE = "2026-10-07"
 FORMAT = "lecture-ppt-workflow-public-manifest.v2"
 ROOT_FILES = frozenset({
     ".gitattributes", ".gitignore", "README.md", "README.en.md", "LICENSE", "NOTICE",
     "CHANGELOG.md", "CONTRIBUTING.md", "SECURITY.md", "install.py",
-    "make_manifest.py",
+    "make_manifest.py", "index.html", ".nojekyll",
 })
 PUBLIC_DIRS = frozenset({
-    ".github", "docs", "demo", "lecture-ppt-workflow", "scripts", "plugins",
+    ".github", "app", "docs", "demo", "lecture-ppt-workflow", "prompts", "scripts", "plugins",
 })
 EXCLUDED_PARTS = frozenset({
     ".git", ".agents", "scratch", "work", ".venv", "venv", "node_modules",
@@ -37,9 +37,9 @@ EXCLUDED_SUFFIXES = frozenset({
 })
 REQUIRED_FILES = ROOT_FILES | frozenset({
     ".github/ISSUE_TEMPLATE/usage_feedback.yml",
-    "docs/QUICKSTART.en.md", "docs/FAQ.md", "docs/OUTREACH.en.md",
-    "docs/media/README.md", "docs/media/lecture-ppt-workflow-overview.mp4",
-    "demo/PROMPTS.en.md", "demo/after.pptx", "demo/before.pptx",
+    "docs/QUICKSTART.en.md", "docs/FAQ.md", "docs/USAGE.md", "docs/images/showcase.png",
+    "app/index.html", "app/app.js", "app/vendor/pptxgen.bundle.js", "prompts/prompt.zh.md",
+    "demo/PROMPTS.en.md", "demo/outline.json", "demo/lecture.pptx",
     "lecture-ppt-workflow/SKILL.md", "scripts/package_release.py",
     "plugins/lecture-ppt-workflow/.codex-plugin/plugin.json",
     "plugins/lecture-ppt-workflow/skills/lecture-ppt-workflow/SKILL.md",

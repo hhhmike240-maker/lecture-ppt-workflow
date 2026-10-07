@@ -1,0 +1,14 @@
+{
+  "knowledge": [
+    {"id": "K01", "source": "lecture.md 一、定义", "required": true, "slides": [4], "on_screen": ["工作分析", "职责", "任职者"]},
+    {"id": "K02", "source": "lecture.md 一、对象与产出", "required": true, "slides": [4], "on_screen": ["岗位本身", "工作描述与任职资格"]},
+    {"id": "K03", "source": "lecture.md 一、作用", "required": true, "slides": [5], "on_screen": ["招聘甄选", "培训开发", "绩效管理", "薪酬设计"]},
+    {"id": "K04", "source": "lecture.md 二、四个阶段", "required": true, "slides": [7], "on_screen": ["准备阶段", "调查阶段", "分析阶段", "完成阶段"]},
+    {"id": "K05", "source": "lecture.md 三、四种方法及优缺点", "required": true, "slides": [9], "on_screen": ["观察法", "访谈法", "问卷法", "工作日志法"]},
+    {"id": "K06", "source": "lecture.md 三、组合使用", "required": true, "slides": [9], "on_screen": ["组合使用"]},
+    {"id": "K07", "source": "lecture.md 四、工作说明书两部分", "required": true, "slides": [11], "on_screen": ["工作描述", "任职资格"]},
+    {"id": "K08", "source": "lecture.md 四、定期更新", "required": true, "slides": [12], "on_screen": ["更新说明书"]},
+    {"id": "K09", "source": "lecture.md 全章回顾", "required": true, "slides": [14], "on_screen": ["含义", "流程", "方法", "工作说明书"]}
+  ],
+  "figures": []
+}

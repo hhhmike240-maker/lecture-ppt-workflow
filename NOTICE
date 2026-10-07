@@ -1,10 +1,20 @@
-This repository contains original workflow rules, helper scripts, documentation,
-and original demonstration materials prepared for this project.
+Lecture PPT Workflow
+Copyright (c) 2026 Lecture PPT Workflow contributors. Original files: MIT License (see LICENSE).
 
-The repository does not include @oai/artifact-tool, any bundled Codex runtime,
-fonts, Microsoft PowerPoint, or other third-party software. Those components
-remain subject to their own terms and may be unavailable for public use.
+This repository includes the following third-party component, unmodified:
 
-The project describes AI-assisted implementation accurately: the workflow and
-acceptance decisions are project work; some code and documentation were
-produced or refined with AI assistance.
+  app/vendor/pptxgen.bundle.js
+    PptxGenJS 4.0.1 browser bundle, https://github.com/gitbrent/PptxGenJS
+    Copyright (c) 2015-present Brent Ely. MIT License: app/vendor/LICENSE-pptxgenjs.txt
+    The bundle contains JSZip 3.10.2, https://github.com/Stuk/jszip
+    Copyright (c) 2009-2016 Stuart Knightley and contributors.
+    Dual licensed MIT or GPLv3; used here under the MIT license: app/vendor/LICENSE-jszip.md
+
+Node.js dependencies (pptxgenjs, image-size, jszip) are declared in
+lecture-ppt-workflow/package-lock.json and installed by users with npm; they are
+not committed. Python, Node.js, lxml, fonts, Microsoft PowerPoint, WPS,
+LibreOffice and Poppler are not distributed and remain under their own terms.
+
+Some code and documentation were produced or refined with AI assistance; the
+workflow rules, teacher-feedback requirements and acceptance decisions are
+project work.
