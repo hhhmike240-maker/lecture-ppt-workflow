@@ -77,7 +77,7 @@
     "scope": "Allowlisted paths and file hashes only. Runtime/cache/archive/key-file patterns are excluded. This scan does not certify the absence of private content, secrets, third-party material, or licensing issues in allowed files."
   },
   "file_count": 216,
-  "total_bytes": 3877093,
+  "total_bytes": 3879877,
   "files": [
     {
       "path": ".gitattributes",
@@ -116,8 +116,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "sha256": "4a62a5920e82f1684c3ce0293dca7153d57d57777518fa33c470061fc52186de",
-      "bytes": 3853
+      "sha256": "474ada9c71cf6df12d2d35080addcb88c55e5633f6cacc036a57262f4a1fe8da",
+      "bytes": 4354
     },
     {
       "path": "CONTRIBUTING.md",
@@ -136,13 +136,13 @@
     },
     {
       "path": "README.en.md",
-      "sha256": "bec2f0d8a86680af9de863a0bf7e26c994f6f6534bc0f81fceedf94acce0178e",
-      "bytes": 5975
+      "sha256": "a5592c023fed5746908f3cc0994dd8c0a44468898c0bdf713172270ab1eaeee7",
+      "bytes": 6157
     },
     {
       "path": "README.md",
-      "sha256": "ab77e3afd6e55e1c6de3c952f6785fc10e98d240f7cb44d3622cabd6842116df",
-      "bytes": 6431
+      "sha256": "bee5a84c53ac538d5668f6c75b1a242257134cd3258c04ab9fd2e0c8e3702b83",
+      "bytes": 6503
     },
     {
       "path": "SECURITY.md",
@@ -396,8 +396,8 @@
     },
     {
       "path": "docs/VALIDATION_20261007.md",
-      "sha256": "398a0bd25f251e9eb0f59421273df824616921b4f1f881d783b26ec37993b162",
-      "bytes": 3089
+      "sha256": "77c0de4ca62a5b20217f8108c48de1bee32bce3c36e8e27c4598fc58c1d9fb09",
+      "bytes": 3762
     },
     {
       "path": "docs/history/RELEASE_0.1.1-alpha.md",
@@ -656,8 +656,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/CHANGELOG.md",
-      "sha256": "4a62a5920e82f1684c3ce0293dca7153d57d57777518fa33c470061fc52186de",
-      "bytes": 3853
+      "sha256": "474ada9c71cf6df12d2d35080addcb88c55e5633f6cacc036a57262f4a1fe8da",
+      "bytes": 4354
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/CONTRIBUTING.md",
@@ -676,8 +676,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/README.en.md",
-      "sha256": "9a7625d0c5c286fb02b6a3211fe07a4c77f46dee4e51abd5d6528d347e5961c1",
-      "bytes": 6872
+      "sha256": "344828ecd421e7564f4a80f17aad1ceb8d7445854235381a8c4d5e260fd58aed",
+      "bytes": 7054
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/README.md",
@@ -906,8 +906,8 @@
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/docs/VALIDATION_20261007.md",
-      "sha256": "398a0bd25f251e9eb0f59421273df824616921b4f1f881d783b26ec37993b162",
-      "bytes": 3089
+      "sha256": "77c0de4ca62a5b20217f8108c48de1bee32bce3c36e8e27c4598fc58c1d9fb09",
+      "bytes": 3762
     },
     {
       "path": "plugins/lecture-ppt-workflow/assets/docs/images/showcase.png",

@@ -66,7 +66,7 @@ The output folder contains `lecture.pptx`, a layout report `report.json`, the pa
 
 ## Verified and not yet verified
 
-- **Verified** (2026-10-07, Windows with Microsoft 365 PowerPoint): opening and exporting all 15 sample slides; click animations recognized by PowerPoint as on-click fade, 0.4 s; identical output from the web page and the command line; template reuse on an original sample template and on a real university template; **WPS Office (Windows)** opens and exports the same pages and recognizes the click animations. Automated tests: 32 Node, 19 Python. See the [validation log](docs/VALIDATION_20261007.md).
+- **Verified** (2026-10-07, Windows with Microsoft 365 PowerPoint): opening and exporting all 15 sample slides; click animations recognized by PowerPoint as on-click fade, 0.4 s; identical output from the web page and the command line; template reuse on an original sample template and on a real university template; **WPS Office (Windows)** opens and exports the same pages and recognizes the click animations. **Real DeepSeek run**: the first answer was a valid 17-slide outline with notes on every slide; 2 slides were correctly flagged as overflowing and fixed after one follow-up message. Automated tests: 35 Node, 19 Python. See the [validation log](docs/VALIDATION_20261007.md).
 - **Not yet verified**: live slideshow playback in WPS (animation structure is recognized), PowerPoint for Mac, Keynote; rendering scripts on non-Windows systems; real-world quality for English-language courses. Feedback is welcome.
 
 ## Limits
