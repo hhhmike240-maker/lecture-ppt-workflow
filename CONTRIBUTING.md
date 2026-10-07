@@ -27,9 +27,17 @@ python -m unittest discover -s tests      # Python：索引、检查、动画交
 
 ## 增加一种版式
 
-1. 在 `outline.mjs` 的 `LAYOUTS`、`LAYOUT_NAMES`、`validateOutline` 和 `L.<名称>` 中实现，所有尺寸从 `ctx`（`W`、`bottom`、`frame`）计算，放不下时调用 `check()` 报告而不是缩小字号。
-2. 在 `references/outline.md` 和 `prompts/prompt.*.md` 中说明字段。
-3. 在 `tests/test_outline.mjs` 中加测试，并用 PowerPoint 或 LibreOffice 渲染检查。
+1. 在 `outline.mjs` 的 `LAYOUTS`、`LAYOUT_NAMES` / `LAYOUT_NAMES_EN`、`validateOutline` 和 `L.<名称>` 中实现，所有尺寸从 `ctx`（`W`、`bottom`、`frame`）计算，放不下时调用 `check()` 报告而不是缩小字号。
+2. 在 `references/outline.md` 和 `prompts/prompt.*.md` 中说明字段。写进课件的固定文字放在 `DECK`（中英文各一份），提示信息放在 `MSG`，不要直接写死中文或英文。
+3. 在 `tests/test_outline.mjs` 中加测试（中英文课件各一项），并用 PowerPoint 或 LibreOffice 渲染检查。
+
+## 中英文 / English and Chinese
+
+- 课件语言由大纲的 `language` 决定（没有时看是否含中文字符），影响写进课件的标签、备注模板和默认字体；提示信息语言可单独指定（网页界面语言、命令行 `--lang`）。
+- 网页文字在 `app/app.js` 的 `STRINGS` 中，`index.html` 用 `data-i18n` 标记；改动界面文字时两种语言一起改。
+- 两份示例（`demo/outline.json`、`demo/en/outline.json`）要与 `lecture-ppt-workflow/examples/` 中的副本保持一致，CI 会检查。
+
+*Slide labels and messages live in the `DECK` and `MSG` tables in `outline.mjs`; web page text lives in `STRINGS` in `app/app.js`. Change both languages together.*
 
 ## 提交前请注意
 

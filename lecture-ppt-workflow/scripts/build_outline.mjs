@@ -1,12 +1,13 @@
 // Lecture outline JSON -> editable PPTX with computed layouts, teaching notes and click reveals.
-// Usage: node build_outline.mjs outline.json new-output-directory [--template reference.pptx]
+// Usage: node build_outline.mjs outline.json new-output-directory [--template reference.pptx] [--lang zh|en]
+// --lang sets the language of issue messages (default: the deck language, from outline.language or its text).
 // Writes lecture.pptx, report.json, spec.json and a copy of outline.json into a NEW directory. Never overwrites.
 // Exit 0: no layout errors; 1: candidate written but layout errors need revision; 2: input error.
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
-import {layoutOutline} from './lib/outline.mjs';
+import {layoutOutline, deckLanguage, messages} from './lib/outline.mjs';
 import {renderDeck} from './lib/pptx_core.mjs';
 import {finalizePackage} from './lib/finalize.mjs';
 import {extractTemplate} from './lib/template.mjs';
@@ -21,17 +22,18 @@ async function dependencies() {
   }
 }
 
-export async function buildOutline(source, out, {template, allowOverflow = false} = {}) {
+export async function buildOutline(source, out, {template, allowOverflow = false, lang} = {}) {
   const input = path.resolve(source), destination = path.resolve(out);
   const raw = await fs.readFile(input);
   const outline = JSON.parse(raw.toString('utf8').replace(/^﻿/, ''));
   const {PptxGenJS, JSZip, imageSize} = await dependencies();
+  lang ??= deckLanguage(outline);   // language of issue messages and the template report
   const images = new Map();       // name -> {data, width, height, sha256}
   const report = {input:path.basename(input), inputSha256:sha(raw), template:null};
   let reference = null;
   if (template) {
     const bytes = await fs.readFile(template);
-    const t = await extractTemplate(await JSZip.loadAsync(bytes));
+    const t = await extractTemplate(await JSZip.loadAsync(bytes), {lang});
     outline.theme = {...t.theme, ...(outline.theme ?? {})};
     reference = t.template;
     report.template = {file:path.basename(template), sha256:sha(bytes), extracted:t.theme, notes:t.report};
@@ -43,12 +45,12 @@ export async function buildOutline(source, out, {template, allowOverflow = false
     const file = path.resolve(path.dirname(input), name);
     try { images.set(name, await fs.readFile(file)); } catch { /* reported by layoutOutline */ }
   }
-  const {spec, issues, summary} = layoutOutline(outline, {images:[...images.keys()]});
+  const {spec, issues, summary} = layoutOutline(outline, {images:[...images.keys()], lang});
   const resolved = new Map();
   for (const [name, bytes] of images) {
     const buf = Buffer.from(bytes);
     const png = buf.subarray(0, 8).equals(Buffer.from([137,80,78,71,13,10,26,10])), jpg = buf[0] === 255 && buf[1] === 216;
-    if (!png && !jpg) { issues.push({slide:0, level:'error', message:`${name} 不是 PNG/JPEG 图片`}); continue; }
+    if (!png && !jpg) { issues.push({slide:0, level:'error', message:messages(lang).notImage(name)}); continue; }
     const dim = imageSize(buf);
     resolved.set(name, {data:`data:image/${png ? 'png' : 'jpeg'};base64,${buf.toString('base64')}`, width:dim.width, height:dim.height, sha256:sha(buf)});
   }
@@ -79,11 +81,12 @@ if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.ar
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--template') options.template = args[++i];
     else if (args[i] === '--allow-overflow') options.allowOverflow = true;
+    else if (args[i] === '--lang') options.lang = args[++i];
     else positional.push(args[i]);
   }
   (async () => {
-    if (positional.length !== 2 || ('template' in options && !options.template))
-      throw Error('Usage: node build_outline.mjs outline.json new-output-directory [--template reference.pptx] [--allow-overflow]');
+    if (positional.length !== 2 || ('template' in options && !options.template) || ('lang' in options && !['zh', 'en'].includes(options.lang)))
+      throw Error('Usage: node build_outline.mjs outline.json new-output-directory [--template reference.pptx] [--allow-overflow] [--lang zh|en]');
     const {report} = await buildOutline(positional[0], positional[1], options);
     process.exitCode = report.status === 'needs-revision' ? 1 : 0;
   })().catch(e => { console.error(`ERROR: ${e.message}. Inputs unchanged; retry with a new output directory.`); process.exitCode = 2; });

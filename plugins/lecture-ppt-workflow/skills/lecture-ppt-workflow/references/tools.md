@@ -1,13 +1,14 @@
-# 工具使用
+# Tools
 
-公开候选的依赖获取与许可限制见[运行边界](runtime.md)。没有生成环境时仍可解析和检查，不能承诺完成生成。
+Dependencies and licensing limits for the public candidate are in [runtime](runtime.md). Without a generation environment you can still parse and check, but cannot promise to finish generating.
 
-先探测Python与演示文稿运行时。在Codex有工作区依赖查询工具时使用其返回路径。以下python/node是已解析可用运行时的占位，不假定系统PATH存在。脚本路径相对本Skill目录，参数内路径按当前任务定位。
+Probe Python and the presentation runtime first. When Codex offers a workspace dependency lookup, use the paths it returns. The `python`/`node` below stand for runtimes you have resolved; do not assume they are on the system PATH. Script paths are relative to this skill directory; paths in arguments are relative to the current task.
 
-来源索引和检查只需Python 3.10+标准库；动画工具另需lxml。生成/渲染需要当前可用演示文稿引擎；随包没有模型推理、离线生成器或图像识别引擎。安装依赖前说明所需内容，优先使用已有运行时。不要对托管运行时做全局安装。
+Source indexing and checks need only the Python 3.10+ standard library; the animation tool also needs lxml. Generation and rendering need an available presentation engine; the package contains no model inference, offline generator or image recognition engine. Explain what is needed before installing dependencies and prefer existing runtimes. Do not install globally into a managed runtime.
 
 ```text
 node scripts/build_outline.mjs outline.json work/build-1 --template reference.pptx
+node scripts/build_outline.mjs outline.json work/build-2 --lang en
 python scripts/office_audit.py index lecture.docx --out work/lecture.json --images-dir work/word-images
 python scripts/office_audit.py index standard.pptx --out work/standard.json
 python scripts/doctor.py --out work/environment.json
@@ -23,24 +24,24 @@ node --test tests/test_builder.mjs
 python -m unittest discover -s tests -v
 ```
 
-`build_outline.mjs` 是新章课件的默认生成方式：输入[课件大纲](outline.md)，输出 lecture.pptx（含授课备注、点击动画、可选模板装饰）、report.json（版面问题、模板提取结果）和 spec.json。退出码 0 无版面错误，1 有版面错误但已写出候选，2 输入错误。
+`build_outline.mjs` is the default way to build a new chapter: it takes a [lecture outline](outline.md) and writes lecture.pptx (with speaker notes, click reveals and optional template decorations), report.json (layout issues, extracted template style) and spec.json. Exit code 0: no layout errors; 1: layout errors, candidate written; 2: input error. `--lang zh|en` sets the language of messages and the template report (default: the deck language).
 
-所有输出采用新路径，存在则拒绝覆盖。页码均为实际放映顺序，从1开始；示例页码不是默认选页，混合选页中的反向范围也会拒绝。比较工具未加--background-only时仅报告差异，不判断差异是否合规。生成器规格见[页面生成](authoring.md)，随包提供不含教师素材的最小例子。新建候选不是已验收课件。
+All outputs go to new paths and existing ones are refused. Slide numbers follow the actual show order and start at 1; example numbers are not default selections, and reversed ranges in mixed selections are refused. Without `--background-only` the compare tool only reports differences and does not judge whether they are acceptable. The generator specification is in [page specification](authoring.md); a minimal example without teacher material is included. A new candidate is not an accepted deck.
 
-背景工具只支持直接、非主题引用的纯色背景，可保留RGB变换参数；继承背景、图片背景和主题色需人工判断适合的处理方式。工具在XML外层保持原字节，去除背景后做结构差异检查。不能用它替换校徽或修模型图底色。
+The background tool supports only direct, non-theme solid backgrounds and keeps RGB transform parameters; inherited backgrounds, picture backgrounds and theme colors need human judgment. The tool keeps bytes outside the XML unchanged and does a structural diff after removing the background. It cannot replace school logos or fix a model figure's background color.
 
-动画仅针对明确选择的新制页面，命名reveal_1_1、reveal_1_2、reveal_2_1等；同组同时淡入，组间点击推进，400毫秒。已有timing、非法组名、永久隐藏等报错，不能静默覆盖导师动画。不得用Python -O关闭验证断言。未选页面保持原字节。
+Animations apply only to explicitly selected new slides, named reveal_1_1, reveal_1_2, reveal_2_1 and so on: objects in a group fade in together, groups advance on click, 400 ms. Existing timing, invalid group names and permanent hiding are errors and teacher animations are never silently overwritten. Do not disable the validation assertions with `python -O`. Unselected slides keep their original bytes.
 
-生成器使用Skill目录中的PptxGenJS；render.mjs通过LibreOffice + Poppler输出静态PNG，Windows可用render_windows.ps1。实际PowerPoint/WPS播放是另项检查。
+The generator uses PptxGenJS from the skill directory. render.mjs exports static PNGs with LibreOffice + Poppler; on Windows, render_windows.ps1 can be used. Real PowerPoint/WPS playback is a separate check.
 
-内容映射JSON格式：
+Content mapping JSON:
 
 ```json
-{"knowledge":[{"id":"K01","source":"讲义第1节第3段","required":true,"slides":[3],"on_screen":["必要的定义原词"]}],"figures":[{"source":"word/media/image1.png","slides":[4],"treatment":"保留原图并注明历史口径"}]}
+{"knowledge":[{"id":"K01","source":"Notes section 1, paragraph 3","required":true,"slides":[3],"on_screen":["exact wording of the key definition"]}],"figures":[{"source":"word/media/image1.png","slides":[4],"treatment":"Keep the original figure and note its historical scope"}]}
 ```
 
-样式检查单独追踪slide/layout/master背景、主题输入、占位符几何和组内缩放/旋转/翻转。可传--policy JSON，格式为{"size_emu":[9144000,5143500],"roles":{"subtitle":{"top_min":619125,"font_sizes_pt":[16]}}}。角色名匹配实际对象name，必须先确认对象命名，不把示例名猜成老师的对象名。几何越界是风险提示；角色规则失败才记errors。完全继承的字号不强行判为通过。母版装饰、字形轮廓、阴影和主题色最终合成都需渲染复查。
+The style check separately tracks slide/layout/master backgrounds, theme inputs, placeholder geometry and scaling/rotation/flips inside groups. You can pass `--policy` JSON in the form `{"size_emu":[9144000,5143500],"roles":{"subtitle":{"top_min":619125,"font_sizes_pt":[16]}}}`. Role names match actual object names; confirm the object names first instead of guessing the teacher's names from the example. Geometry out of bounds is a risk hint; only failed role rules count as errors. Fully inherited font sizes are not forced to pass. Master decorations, glyph outlines, shadows and final theme colors need a rendered review.
 
-索引含正文/表格段落、原图所在段落、高亮、评论和幻灯片备注。必须看图后才能理解模型。脚本未完全解析继承字号、VML对象、批注锚点和修订接受状态，遇这些内容单独检查。通过工具不等于语义、视觉或播放验收通过。
+The index contains body and table paragraphs, the paragraphs holding original figures, highlights, comments and slide notes. You must look at the images before you understand a model. The script does not fully resolve inherited font sizes, VML objects, comment anchors or the accepted state of tracked changes; check those separately. Passing a tool is not semantic, visual or playback acceptance.
 
-退出码：0表示本命令范围内通过，1表示检查发现问题或依赖能力不齐，2表示输入/执行错误（argparse参数错误也是2）。检查结果保留局限；失败后不自动删除草稿。只读索引无法解析严重损坏的关系时会报错而不是伪造空白索引。
+Exit codes: 0 means passed within the scope of the command, 1 means the check found problems or capabilities are missing, 2 means an input or execution error (argparse errors are also 2). Results keep their limitations; drafts are not deleted after a failure. A read-only index that cannot resolve badly damaged relationships reports an error instead of producing a fake empty index.

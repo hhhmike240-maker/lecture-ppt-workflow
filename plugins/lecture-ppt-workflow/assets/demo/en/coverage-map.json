@@ -1,0 +1,14 @@
+{
+  "knowledge": [
+    {"id": "K01", "source": "lecture.md 1. Definition", "required": true, "slides": [4], "on_screen": ["Job analysis", "duties", "knowledge, skills and abilities"]},
+    {"id": "K02", "source": "lecture.md 1. Object and outputs", "required": true, "slides": [4], "on_screen": ["the job itself", "job description and specification"]},
+    {"id": "K03", "source": "lecture.md 1. Why it matters", "required": true, "slides": [5], "on_screen": ["Recruitment", "Training", "Performance", "Pay"]},
+    {"id": "K04", "source": "lecture.md 2. Four stages", "required": true, "slides": [7], "on_screen": ["Preparation", "Investigation", "Analysis", "Completion"]},
+    {"id": "K05", "source": "lecture.md 3. Four methods, strengths and limits", "required": true, "slides": [9], "on_screen": ["Observation", "Interview", "Questionnaire", "Work diary"]},
+    {"id": "K06", "source": "lecture.md 3. Combine methods", "required": true, "slides": [9], "on_screen": ["combine several methods"]},
+    {"id": "K07", "source": "lecture.md 4. Two parts", "required": true, "slides": [11], "on_screen": ["Job description", "Job specification"]},
+    {"id": "K08", "source": "lecture.md 4. Regular updates", "required": true, "slides": [12], "on_screen": ["update descriptions"]},
+    {"id": "K09", "source": "lecture.md Chapter review", "required": true, "slides": [14], "on_screen": ["Meaning", "Process", "Methods", "Documents"]}
+  ],
+  "figures": []
+}

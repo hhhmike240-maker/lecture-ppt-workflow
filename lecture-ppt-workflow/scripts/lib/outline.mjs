@@ -2,11 +2,93 @@
 // Environment-neutral: used by build_outline.mjs and by the browser page.
 // The AI or teacher writes content; this module owns coordinates, spacing and overflow checks.
 // Text never shrinks silently to fit: overflow is reported so the page can be split.
+// Text placed on slides follows the deck language; issue messages follow options.lang (default: the deck language).
 
 export const OUTLINE_FORMAT = 'lecture-outline';
 export const LAYOUTS = ['cover','agenda','section','bullets','definition','compare','table','process','case','figure','review','quiz','closing'];
 export const LAYOUT_NAMES = {cover:'封面',agenda:'目录',section:'过渡页',bullets:'要点',definition:'概念定义',compare:'对比',table:'表格',
   process:'流程',case:'教学情境',figure:'原图',review:'知识回顾',quiz:'课堂提问',closing:'结束页'};
+export const LAYOUT_NAMES_EN = {cover:'Cover',agenda:'Agenda',section:'Section',bullets:'Key points',definition:'Definition',compare:'Comparison',table:'Table',
+  process:'Process',case:'Case',figure:'Figure',review:'Review',quiz:'Quiz',closing:'Closing'};
+export const layoutNames = lang => lang === 'en' ? LAYOUT_NAMES_EN : LAYOUT_NAMES;
+
+/** 'zh' or 'en'. An explicit `language` wins (zh* is Chinese, anything else English); otherwise a deck without CJK text is English. */
+export function deckLanguage(outline) {
+  const l = typeof outline?.language === 'string' ? outline.language.trim() : '';
+  if (l) return /^zh/i.test(l) ? 'zh' : 'en';
+  return /\p{Script=Han}/u.test(JSON.stringify([outline?.title, outline?.slides]) ?? '') ? 'zh' : 'en';
+}
+
+// Fixed text written into the deck.
+const DECK = {
+  zh: {agenda:'目录', review:'知识回顾', center:'本章', material:'情境材料', discuss:'讨论', analysis:'参考分析', answer:a => `答案：${a}`,
+    fictional:'教学情境（虚构）', fictionalRe:/虚构/, sep:'；', colon:'：', insertFigure:'【请在此插入原图】', coverAlt:'封面背景', backgroundAlt:'模板背景',
+    plainNotes:name => `本页为${name}，无额外讲授内容。`, todoNotes:'【待补充】本页授课备注：讲解要点、提问与过渡。',
+    clickOrder:steps => `【点击顺序】${steps.join('；')}。`, revealPoint:n => `第${n}次点击：显示第${n}条要点`,
+    revealAnalysis:'第1次点击：显示参考分析', revealAnswer:n => `第${n}次点击：显示第${n}题答案`},
+  en: {agenda:'Agenda', review:'Review', center:'This chapter', material:'Case material', discuss:'Discussion', analysis:'Suggested analysis', answer:a => `Answer: ${a}`,
+    fictional:'Teaching scenario (fictional)', fictionalRe:/fictional|hypothetical/i, sep:'; ', colon:': ', insertFigure:'[Insert the original figure here]',
+    coverAlt:'Cover background', backgroundAlt:'Template background',
+    plainNotes:name => `${name} slide; nothing extra to teach here.`, todoNotes:'[TO DO] Speaker notes for this slide: key points, a question to ask, and the transition.',
+    clickOrder:steps => `[Click order] ${steps.join('; ')}.`, revealPoint:n => `Click ${n}: show point ${n}`,
+    revealAnalysis:'Click 1: show the suggested analysis', revealAnswer:n => `Click ${n}: show the answer to question ${n}`},
+};
+
+// Validation and layout messages. Overflow messages say what to ask the AI, so a teacher can fix the page in one round.
+const MSG = {
+  zh: {
+    slide:(n, name) => `第${n}页（${name}）：`, notObject:'内容必须是一个 JSON 对象（以 { 开头）', format:f => `format 应为 "${f}"`,
+    noSlides:'缺少 slides 页面列表', tooMany:'一次最多 80 页，请按节拆分', unknown:(n, l, all) => `第${n}页：未知版式 "${l}"，可用：${all}`,
+    missing:k => `缺少 ${k}`, both:(a, b) => `需要 ${a} 和 ${b}`, count:(k, min, max) => `${k} 需要 ${min}–${max} 项`,
+    column:j => `第${j}栏需要 title 和 points`, headers:'headers 需要 2–6 列', row:j => `第${j}行列数应与 headers 相同`,
+    step:j => `第${j}步缺少 title`, analysisMax:'analysis 最多 5 条', figure:'需要 image（图片文件名）或 placeholder（待插图说明）',
+    branch:j => `第${j}个分支缺少 title`, question:j => `第${j}题缺少 q`,
+    heading:'标题过长（超过一行），请缩短', topic:'页面标题过长（超过一行），请缩短', source:'来源说明较长，建议把完整出处写进备注',
+    content:'内容', table:'表格', sidePoints:'右侧要点',
+    overflow:(what, pct, n, fix) => `${what}超出版面约 ${pct}%（不自动缩小字号）。可以对 AI 说：“第 ${n} 页${fix}，其他页不变，输出完整 JSON。”`,
+    fix:{bullets:'要点太多：拆成两页，或每条精简到 20 字以内',
+      definition:'定义或要点太长：定义控制在 60 字内，要点 2–3 条',
+      compare:'对比内容太多：每栏不超过 4 条、每条 15 字以内，或拆成两页',
+      table:'表格太长：减少行数、精简单元格文字，或拆成两页',
+      process:'流程说明太长：每步说明控制在 25 字以内',
+      case:'情境太长：材料控制在 80 字内，问题不超过 2 个，参考分析改为 2–3 条、每条不超过 30 字',
+      figure:'图旁要点太多：减少到 3 条以内',
+      quiz:'提问太多：每页不超过 4 题，每个答案精简到 25 字以内，或拆成两页',
+      other:'内容太多：精简或拆成两页'},
+    cover:'封面标题超过两行，请缩短', agendaItem:n => `目录第${n}项过长`, manyPoints:n => `要点 ${n} 条，建议每页不超过 6 条`,
+    placeholder:'原图占位：请在 PowerPoint 中替换为讲义原图', branchLong:t => `分支“${t}”过长，请控制在 8 字左右`,
+    branchItems:t => `分支“${t}”的要点过多，请精简`, missingImage:f => `缺少图片文件 ${f}`, notImage:f => `${f} 不是 PNG/JPEG 图片`,
+    noNotes:'缺少授课备注（notes）', color:k => `theme.${k} 颜色格式应为 #RRGGBB`, width:'theme.width 应在 640–1280 之间（960 为 16:9，720 为 4:3）',
+  },
+  en: {
+    slide:(n, name) => `Slide ${n} (${name}): `, notObject:'The content must be a JSON object (starting with {)', format:f => `format must be "${f}"`,
+    noSlides:'The slides list is missing', tooMany:'At most 80 slides at a time; split the chapter by section',
+    unknown:(n, l, all) => `Slide ${n}: unknown layout "${l}". Available: ${all}`,
+    missing:k => `${k} is missing`, both:(a, b) => `needs ${a} and ${b}`, count:(k, min, max) => `${k} needs ${min}–${max} items`,
+    column:j => `column ${j} needs title and points`, headers:'headers needs 2–6 columns', row:j => `row ${j} must have as many cells as headers`,
+    step:j => `step ${j} is missing title`, analysisMax:'analysis allows at most 5 items', figure:'needs image (an image file name) or placeholder (which figure to insert)',
+    branch:j => `branch ${j} is missing title`, question:j => `question ${j} is missing q`,
+    heading:'The heading is longer than one line; shorten it', topic:'The slide title is longer than one line; shorten it',
+    source:'The source line is long; move the full citation into the notes',
+    content:'The content', table:'The table', sidePoints:'The points beside the figure',
+    overflow:(what, pct, n, fix) => `${what} overflows the slide by about ${pct}% (text is never shrunk automatically). You can tell the AI: "Slide ${n} ${fix}. Keep the other slides unchanged and output the full JSON."`,
+    fix:{bullets:'has too many points: split it into two slides, or cut each point to 12 words or fewer',
+      definition:'is too long: keep the definition under 30 words and use 2–3 points',
+      compare:'has too much in the comparison: at most 4 points per column and 8 words per point, or split it into two slides',
+      table:'has a table that is too long: use fewer rows and shorter cells, or split it into two slides',
+      process:'has step descriptions that are too long: keep each to 12 words or fewer',
+      case:'has a case that is too long: material under 50 words, at most 2 questions, and 2–3 analysis points of 15 words or fewer',
+      figure:'has too many points beside the figure: keep it to 3 or fewer',
+      quiz:'has too many questions: at most 4 per slide with answers of 12 words or fewer, or split it into two slides',
+      other:'has too much content: trim it or split it into two slides'},
+    cover:'The cover title is longer than two lines; shorten it', agendaItem:n => `Agenda item ${n} is too long`,
+    manyPoints:n => `${n} points; keep it to 6 or fewer per slide`,
+    placeholder:'Figure placeholder: replace it with the original figure in PowerPoint', branchLong:t => `Branch "${t}" is too long; keep it to about 3 words`,
+    branchItems:t => `Branch "${t}" has too many items; trim them`, missingImage:f => `Missing image file ${f}`, notImage:f => `${f} is not a PNG/JPEG image`,
+    noNotes:'Speaker notes (notes) are missing', color:k => `theme.${k} must be a color like #RRGGBB`, width:'theme.width must be 640–1280 (960 is 16:9, 720 is 4:3)',
+  },
+};
+export const messages = lang => MSG[lang === 'en' ? 'en' : 'zh'];
 
 export const DEFAULT_THEME = {
   font:'Microsoft YaHei', primary:'#2F5D7C', accent:'#167A85', text:'#243746', muted:'#5E6E78',
@@ -19,15 +101,20 @@ const M = 48;                 // side margin
 const BOTTOM = 474;           // content bottom (above source/page number band)
 
 // ---------- text measurement ----------
+// Latin widths below match Microsoft YaHei. Narrower Latin fonts get a factor measured with canvas
+// measureText on English sentences (Calibri ~0.83, Arial ~0.91), rounded up to stay conservative.
+const LATIN_WIDTH = {'calibri':.86, 'calibri light':.86, 'cambria':.9, 'times new roman':.86, 'georgia':.95,
+  'arial':.93, 'helvetica':.93, 'segoe ui':.92, 'aptos':.9};
+let latinScale = 1;           // set by layoutOutline for the deck font (layout is synchronous)
 const isWide = c => c >= 0x2E80 || (c >= 0x3000 && c <= 0x303F);
 function charWidth(ch) {
   const c = ch.codePointAt(0);
   if (isWide(c)) return 1;
-  if (/[A-Z]/.test(ch)) return /[MW]/.test(ch) ? .9 : .66;
-  if (/[mw]/.test(ch)) return .85;
-  if (/[iljtf.,;:'!|()\[\]]/.test(ch)) return .32;
-  if (ch === ' ') return .3;
-  return .56;
+  if (/[A-Z]/.test(ch)) return (/[MW]/.test(ch) ? .9 : .66) * latinScale;
+  if (/[mw]/.test(ch)) return .85 * latinScale;
+  if (/[iljtf.,;:'!|()\[\]]/.test(ch)) return .32 * latinScale;
+  if (ch === ' ') return .3 * latinScale;
+  return .56 * latinScale;
 }
 const tokenWidth = (t, px) => [...t].reduce((a, ch) => a + charWidth(ch), 0) * px;
 /** Estimated wrapped line count for text at px within width (greedy, CJK breaks anywhere). */
@@ -56,8 +143,12 @@ export const textHeight = (text, px, width, spacing = 1) => countLines(text, px,
 // ---------- helpers ----------
 const str = v => typeof v === 'string' ? v.trim() : (typeof v === 'number' ? String(v) : '');
 const list = v => Array.isArray(v) ? v : (v === undefined || v === null || v === '' ? [] : [v]);
-const KEY = /^([^：:\n]{1,16})[：:]\s*([\s\S]+)$/;
-const splitKey = t => { const m = str(t).match(KEY); return m ? {key:m[1].trim(), rest:m[2].trim()} : null; };
+// "Term：explanation". English terms run longer, and "a:b" without a space (times, URLs) is not a term.
+const KEY = {zh:/^([^：:\n]{1,16})[：:]\s*([\s\S]+)$/, en:/^([^：:\n]{1,40})(?:：|:\s)\s*([\s\S]+)$/};
+const splitKey = (t, lang = 'zh') => {
+  const m = str(t).match(KEY[lang]);
+  return m && (lang !== 'en' || m[1].trim().split(/\s+/).length <= 6) ? {key:m[1].trim(), rest:m[2].trim()} : null;
+};
 const pointText = p => typeof p === 'string' || typeof p === 'number' ? str(p) : str(p?.text);
 const pointSubs = p => (p && typeof p === 'object' && !Array.isArray(p)) ? list(p.sub).map(str).filter(Boolean) : [];
 
@@ -72,14 +163,14 @@ function box(name, x, y, w, h, o = {}) {
 }
 
 /** Runs for a bullet list; "术语：解释" gets a bold accent term. Returns {runs, height}. */
-function bulletRuns(points, size, width, theme, {subSize = size - 3, gap = 10} = {}) {
-  const runs = []; let height = 0;
+function bulletRuns(points, size, width, ctx, {subSize = size - 3, gap = 10} = {}) {
+  const {theme} = ctx, runs = []; let height = 0;
   const items = points.map(p => ({text:pointText(p), subs:pointSubs(p)})).filter(p => p.text);
   items.forEach((p, i) => {
     const last = i === items.length - 1 && !p.subs.length;
-    const k = splitKey(p.text);
+    const k = splitKey(p.text, ctx.lang);
     if (k) {
-      runs.push({text:k.key + '：', bold:true, color:theme.accent, bullet:true});
+      runs.push({text:k.key + ctx.T.colon, bold:true, color:theme.accent, bullet:true});
       runs.push({text:k.rest, breakLine:!last});
     } else runs.push({text:p.text, bullet:true, breakLine:!last});
     height += textHeight(p.text, size, width - 24) + gap;
@@ -92,37 +183,37 @@ function bulletRuns(points, size, width, theme, {subSize = size - 3, gap = 10} =
 }
 
 // ---------- validation ----------
-function fail(i, layout, msg) { throw Error(`第${i + 1}页（${LAYOUT_NAMES[layout] ?? layout}）：${msg}`); }
-
-export function validateOutline(outline) {
-  if (!outline || typeof outline !== 'object' || Array.isArray(outline)) throw Error('内容必须是一个 JSON 对象（以 { 开头）');
-  if (outline.format !== undefined && outline.format !== OUTLINE_FORMAT) throw Error(`format 应为 "${OUTLINE_FORMAT}"`);
-  if (!Array.isArray(outline.slides) || !outline.slides.length) throw Error('缺少 slides 页面列表');
-  if (outline.slides.length > 80) throw Error('一次最多 80 页，请按节拆分');
+/** Throws on structural errors. lang selects the message language (default: the deck language). */
+export function validateOutline(outline, lang) {
+  const msgLang = lang ?? (outline && typeof outline === 'object' ? deckLanguage(outline) : 'zh'), t = messages(msgLang), names = layoutNames(msgLang);
+  if (!outline || typeof outline !== 'object' || Array.isArray(outline)) throw Error(t.notObject);
+  if (outline.format !== undefined && outline.format !== OUTLINE_FORMAT) throw Error(t.format(OUTLINE_FORMAT));
+  if (!Array.isArray(outline.slides) || !outline.slides.length) throw Error(t.noSlides);
+  if (outline.slides.length > 80) throw Error(t.tooMany);
   outline.slides.forEach((s, i) => {
     const layout = s?.layout;
-    if (!LAYOUTS.includes(layout)) throw Error(`第${i + 1}页：未知版式 "${layout}"，可用：${LAYOUTS.join(', ')}`);
-    const need = (cond, msg) => { if (!cond) fail(i, layout, msg); };
+    if (!LAYOUTS.includes(layout)) throw Error(t.unknown(i + 1, layout, LAYOUTS.join(', ')));
+    const need = (cond, msg) => { if (!cond) throw Error(t.slide(i + 1, names[layout]) + msg); };
     const has = k => str(s[k]) !== '';
-    const arr = (k, min, max) => need(Array.isArray(s[k]) && s[k].length >= min && s[k].length <= max, `${k} 需要 ${min}–${max} 项`);
+    const arr = (k, min, max) => need(Array.isArray(s[k]) && s[k].length >= min && s[k].length <= max, t.count(k, min, max));
     switch (layout) {
-      case 'cover': need(has('title'), '缺少 title'); break;
+      case 'cover': need(has('title'), t.missing('title')); break;
       case 'agenda': arr('items', 2, 10); break;
-      case 'section': case 'closing': need(has('title'), '缺少 title'); break;
-      case 'bullets': need(has('title'), '缺少 title'); arr('points', 1, 8); break;
-      case 'definition': need(has('term') && has('definition'), '需要 term 和 definition'); if (s.points !== undefined) arr('points', 0, 4); break;
-      case 'compare': need(has('title'), '缺少 title'); arr('columns', 2, 3);
-        s.columns.forEach((c, j) => need(str(c?.title) && Array.isArray(c?.points) && c.points.length, `第${j + 1}栏需要 title 和 points`)); break;
-      case 'table': need(has('title'), '缺少 title'); need(Array.isArray(s.headers) && s.headers.length >= 2 && s.headers.length <= 6, 'headers 需要 2–6 列');
-        arr('rows', 1, 10); s.rows.forEach((r, j) => need(Array.isArray(r) && r.length === s.headers.length, `第${j + 1}行列数应与 headers 相同`)); break;
-      case 'process': need(has('title'), '缺少 title'); arr('steps', 2, 6);
-        s.steps.forEach((st, j) => need(str(typeof st === 'string' ? st : st?.title), `第${j + 1}步缺少 title`)); break;
-      case 'case': need(has('title') && has('material'), '需要 title 和 material'); arr('questions', 1, 4);
-        if (s.analysis !== undefined) need(list(s.analysis).length <= 5, 'analysis 最多 5 条'); break;
-      case 'figure': need(has('title'), '缺少 title'); need(has('image') || has('placeholder'), '需要 image（图片文件名）或 placeholder（待插图说明）'); break;
-      case 'review': arr('branches', 2, 5); s.branches.forEach((b, j) => need(str(b?.title), `第${j + 1}个分支缺少 title`)); break;
-      case 'quiz': need(has('title'), '缺少 title'); arr('questions', 1, 4);
-        s.questions.forEach((q, j) => need(str(typeof q === 'string' ? q : q?.q), `第${j + 1}题缺少 q`)); break;
+      case 'section': case 'closing': need(has('title'), t.missing('title')); break;
+      case 'bullets': need(has('title'), t.missing('title')); arr('points', 1, 8); break;
+      case 'definition': need(has('term') && has('definition'), t.both('term', 'definition')); if (s.points !== undefined) arr('points', 0, 4); break;
+      case 'compare': need(has('title'), t.missing('title')); arr('columns', 2, 3);
+        s.columns.forEach((c, j) => need(str(c?.title) && Array.isArray(c?.points) && c.points.length, t.column(j + 1))); break;
+      case 'table': need(has('title'), t.missing('title')); need(Array.isArray(s.headers) && s.headers.length >= 2 && s.headers.length <= 6, t.headers);
+        arr('rows', 1, 10); s.rows.forEach((r, j) => need(Array.isArray(r) && r.length === s.headers.length, t.row(j + 1))); break;
+      case 'process': need(has('title'), t.missing('title')); arr('steps', 2, 6);
+        s.steps.forEach((st, j) => need(str(typeof st === 'string' ? st : st?.title), t.step(j + 1))); break;
+      case 'case': need(has('title') && has('material'), t.both('title', 'material')); arr('questions', 1, 4);
+        if (s.analysis !== undefined) need(list(s.analysis).length <= 5, t.analysisMax); break;
+      case 'figure': need(has('title'), t.missing('title')); need(has('image') || has('placeholder'), t.figure); break;
+      case 'review': arr('branches', 2, 5); s.branches.forEach((b, j) => need(str(b?.title), t.branch(j + 1))); break;
+      case 'quiz': need(has('title'), t.missing('title')); arr('questions', 1, 4);
+        s.questions.forEach((q, j) => need(str(typeof q === 'string' ? q : q?.q), t.question(j + 1))); break;
     }
   });
   return outline;
@@ -137,13 +228,13 @@ function header(s, ctx) {
   const heading = text => {
     els.push(textEl('heading', text, M, rule - 48, HW, 40, 28, {bold:true, color:theme.primary, valign:'bottom'}));
     if (ownRule) els.push(box('title-rule', M, rule, CW, 1.5, {fill:theme.line}));
-    if (countLines(text, 28, HW) > 1) ctx.issue('error', '标题过长（超过一行），请缩短');
+    if (countLines(text, 28, HW) > 1) ctx.issue('error', ctx.M.heading);
   };
   const section = ctx.section;
   if (section) {
     heading(section);
     els.push(textEl('topic', str(s.title), M, rule + 12, CW, 36, 22, {bold:true, color:theme.text, valign:'middle'}));
-    if (countLines(str(s.title), 22, CW) > 1) ctx.issue('error', '页面标题过长（超过一行），请缩短');
+    if (countLines(str(s.title), 22, CW) > 1) ctx.issue('error', ctx.M.topic);
     return {els, top:rule + 66};
   }
   heading(str(s.title));
@@ -153,36 +244,25 @@ function header(s, ctx) {
 function footer(s, ctx, {fictional = false} = {}) {
   const {theme, W} = ctx, els = [], right = Math.min(W - M, ctx.frame.footerRight ?? W - M);
   const source = str(s.source);
-  const parts = [fictional && !/虚构/.test(source) ? '教学情境（虚构）' : '', source].filter(Boolean);
+  const parts = [fictional && !ctx.T.fictionalRe.test(source) ? ctx.T.fictional : '', source].filter(Boolean);
   if (parts.length) {
-    const text = parts.join('；'), w = right - M - 70;
+    const text = parts.join(ctx.T.sep), w = right - M - 70;
     els.push(textEl('source', text, M, 484, w, 24, 14, {color:theme.muted, valign:'middle'}));
-    if (countLines(text, 14, w) > 1) ctx.issue('warning', '来源说明较长，建议把完整出处写进备注');
+    if (countLines(text, 14, w) > 1) ctx.issue('warning', ctx.M.source);
   }
   if (theme.pageNumbers) els.push(textEl('page-number', String(ctx.index + 1), right - 60, 486, 60, 22, 14, {color:theme.muted, align:'right', valign:'middle'}));
   return els;
 }
 
-// Overflow messages say what to ask the AI, so a teacher can fix the page in one round.
-const FIX = {
-  bullets:'要点太多：拆成两页，或每条精简到 20 字以内',
-  definition:'定义或要点太长：定义控制在 60 字内，要点 2–3 条',
-  compare:'对比内容太多：每栏不超过 4 条、每条 15 字以内，或拆成两页',
-  table:'表格太长：减少行数、精简单元格文字，或拆成两页',
-  process:'流程说明太长：每步说明控制在 25 字以内',
-  case:'情境太长：材料控制在 80 字内，问题不超过 2 个，参考分析改为 2–3 条、每条不超过 30 字',
-  figure:'图旁要点太多：减少到 3 条以内',
-  quiz:'提问太多：每页不超过 4 题，每个答案精简到 25 字以内，或拆成两页',
-};
-function check(ctx, needed, available, what = '内容') {
+function check(ctx, needed, available, what = ctx.M.content) {
   if (needed <= available + 2) return;
-  const fix = FIX[ctx.layout] ?? '内容太多：精简或拆成两页';
-  ctx.issue('error', `${what}超出版面约 ${Math.round((needed / available - 1) * 100)}%（不自动缩小字号）。可以对 AI 说：“第 ${ctx.index + 1} 页${fix}，其他页不变，输出完整 JSON。”`);
+  const fix = ctx.M.fix[ctx.layout] ?? ctx.M.fix.other;
+  ctx.issue('error', ctx.M.overflow(what, Math.round((needed / available - 1) * 100), ctx.index + 1, fix));
 }
 /** Card row for "term：text" points. */
 function cardRow(points, x, y, w, ctx, {minHeight = 0, titleSize = 21, bodySize = 18} = {}) {
   const {theme} = ctx, n = points.length, gap = 20, cw = (w - gap * (n - 1)) / n, pad = 16, els = [];
-  const parsed = points.map(p => splitKey(pointText(p)) ?? {key:'', rest:pointText(p)});
+  const parsed = points.map(p => splitKey(pointText(p), ctx.lang) ?? {key:'', rest:pointText(p)});
   const inner = cw - 2 * pad;
   const titleH = Math.max(...parsed.map(p => p.key ? textHeight(p.key, titleSize, inner) : 0));
   const bodyH = Math.max(...parsed.map(p => textHeight(p.rest, bodySize, inner)));
@@ -216,7 +296,7 @@ L.cover = (s, ctx) => {
     // Template cover: centre the text, inside the template's title band when there is one.
     const band = frame.coverTitle, w = band ? band.width - 24 : W - 2 * M - 120, x = band ? band.left + 12 : (W - w) / 2;
     const th = textHeight(title, 36, w), ty = band ? band.top + Math.max(0, (band.height - th) / 2) : 190 - th / 2;
-    if (countLines(title, 36, w) > 2) ctx.issue('error', '封面标题超过两行，请缩短');
+    if (countLines(title, 36, w) > 2) ctx.issue('error', ctx.M.cover);
     els.push(textEl('title', title, x, ty, w, th, 36, {bold:true, color:band?.color ?? theme.primary, align:'center'}));
     const below = band ? band.top + band.height + 18 : ty + th + 24;
     if (subtitle) els.push(textEl('subtitle', subtitle, x, below, w, textHeight(subtitle, 22, w), 22, {color:theme.text, align:'center'}));
@@ -224,10 +304,10 @@ L.cover = (s, ctx) => {
     return els;
   }
   const x = M + 44, w = W - x - M;
-  if (ctx.coverImage) els.push({type:'image', name:'cover-background', path:ctx.coverImage, fit:'cover', position:{left:0, top:0, width:W, height:H}, alt:'封面背景'});
+  if (ctx.coverImage) els.push({type:'image', name:'cover-background', path:ctx.coverImage, fit:'cover', position:{left:0, top:0, width:W, height:H}, alt:ctx.T.coverAlt});
   else els.push(box('cover-bar', 0, 0, 18, H, {fill:theme.primary}));
   const th = textHeight(title, 40, w);
-  if (countLines(title, 40, w) > 2) ctx.issue('error', '封面标题超过两行，请缩短');
+  if (countLines(title, 40, w) > 2) ctx.issue('error', ctx.M.cover);
   const ty = 150 + Math.max(0, (100 - th) / 2);
   els.push(textEl('title', title, x, ty, w, th, 40, {bold:true, color:theme.primary}));
   els.push(box('title-accent', x, ty + th + 18, 96, 4, {fill:theme.accent}));
@@ -237,7 +317,7 @@ L.cover = (s, ctx) => {
 };
 
 L.agenda = (s, ctx) => {
-  const {theme, W} = ctx, h = header({title:str(s.title) || '目录'}, {...ctx, section:''}), els = [...h.els];
+  const {theme, W} = ctx, h = header({title:str(s.title) || ctx.T.agenda}, {...ctx, section:''}), els = [...h.els];
   const items = s.items.map(str), n = items.length, cols = n > 5 ? 2 : 1, rows = Math.ceil(n / cols);
   const avail = ctx.bottom - h.top - 10, rowH = Math.min(70, avail / rows), colW = (W - 2 * M) / cols;
   const y0 = h.top + 10 + (avail - rowH * rows) / 2;
@@ -245,7 +325,7 @@ L.agenda = (s, ctx) => {
     const c = Math.floor(i / rows), r = i % rows, x = M + c * colW + 20, y = y0 + r * rowH + (rowH - 44) / 2;
     els.push(textEl(`item-${i + 1}-number`, String(i + 1), x, y, 44, 44, 20, {geometry:'ellipse', fill:theme.primary, color:'#FFFFFF', bold:true, align:'center', valign:'middle'}));
     els.push(textEl(`item-${i + 1}`, t, x + 64, y - 4, colW - 104, 52, 22, {color:theme.text, valign:'middle'}));
-    if (countLines(t, 22, colW - 104) > 1) ctx.issue('warning', `目录第${i + 1}项过长`);
+    if (countLines(t, 22, colW - 104) > 1) ctx.issue('warning', ctx.M.agendaItem(i + 1));
   });
   return els;
 };
@@ -272,8 +352,9 @@ L.bullets = (s, ctx) => {
   let emph;
   if (emphasis) { emph = emphasisBox(emphasis, M, 0, CW, ctx); bottom -= emph.height + 16; }
   const points = list(s.points);
-  const keyed = points.every(p => splitKey(pointText(p)) && !pointSubs(p).length);
-  const style = s.style ?? (keyed && points.length >= 2 && points.length <= 4 && points.every(p => splitKey(pointText(p)).rest.length <= 70) ? 'cards' : 'list');
+  const keyed = points.every(p => splitKey(pointText(p), ctx.lang) && !pointSubs(p).length);
+  const cardText = ctx.lang === 'en' ? 160 : 70;
+  const style = s.style ?? (keyed && points.length >= 2 && points.length <= 4 && points.every(p => splitKey(pointText(p), ctx.lang).rest.length <= cardText) ? 'cards' : 'list');
   const avail = bottom - h.top - 6;
   if (style === 'cards') {
     // Natural-height cards; the card row and emphasis are placed together, slightly above center.
@@ -287,15 +368,15 @@ L.bullets = (s, ctx) => {
   } else if (s.reveal) {
     let y = h.top + 6;
     points.forEach((p, i) => {
-      const b = bulletRuns([p], 22, CW, ctx.theme);
+      const b = bulletRuns([p], 22, CW, ctx);
       els.push(runsEl(`reveal_${i + 1}_1_point`, b.runs, M, y, CW, Math.min(b.height, Math.max(10, bottom - y)), 22, {color:theme.text, paragraphSpacing:6}));
       y += b.height + 6;
-      ctx.reveal(`第${i + 1}次点击：显示第${i + 1}条要点`);
+      ctx.reveal(ctx.T.revealPoint(i + 1));
     });
     check(ctx, y - h.top - 6, avail);
   } else {
-    const b = bulletRuns(points, 22, CW, theme);
-    if (b.count > 6) ctx.issue('warning', `要点 ${b.count} 条，建议每页不超过 6 条`);
+    const b = bulletRuns(points, 22, CW, ctx);
+    if (b.count > 6) ctx.issue('warning', ctx.M.manyPoints(b.count));
     check(ctx, b.height, avail);
     els.push(runsEl('points', b.runs, M, h.top + 6, CW, Math.max(10, Math.min(avail, b.height + 10)), 22, {color:theme.text, paragraphSpacing:10, lineSpacing:1}));
   }
@@ -317,11 +398,11 @@ L.definition = (s, ctx) => {
   const points = list(s.points);
   let bottom = ctx.bottom;
   if (points.length) {
-    if (points.every(p => splitKey(pointText(p)))) {
+    if (points.every(p => splitKey(pointText(p), ctx.lang))) {
       const row = cardRow(points, M, y, CW, ctx, {titleSize:20, bodySize:18});
       els.push(...row.els); y += row.height;
     } else {
-      const b = bulletRuns(points, 20, CW, theme);
+      const b = bulletRuns(points, 20, CW, ctx);
       els.push(runsEl('points', b.runs, M, y, CW, Math.max(10, Math.min(b.height + 8, bottom - y)), 20, {color:theme.text, paragraphSpacing:8}));
       y += b.height;
     }
@@ -336,7 +417,7 @@ L.compare = (s, ctx) => {
   let bottom = ctx.bottom, emph;
   if (conclusion) { emph = emphasisBox(conclusion, M, 0, CW, ctx, 'conclusion'); bottom -= emph.height + 16; }
   const n = s.columns.length, gap = 22, cw = (CW - gap * (n - 1)) / n, pad = 16, headH = 46, top = h.top + 6;
-  const bodies = s.columns.map(c => bulletRuns(c.points, 19, cw - 2 * pad, theme, {gap:8}));
+  const bodies = s.columns.map(c => bulletRuns(c.points, 19, cw - 2 * pad, ctx, {gap:8}));
   const need = headH + pad + Math.max(...bodies.map(b => b.height)) + pad;
   const avail = bottom - top;
   check(ctx, need, avail);
@@ -371,7 +452,7 @@ L.table = (s, ctx) => {
   const rowHeights = values.map(r => Math.max(...r.map((v, c) => textHeight(v || ' ', size, widths[c] - 16))) + 12);
   const need = rowHeights.reduce((a, b) => a + b, 0);
   const avail = bottom - h.top - 6;
-  check(ctx, need, avail, '表格');
+  check(ctx, need, avail, ctx.M.table);
   const tableH = Math.min(need, avail);
   const k = tableH / need;
   els.push({type:'table', name:'table', values, fontSize:size, color:theme.text, headerFill:theme.primary, bandFill:theme.tint, borderColor:theme.border,
@@ -410,23 +491,23 @@ L.case = (s, ctx) => {
   let y = h.top + 4;
   els.push(box('material-card', M, y, CW, cardH, {fill:theme.tint}));
   els.push(box('material-bar', M, y, 6, cardH, {fill:theme.warm}));
-  els.push(textEl('material-label', str(s.label) || '情境材料', M + 6 + pad, y + pad, inner, labelH, 16, {bold:true, color:theme.warm}));
+  els.push(textEl('material-label', str(s.label) || ctx.T.material, M + 6 + pad, y + pad, inner, labelH, 16, {bold:true, color:theme.warm}));
   els.push(textEl('material', material, M + 6 + pad, y + pad + labelH + 6, inner, matH, 20, {color:theme.text}));
   y += cardH + 18;
   const half = (CW - 24) / 2, questions = s.questions.map(str);
   const qText = questions.map((q, i) => `${i + 1}. ${q}`).join('\n');
   const qH = textHeight(qText, 20, half) + questions.length * 6;
-  els.push(textEl('questions-label', '讨论', M, y, half, 28, 20, {bold:true, color:theme.accent}));
+  els.push(textEl('questions-label', ctx.T.discuss, M, y, half, 28, 20, {bold:true, color:theme.accent}));
   els.push(textEl('questions', qText, M, y + 34, half, Math.max(10, Math.min(qH, ctx.bottom - y - 34)), 20, {color:theme.text, paragraphSpacing:6}));
   // AIs often return the analysis as one paragraph; split it into sentences for bullets.
-  const analysis = (typeof s.analysis === 'string' ? s.analysis.split(/(?<=[。；;！？!?])s*/) : list(s.analysis)).map(str).filter(Boolean);
+  const analysis = (typeof s.analysis === 'string' ? s.analysis.split(/(?<=[。；！？])\s*|(?<=[.;!?])\s+/) : list(s.analysis)).map(str).filter(Boolean);
   let rightH = 0;
   if (analysis.length) {
-    const runs = [{text:'参考分析', bold:true, color:theme.accent, breakLine:true}, ...analysis.map((a, i) => ({text:a, bullet:true, breakLine:i < analysis.length - 1}))];
+    const runs = [{text:ctx.T.analysis, bold:true, color:theme.accent, breakLine:true}, ...analysis.map((a, i) => ({text:a, bullet:true, breakLine:i < analysis.length - 1}))];
     rightH = 16 + 26 + analysis.reduce((a, t) => a + textHeight(t, 19, half - 48) + 6, 0) + 16;
     els.push(runsEl('reveal_1_1_analysis', runs, M + half + 24, y, half, Math.max(10, Math.min(rightH, ctx.bottom - y)), 19,
       {geometry:'roundRect', radius:.04, fill:theme.surface, lineColor:theme.accent, lineWidth:1.25, color:theme.text, margin:12, paragraphSpacing:6}));
-    ctx.reveal('第1次点击：显示参考分析');
+    ctx.reveal(ctx.T.revealAnalysis);
   }
   check(ctx, (y - h.top) + Math.max(34 + qH, rightH), ctx.bottom - h.top);
   els.push(...footer(s, ctx, {fictional:s.fictional ?? !str(s.source)}));
@@ -442,23 +523,23 @@ L.figure = (s, ctx) => {
   const left = s.imageSide === 'right' && points.length ? M + CW - imgW : M;
   if (str(s.image)) els.push({type:'image', name:'figure', path:str(s.image), position:{left, top, width:imgW, height:imgH}, alt:caption || str(s.title)});
   else {
-    els.push(textEl('figure-placeholder', `【请在此插入原图】\n${str(s.placeholder)}`, left, top, imgW, imgH, 18,
+    els.push(textEl('figure-placeholder', `${ctx.T.insertFigure}\n${str(s.placeholder)}`, left, top, imgW, imgH, 18,
       {geometry:'rect', fill:'#EEF2F4', lineColor:theme.line, lineWidth:1, lineDash:'dash', color:theme.muted, align:'center', valign:'middle', margin:16}));
-    ctx.issue('warning', '原图占位：请在 PowerPoint 中替换为讲义原图');
+    ctx.issue('warning', ctx.M.placeholder);
   }
   if (caption) els.push(textEl('caption', caption, left, top + imgH + 4, imgW, 24, 15, {color:theme.muted, align:'center', valign:'middle'}));
   if (points.length) {
     const x = s.imageSide === 'right' ? M : M + imgW + 28, w = CW - imgW - 28;
-    const b = bulletRuns(points, 20, w, theme, {gap:10});
-    check(ctx, b.height, avail, '右侧要点');
+    const b = bulletRuns(points, 20, w, ctx, {gap:10});
+    check(ctx, b.height, avail, ctx.M.sidePoints);
     els.push(runsEl('points', b.runs, x, top + 4, w, Math.max(10, Math.min(avail, b.height + 8)), 20, {color:theme.text, paragraphSpacing:10}));
   }
   return els;
 };
 
 L.review = (s, ctx) => {
-  const {theme, W} = ctx, h = header({...s, title:str(s.title) || '知识回顾'}, ctx), els = [...h.els];
-  const center = str(s.center) || ctx.section || '本章';
+  const {theme, W} = ctx, h = header({...s, title:str(s.title) || ctx.T.review}, ctx), els = [...h.els];
+  const center = str(s.center) || ctx.section || ctx.T.center;
   const n = s.branches.length, top = h.top + 6, avail = ctx.bottom - top, slot = avail / n;
   const rootW = 196, rootH = Math.max(72, textHeight(center, 22, rootW - 20) + 24), bx = M + rootW + 64, bw = 184, bh = 46;
   const ix = bx + bw + 46, iw = W - M - ix;
@@ -468,11 +549,11 @@ L.review = (s, ctx) => {
     const cy = top + slot * (i + .5), items = list(b.items).map(str).filter(Boolean);
     els.push(textEl(`branch-${i + 1}`, str(b.title), bx, cy - bh / 2, bw, bh, 20,
       {geometry:'roundRect', radius:.5, fill:theme.tint, lineColor:theme.accent, lineWidth:1.25, color:theme.accent, bold:true, align:'center', valign:'middle', margin:4}));
-    if (countLines(str(b.title), 20, bw - 12) > 1) ctx.issue('error', `分支“${str(b.title)}”过长，请控制在 8 字左右`);
+    if (countLines(str(b.title), 20, bw - 12) > 1) ctx.issue('error', ctx.M.branchLong(str(b.title)));
     els.push({type:'connector', name:`link-${i + 1}`, from:'root', to:`branch-${i + 1}`, fromSide:'right', toSide:'left', color:theme.line, width:1.5});
     if (items.length) {
-      const text = items.join('；'), th = textHeight(text, 18, iw);
-      if (th > slot - 6) ctx.issue('error', `分支“${str(b.title)}”的要点过多，请精简`);
+      const text = items.join(ctx.T.sep), th = textHeight(text, 18, iw);
+      if (th > slot - 6) ctx.issue('error', ctx.M.branchItems(str(b.title)));
       els.push(textEl(`branch-${i + 1}-items`, text, ix, cy - Math.min(th, slot - 6) / 2, iw, Math.max(10, Math.min(th, slot - 6)), 18, {color:theme.text, valign:'middle'}));
       els.push({type:'connector', name:`leaf-${i + 1}`, from:`branch-${i + 1}`, to:`branch-${i + 1}-items`, fromSide:'right', toSide:'left', color:theme.line, width:1.5});
     }
@@ -488,7 +569,7 @@ L.quiz = (s, ctx) => {
     const qSize = cols > 1 ? 19 : 21, aSize = cols > 1 ? 17 : 19, badge = cols > 1 ? 32 : 38, tw = cw - (badge + 34) - pad;
     const cards = s.questions.map(q0 => {
       const q = typeof q0 === 'string' ? {q:q0} : q0, options = list(q.options).map(str).filter(Boolean);
-      const qt = str(q.q), ot = options.join('    '), at = str(q.answer) ? `答案：${str(q.answer)}` : '';
+      const qt = str(q.q), ot = options.join('    '), at = str(q.answer) ? ctx.T.answer(str(q.answer)) : '';
       const qH = textHeight(qt, qSize, tw), oH = ot ? textHeight(ot, aSize, tw) : 0, aH = at ? textHeight(at, aSize, tw) : 0;
       return {qt, ot, at, qH, oH, aH, height:Math.max(badge + 2 * pad, pad + qH + (ot ? 6 + oH : 0) + (at ? 10 + aH : 0) + pad)};
     });
@@ -514,7 +595,7 @@ L.quiz = (s, ctx) => {
     if (c.ot) { els.push(textEl(`question-${n}-options`, c.ot, tx, ty + 6, tw, c.oH, aSize, {color:theme.text})); ty += 6 + c.oH; }
     if (c.at) {
       els.push(textEl(`reveal_${n}_1_answer`, c.at, tx, ty + 10, tw, Math.max(10, Math.min(c.aH, ctx.bottom - ty - 10)), aSize, {color:theme.accent, bold:true}));
-      ctx.reveal(`第${n}次点击：显示第${n}题答案`);
+      ctx.reveal(ctx.T.revealAnswer(n));
     }
   });
   return els;
@@ -535,48 +616,56 @@ function clampElements(els, W, H) {
 /**
  * Convert an outline into a page specification.
  * options.images: Set/Array of available image names (for missing-image warnings), optional.
+ * options.lang: 'zh' or 'en' for issue messages; defaults to the deck language.
  * Returns {spec, issues, summary}.
  */
 export function layoutOutline(outline, options = {}) {
-  validateOutline(outline);
-  const theme = {...DEFAULT_THEME, ...(outline.theme ?? {})};
+  validateOutline(outline, options.lang);
+  const lang = deckLanguage(outline), msg = messages(options.lang ?? lang);
+  const theme = {...DEFAULT_THEME, ...(lang === 'en' ? {font:'Calibri'} : {}), ...(outline.theme ?? {})};
+  // A reference deck supplies both its East Asian and its Latin font; English decks use the Latin one.
+  if (lang === 'en' && theme.latinFont) theme.font = theme.latinFont;
   for (const k of ['primary','accent','text','muted','background','surface','tint','line','border','warm'])
-    if (!/^#?[0-9A-Fa-f]{6}$/.test(String(theme[k]))) throw Error(`theme.${k} 颜色格式应为 #RRGGBB`);
+    if (!/^#?[0-9A-Fa-f]{6}$/.test(String(theme[k]))) throw Error(msg.color(k));
   const W = Number(theme.width) || 960, H = 540;
-  if (W < 640 || W > 1280) throw Error('theme.width 应在 640–1280 之间（960 为 16:9，720 为 4:3）');
+  if (W < 640 || W > 1280) throw Error(msg.width);
   const issues = [], available = options.images ? new Set(options.images) : null, frame = theme.frame ?? {};
-  let section = '';
-  const slides = outline.slides.map((s, index) => {
+  let section = '', slides;
+  latinScale = LATIN_WIDTH[String(theme.font).trim().toLowerCase()] ?? 1;
+  try {
+  slides = outline.slides.map((s, index) => {
     const reveals = [];
     const ctx = {theme, W, H, index, layout:s.layout, section:'', coverImage:theme.coverImage, frame, bottom:Math.min(BOTTOM, frame.bottom ?? BOTTOM),
+      lang, T:DECK[lang], M:msg,
       issue:(level, message) => issues.push({slide:index + 1, layout:s.layout, level, message}),
       reveal:m => reveals.push(m)};
     if (s.layout === 'section') section = [str(s.number), str(s.title)].filter(Boolean).join(' ');
     else if (s.section !== undefined) section = s.section === null ? '' : str(s.section);
     ctx.section = s.layout === 'agenda' ? '' : section;
     if (s.layout === 'figure' && str(s.image) && available && !available.has(str(s.image)))
-      ctx.issue('error', `缺少图片文件 ${str(s.image)}`);
+      ctx.issue('error', msg.missingImage(str(s.image)));
     const structural = ['cover', 'section', 'closing'].includes(s.layout);
     const elements = [];
     if (!structural && theme.backgroundImage)
-      elements.push({type:'image', name:'template-background', path:theme.backgroundImage, fit:'cover', position:{left:0, top:0, width:W, height:H}, alt:'模板背景'});
+      elements.push({type:'image', name:'template-background', path:theme.backgroundImage, fit:'cover', position:{left:0, top:0, width:W, height:H}, alt:ctx.T.backgroundAlt});
     elements.push(...L[s.layout](s, ctx));
     if (!structural && !ctx.footerDone && s.layout !== 'agenda') elements.push(...footer(s, ctx));
     let notes = str(s.notes);
     if (!notes) {
-      if (structural || s.layout === 'agenda') notes = `本页为${LAYOUT_NAMES[s.layout]}，无额外讲授内容。`;
-      else { notes = '【待补充】本页授课备注：讲解要点、提问与过渡。'; ctx.issue('warning', '缺少授课备注（notes）'); }
+      if (structural || s.layout === 'agenda') notes = ctx.T.plainNotes(layoutNames(lang)[s.layout]);
+      else { notes = ctx.T.todoNotes; ctx.issue('warning', msg.noNotes); }
     }
-    if (reveals.length) notes += `\n\n【点击顺序】${reveals.join('；')}。`;
+    if (reveals.length) notes += '\n\n' + ctx.T.clickOrder(reveals);
     const sectionLike = ['section', 'closing'].includes(s.layout);
     const background = sectionLike && frame.sectionDark !== false ? theme.primary : theme.background;
     const role = s.layout === 'cover' ? 'cover' : sectionLike ? 'section' : 'content';
     return {id:`s${index + 1}-${s.layout}`, role, background, notes, elements:clampElements(elements, W, H), reveal:reveals.length > 0};
   });
-  const spec = {version:1, font:theme.font, slideSize:{width:W, height:H}, lang:outline.language ?? 'zh-CN', slides};
+  } finally { latinScale = 1; }
+  const spec = {version:1, font:theme.font, slideSize:{width:W, height:H}, lang:str(outline.language) || (lang === 'en' ? 'en-US' : 'zh-CN'), slides};
   const counts = {};
   outline.slides.forEach(s => counts[s.layout] = (counts[s.layout] ?? 0) + 1);
-  return {spec, issues, summary:{title:str(outline.title), slides:slides.length, layouts:counts,
+  return {spec, issues, summary:{title:str(outline.title), language:lang, slides:slides.length, layouts:counts,
     revealSlides:slides.filter(s => s.reveal).length,
     errors:issues.filter(i => i.level === 'error').length, warnings:issues.filter(i => i.level === 'warning').length}};
 }

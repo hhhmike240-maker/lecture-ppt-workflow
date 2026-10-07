@@ -165,27 +165,45 @@ function coverTitleBox(boxes, W, H) {
   return c ? {left:c.left, top:c.top, width:c.width, height:c.height, color:luminance(c.fill) < 140 ? '#FFFFFF' : null} : null;
 }
 
-/** Returns {theme, images, template, report}. `template` is passed to finalizePackage. */
-export async function extractTemplate(zip) {
-  const report = [];
+const REPORT = {
+  zh: {invalid:'这不是有效的 PPTX 文件（缺少 ppt/presentation.xml）', empty:'参考 PPT 中没有幻灯片',
+    style:(ratio, font, latin, primary, accent) => `页面比例 ${ratio ?? '其他'}，字体 ${font}${latin !== font ? `（西文 ${latin}）` : ''}，主色 #${primary}，强调色 #${accent}`,
+    reused:(content, cover) => `已复用 ${content} 个内容页装饰、${cover} 个封面装饰（标志、线条、图形）`,
+    none:'参考 PPT 中没有可复用的装饰形状，仅套用字体和配色', rule:'识别到标题横线，标题将放在横线上方',
+    skipped:n => `${n} 个带文字的形状没有复制（避免把示例文字带进新课件）`, check:'占位符样式和继承字号不复制；请预览检查标题、正文是否与装饰重叠'},
+  en: {invalid:'This is not a valid PPTX file (ppt/presentation.xml is missing)', empty:'The reference deck has no slides',
+    style:(ratio, font, latin, primary, accent) => `Aspect ratio ${ratio ?? 'other'}, font ${font}${latin !== font ? ` (Latin text: ${latin})` : ''}, primary #${primary}, accent #${accent}`,
+    reused:(content, cover) => `Reused ${content} content-slide and ${cover} cover decorations (logos, lines, shapes)`,
+    none:'The reference deck has no reusable decorations; only its fonts and colors are applied', rule:'Found a title rule; headings are placed above it',
+    skipped:n => `${n} shapes with text were not copied (so sample text does not end up in the new deck)`,
+    check:'Placeholder styles and inherited font sizes are not copied; check the preview for headings or text overlapping decorations'},
+};
+
+/** Returns {theme, images, template, report}. `template` is passed to finalizePackage. options.lang: report language ('zh' or 'en'). */
+export async function extractTemplate(zip, {lang = 'zh'} = {}) {
+  const report = [], t = REPORT[lang === 'en' ? 'en' : 'zh'];
   const pres = await readText(zip, 'ppt/presentation.xml');
-  if (!pres) throw Error('这不是有效的 PPTX 文件（缺少 ppt/presentation.xml）');
+  if (!pres) throw Error(t.invalid);
   const size = pres.match(/<p:sldSz\b[^>]*>/)?.[0];
   const cx = Number(attr(size ?? '', 'cx')) || 12192000, cy = Number(attr(size ?? '', 'cy')) || 6858000;
   const width = Math.round(540 * cx / cy), H = 540, scale = OUT_CY / cy;
   const presRels = await rels(zip, 'ppt/presentation.xml');
   const slideParts = [...pres.matchAll(/<p:sldId\b[^>]*>/g)].map(m => presRels.get(attr(m[0], 'r:id'))?.part).filter(Boolean);
-  if (!slideParts.length) throw Error('参考 PPT 中没有幻灯片');
+  if (!slideParts.length) throw Error(t.empty);
   const themePart = Object.keys(zip.files).filter(n => /^ppt\/theme\/theme\d+\.xml$/.test(n)).sort()[0];
   const themeXml = themePart ? await readText(zip, themePart) : '';
   const scheme = schemeColors(themeXml);
   const minor = themeXml.match(/<a:minorFont>([\s\S]*?)<\/a:minorFont>/)?.[1] ?? '';
-  const themeFont = attr(minor.match(/<a:ea\b[^>]*>/)?.[0] ?? '', 'typeface') || attr(minor.match(/<a:latin\b[^>]*>/)?.[0] ?? '', 'typeface');
+  const themeLatin = attr(minor.match(/<a:latin\b[^>]*>/)?.[0] ?? '', 'typeface');
+  const themeFont = attr(minor.match(/<a:ea\b[^>]*>/)?.[0] ?? '', 'typeface') || themeLatin;
 
-  const fonts = new Map(), colors = new Map(), titleColors = new Map();
+  const fonts = new Map(), latinFonts = new Map(), colors = new Map(), titleColors = new Map();
   for (const part of slideParts.slice(0, 12)) {
     const xml = await readText(zip, part) ?? '';
-    for (const m of xml.matchAll(/<a:(?:ea|latin)\b[^>]*typeface="([^"+][^"]*)"/g)) fonts.set(m[1], (fonts.get(m[1]) ?? 0) + 1);
+    for (const m of xml.matchAll(/<a:(ea|latin)\b[^>]*typeface="([^"+][^"]*)"/g)) {
+      fonts.set(m[2], (fonts.get(m[2]) ?? 0) + 1);
+      if (m[1] === 'latin') latinFonts.set(m[2], (latinFonts.get(m[2]) ?? 0) + 1);
+    }
     for (const m of xml.matchAll(/<a:rPr\b([^>]*)>([\s\S]*?)<\/a:rPr>/g)) {
       const hex = fragmentColor(m[2].match(/<a:solidFill>[\s\S]*?<\/a:solidFill>/)?.[0], scheme);
       if (!hex) continue;
@@ -195,6 +213,7 @@ export async function extractTemplate(zip) {
   }
   const ranked = map => [...map.entries()].sort((a, b) => b[1] - a[1]).map(x => x[0]);
   const font = ranked(fonts)[0] || themeFont || 'Microsoft YaHei';
+  const latinFont = ranked(latinFonts)[0] || themeLatin || font;   // used for English decks
 
   const roles = {
     cover:await roleFrom(zip, slideParts[0], scheme, scale),
@@ -231,17 +250,17 @@ export async function extractTemplate(zip) {
   frame.sectionDark = sectionBg ? luminance(sectionBg) < 140 : true;
   frame.coverDecorated = roles.cover.decor.length > 0;
   const bgHex = roles.content.bgColor;
-  const theme = {font, primary:'#' + primary, accent:'#' + accent, text:'#' + text, width,
+  const theme = {font, latinFont, primary:'#' + primary, accent:'#' + accent, text:'#' + text, width,
     background:bgHex && !roles.content.bgPicture ? '#' + bgHex : '#F7F8FA', frame};
   const template = {scale, roles:{cover:pack(roles.cover), content:pack(roles.content), section:pack(roles.section)}, media};
 
-  report.push(`页面比例 ${cx > cy * 1.5 ? '16:9' : (cx > cy * 1.2 ? '4:3' : '其他')}，字体 ${font}，主色 #${primary}，强调色 #${accent}`);
+  report.push(t.style(cx > cy * 1.5 ? '16:9' : (cx > cy * 1.2 ? '4:3' : null), font, latinFont, primary, accent));
   const n = roles.content.decor.length + roles.cover.decor.length;
-  report.push(n ? `已复用 ${roles.content.decor.length} 个内容页装饰、${roles.cover.decor.length} 个封面装饰（标志、线条、图形）` : '参考 PPT 中没有可复用的装饰形状，仅套用字体和配色');
-  if (frame.ruleY) report.push(`识别到标题横线，标题将放在横线上方`);
+  report.push(n ? t.reused(roles.content.decor.length, roles.cover.decor.length) : t.none);
+  if (frame.ruleY) report.push(t.rule);
   const skipped = roles.content.skippedText + roles.cover.skippedText;
-  if (skipped) report.push(`${skipped} 个带文字的形状没有复制（避免把示例文字带进新课件）`);
-  report.push('占位符样式和继承字号不复制；请预览检查标题、正文是否与装饰重叠');
+  if (skipped) report.push(t.skipped(skipped));
+  report.push(t.check);
   return {theme, images:{}, template, report};
 }
 const pack = role => ({decor:role.decor, bg:role.bg, bgColor:role.bgColor, boxes:role.boxes});

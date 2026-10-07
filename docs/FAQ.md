@@ -1,6 +1,6 @@
 # 常见问题 / FAQ
 
-[中文首页](../README.md) · [English](../README.en.md) · [使用指南](USAGE.md)
+[中文首页](../README.md) · [English FAQ](FAQ.en.md) · [使用指南](USAGE.md)
 
 ### 需要安装什么吗？
 
@@ -40,9 +40,9 @@ AI 不会重画讲义里的模型图，而是生成“原图”页，留一个�
 
 ### 支持英文课程吗？
 
-提供英文提示词，课件文字会使用讲义的语言。英文课程的实际效果还没有系统验证，网页界面目前是中文。
+支持。用英文提示词，课件文字使用讲义的语言；“答案：”“参考分析”、备注里的点击顺序等工具自动添加的文字，会跟随大纲的 `language` 变成英文，英文课件默认字体为 Calibri。网页右上角可以切换中英文界面。英文示例已在 PowerPoint 中逐页检查；用英文讲义实测 AI 还没有记录，欢迎反馈。
 
-*An English prompt is included and slide text follows the language of your notes. English-course quality has not been systematically validated yet.*
+*Yes: see the [English FAQ](FAQ.en.md). Slide labels, notes, messages and the web page all come in English.*
 
 ### 收费吗？
 

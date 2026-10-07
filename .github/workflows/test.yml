@@ -37,6 +37,8 @@ jobs:
         run: python demo/run_demo.py --out out/ci-demo --no-render
       - name: Example outline in sync with demo
         shell: bash
-        run: cmp demo/outline.json lecture-ppt-workflow/examples/outline.json
+        run: |
+          cmp demo/outline.json lecture-ppt-workflow/examples/outline.json
+          cmp demo/en/outline.json lecture-ppt-workflow/examples/outline.en.json
       - name: Plugin mirror in sync
         run: python -B scripts/build_plugin.py --check
