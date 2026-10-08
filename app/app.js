@@ -25,7 +25,7 @@ const STRINGS = {
     imagesLabel:'讲义原图（PNG/JPG，可多选）', imagesHint:'文件名与大纲中 figure 页的 image 字段一致时自动放入；没有原图的页面会留出“请插入原图”占位框。',
     s4:'检查预览，下载 PPT', s4hint:'预览是近似效果，以 PowerPoint/WPS 中打开为准。请逐页核对内容是否准确；红色问题建议先回到 AI 修改（例如“第 5 页内容太多，拆成两页”）。',
     download:'下载 PPTX',
-    footer:`开源项目 <a href="${REPO}">lecture-ppt-workflow</a>（MIT 许可）。生成引擎为 <a href="https://github.com/gitbrent/PptxGenJS">PptxGenJS</a>。AI 生成的内容需要老师审核后再用于教学。<a href="${REPO}/issues/new/choose">反馈问题或建议</a>`,
+    footer:`开源项目 <a href="${REPO}">lecture-ppt-workflow</a>（MIT 许可）。生成引擎为 <a href="https://github.com/gitbrent/PptxGenJS">PptxGenJS</a>。AI 生成的内容需要老师审核后再用于教学。本页用 <a href="https://www.goatcounter.com">GoatCounter</a> 匿名统计访问和下载次数，不用 cookie，不读取你的讲义和课件。<a href="${REPO}/issues/new/choose">反馈问题或建议</a>`,
     promptFailed:'提示词加载失败。请通过网址访问本页（不要直接双击打开文件），或到 GitHub 仓库的 prompts 目录复制。',
     copied:'已复制。打开你常用的 AI，粘贴提示词，在末尾填上课程信息并附上讲义（文字或文件）。',
     copyManual:'浏览器不允许自动复制，已为你选中提示词，请按 Ctrl+C（Mac 为 ⌘+C）。',
@@ -57,7 +57,7 @@ const STRINGS = {
     s4:'Check the preview and download the deck',
     s4hint:'The preview is approximate; PowerPoint or WPS is authoritative. Check every slide for accuracy, and fix red issues with the AI first (for example "Slide 5 has too much content; split it into two slides").',
     download:'Download PPTX',
-    footer:`Open-source project <a href="${REPO}">lecture-ppt-workflow</a> (MIT license). Decks are generated with <a href="https://github.com/gitbrent/PptxGenJS">PptxGenJS</a>. AI-written content needs a teacher's review before class. <a href="${REPO}/issues/new/choose">Report a problem or suggest an idea</a>`,
+    footer:`Open-source project <a href="${REPO}">lecture-ppt-workflow</a> (MIT license). Decks are generated with <a href="https://github.com/gitbrent/PptxGenJS">PptxGenJS</a>. AI-written content needs a teacher's review before class. Visits and downloads are counted anonymously with <a href="https://www.goatcounter.com">GoatCounter</a> (no cookies; your notes and slides are never read). <a href="${REPO}/issues/new/choose">Report a problem or suggest an idea</a>`,
     promptFailed:'The prompt could not be loaded. Open this page through its web address (not by double-clicking the file), or copy the prompt from the prompts folder of the GitHub repository.',
     copied:'Copied. Open your AI chatbot, paste the prompt, fill in your course details at the end and attach or paste your lecture notes.',
     copyManual:'Your browser blocked automatic copying, so the prompt is selected. Press Ctrl+C (⌘+C on a Mac).',
@@ -73,6 +73,8 @@ const STRINGS = {
   },
 };
 const t = () => STRINGS[state.ui];
+// Anonymous usage counts (GoatCounter: no cookies, no content). Skipped on localhost and when blocked.
+const track = name => { try { window.goatcounter?.count?.({path:name, event:true}); } catch { /* ignore */ } };
 const storage = {
   get() { try { return localStorage.getItem('lecture-ppt-ui'); } catch { return null; } },
   set(v) { try { localStorage.setItem('lecture-ppt-ui', v); } catch { /* private mode */ } },
@@ -136,6 +138,7 @@ $('copy-prompt').addEventListener('click', async () => {
   try {
     await navigator.clipboard.writeText(text);
     status('prompt-status', 'ok', t().copied);
+    track(`copy-prompt-${state.lang}`);
   } catch {
     $('prompt-text').closest('details').open = true;
     const range = document.createRange(); range.selectNodeContents($('prompt-text'));
@@ -376,13 +379,15 @@ function build(scroll = true) {
 }
 $('preview').addEventListener('click', () => build(true));
 let timer;
-$('outline').addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(() => build(false), 700); });
+$('outline').addEventListener('input', () => { state.sample = false; clearTimeout(timer); timer = setTimeout(() => build(false), 700); });
 $('load-sample').addEventListener('click', async () => {
   try {
     const r = await fetch(state.ui === 'en' ? '../demo/en/outline.json' : '../demo/outline.json');
     if (!r.ok) throw Error(r.status);
     $('outline').value = await r.text();
+    state.sample = true;
     build(true);
+    track('load-sample');
   } catch { status('parse-status', 'err', t().sampleFailed); }
 });
 
@@ -400,6 +405,7 @@ $('download').addEventListener('click', async () => {
     a.download = `${(state.title || s.fileName).replace(/[\\/:*?"<>|]+/g, ' ').trim() || s.fileName}.pptx`;
     document.body.append(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 30000);
+    track(state.sample ? 'download-sample' : state.template ? 'download-with-template' : 'download');
   } catch (err) {
     alert(s.failed + err.message);
   } finally { button.disabled = false; button.textContent = s.download; }
